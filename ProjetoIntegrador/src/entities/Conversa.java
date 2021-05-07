@@ -1,19 +1,26 @@
 package entities;
 
 /**
- * Classe responsável por representar os usuários
+ * Classe responsavel por representar os usuarios
  * @author Kaiane Ferreira
  * */
 
 import java.time.LocalDate;
 
 public class Conversa {
-	
-	private LocalDate data;
-	private String mensagem;
+
+	private LocalDate dataMensagem;
 	private Usuario usuarioRemetente;
 	private Usuario usuarioDestinatario;
-	
+	private String mensagem;
+
+	public Conversa(Usuario usuarioRemetente, Usuario usuarioDestinatario, String mensagem) {
+		this.usuarioRemetente = usuarioRemetente;
+		this.usuarioDestinatario = usuarioRemetente;
+		this.mensagem = mensagem;
+		dataMensagem = LocalDate.now(); 
+	}
+
 	public String getMensagem() {
 		return mensagem;
 	}
@@ -32,8 +39,8 @@ public class Conversa {
 	public void setUsuarioDestinatario(Usuario usuarioDestinatario) {
 		this.usuarioDestinatario = usuarioDestinatario;
 	}
-	public LocalDate getData() {
-		return data;
+	public LocalDate getDataMensagem() {
+		return dataMensagem;
 	}
-	
+
 }

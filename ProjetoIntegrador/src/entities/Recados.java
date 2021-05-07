@@ -1,7 +1,7 @@
 package entities;
 
 /**
- * Classe responsável por representar os recados
+ * Classe responsavel por representar os recados
  * @author Kaiane Ferreira
  * */
 

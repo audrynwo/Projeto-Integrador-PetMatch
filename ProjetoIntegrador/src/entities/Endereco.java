@@ -1,7 +1,7 @@
 package entities;
 
 /**
- * Classe responsável por representar o Endereço do Usuário
+ * Classe responsï¿½vel por representar o Endereco do Usuario
  * @author Audryn Weber de Oliveira
  * */
 public class Endereco {
@@ -11,7 +11,13 @@ public class Endereco {
 	private String rua;
 	private String complemento;
 	private String cep;
-	
+
+	public Endereco(String cep, String uf, String cidade) {
+		this.cep = cep;
+		this.uf = uf;
+		this.cidade = cidade;
+	}
+
 	public Endereco(String cep, String uf, String cidade, String bairro, String rua, String complemento) {
 		this.cep = cep;
 		this.uf = uf;
@@ -19,7 +25,7 @@ public class Endereco {
 		this.bairro = bairro;
 		this.rua = rua;
 		this.complemento = complemento;
-		
+
 	}
 
 	public String getUf() {
@@ -69,6 +75,6 @@ public class Endereco {
 	public void setCep(String cep) {
 		this.cep = cep;
 	}
-	
+
 }
-	
+

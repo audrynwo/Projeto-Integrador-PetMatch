@@ -1,9 +1,10 @@
 package entities;
 
 /**
- * Classe responsável por representar os usuários
+ * Classe responsavel por representar os usuarios
  * @author Kaiane Ferreira
  * */
+
 public class Usuario {
 	
 	private String nome;
@@ -15,15 +16,11 @@ public class Usuario {
 	private String fotoPerfil;
 	Endereco endereco;
 	
-	public Usuario(String nome, String sobrenome, String cpf, String email, String celular, String senha, String fotoPerfil, Endereco endereco) {
+	public Usuario(String nome, String sobrenome, String email, String senha) {
 		this.nome = nome;
 		this.sobrenome = sobrenome;
-		this.cpf = cpf;
 		this.email = email;
-		this.celular = celular;
 		this.senha = senha;
-		this.fotoPerfil = fotoPerfil;
-		this.endereco = endereco;
 	}
 
 	public String getNome() {
@@ -90,5 +87,4 @@ public class Usuario {
 		this.endereco = endereco;
 	}
 	
-
 }
