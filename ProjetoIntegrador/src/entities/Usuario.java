@@ -15,12 +15,14 @@ public class Usuario {
 	private String senha;
 	private String fotoPerfil;
 	Endereco endereco;
-	
+	private boolean statusPerfil;
+
 	public Usuario(String nome, String sobrenome, String email, String senha) {
 		this.nome = nome;
 		this.sobrenome = sobrenome;
 		this.email = email;
 		this.senha = senha;
+		statusPerfil = true;
 	}
 
 	public String getNome() {
@@ -86,5 +88,11 @@ public class Usuario {
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
 	}
-	
+	public boolean isStatusPerfil() {
+		return statusPerfil;
+	}
+
+	public void setStatusPerfil(boolean statusPerfil) {
+		this.statusPerfil = statusPerfil;
+	}	
 }
