@@ -144,11 +144,11 @@ public class Anuncios {
 	}
 	
 	public boolean isStatusAdocao() {
-		return statusAnuncio;
+		return statusAdocao;
 	}
 	
-	public void setStatusAdocao(boolean statusAnuncio) {
-		this.statusAnuncio = statusAnuncio;
+	public void setStatusAdocao(boolean statusAdocao) {
+		this.statusAdocao = statusAdocao;
 	}
 
 	public LocalDate getDataAnuncio() {
