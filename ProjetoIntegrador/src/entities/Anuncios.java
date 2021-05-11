@@ -28,21 +28,6 @@ public class Anuncios {
 	private Usuario autor;
 	private Endereco endereco;
 
-	public Anuncios(String nomeDoAnimal, String especie, String raca, String genero, 
-			String porte, int idade, Usuario autor) {
-		this.nomeDoAnimal = nomeDoAnimal;
-		this.especie = especie;
-		this.raca = raca;
-		this.genero = genero;
-		this.porte = porte;
-		this.idade = idade;
-		this.autor = autor;
-		endereco = autor.getEndereco();
-		dataAnuncio = LocalDate.now();
-		statusAnuncio = true;
-		statusAdocao = false;
-	}
-
 	public Anuncios(String descricao, String midia, String nomeDoAnimal, String especie, String raca, String genero, 
 			String porte, int idade, boolean statusVacinacao, boolean statusCastracao, boolean statusVermifugo, Usuario autor) {
 		this.descricao = descricao;
@@ -58,6 +43,8 @@ public class Anuncios {
 		this.statusVermifugo = statusVermifugo;
 		this.autor = autor;
 		dataAnuncio = LocalDate.now();
+		statusAnuncio = true;
+		statusAdocao = false;
 	}
 
 	public String getDescricao() {
@@ -157,11 +144,11 @@ public class Anuncios {
 	}
 	
 	public boolean isStatusAdocao() {
-		return statusAnuncio;
+		return statusAdocao;
 	}
 	
-	public void setStatusAdocao(boolean statusAnuncio) {
-		this.statusAnuncio = statusAnuncio;
+	public void setStatusAdocao(boolean statusAdocao) {
+		this.statusAdocao = statusAdocao;
 	}
 
 	public LocalDate getDataAnuncio() {
