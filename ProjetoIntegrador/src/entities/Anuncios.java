@@ -23,6 +23,8 @@ public class Anuncios {
 	private boolean statusVacinacao;
 	private boolean statusCastracao;
 	private boolean statusVermifugo;
+	private boolean statusAnuncio;
+	private boolean statusAdocao;
 	private Usuario autor;
 	private Endereco endereco;
 
@@ -37,6 +39,8 @@ public class Anuncios {
 		this.autor = autor;
 		endereco = autor.getEndereco();
 		dataAnuncio = LocalDate.now();
+		statusAnuncio = true;
+		statusAdocao = false;
 	}
 
 	public Anuncios(String descricao, String midia, String nomeDoAnimal, String especie, String raca, String genero, 
@@ -142,6 +146,22 @@ public class Anuncios {
 
 	public void setStatusVermifugo(boolean statusVermifugo) {
 		this.statusVermifugo = statusVermifugo;
+	}
+	
+	public boolean isStatusAnuncio() {
+		return statusAnuncio;
+	}
+	
+	public void setStatusAnuncio(boolean statusAnuncio) {
+		this.statusAnuncio = statusAnuncio;
+	}
+	
+	public boolean isStatusAdocao() {
+		return statusAnuncio;
+	}
+	
+	public void setStatusAdocao(boolean statusAnuncio) {
+		this.statusAnuncio = statusAnuncio;
 	}
 
 	public LocalDate getDataAnuncio() {
