@@ -6,16 +6,16 @@ package entities;
  * */
 
 public class Usuario {
-	
-	private String nome;
-	private String sobrenome;
-	private String cpf;
-	private String email;
-	private String celular;
-	private String senha;
-	private String fotoPerfil;
-	Endereco endereco;
-	private boolean statusPerfil;
+
+	protected String nome;
+	protected String sobrenome;
+	protected String cpf;
+	protected String email;
+	protected String celular;
+	protected String senha;
+	protected String fotoPerfil;
+	protected Endereco endereco;
+	protected boolean statusPerfil;
 
 	public Usuario(String nome, String sobrenome, String email, String senha) {
 		this.nome = nome;
