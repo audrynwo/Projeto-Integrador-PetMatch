@@ -5,6 +5,8 @@ package entities;
  * @author Kaiane Ferreira
  * */
 
+import java.util.List;
+
 public class Usuario {
 
 	protected String nome;
@@ -95,4 +97,6 @@ public class Usuario {
 	public void setStatusPerfil(boolean statusPerfil) {
 		this.statusPerfil = statusPerfil;
 	}	
+	
+	protected List<Favoritos> favoritos;
 }
