@@ -1,7 +1,7 @@
 package entities;
 
 /**
- * Classe respons�vel por representar o Endereco do Usuario
+ * Classe responsavel por representar o Endereco do Usuario
  * @author Audryn Weber de Oliveira
  * */
 public class Endereco {
