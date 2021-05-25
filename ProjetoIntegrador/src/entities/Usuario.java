@@ -90,13 +90,10 @@ public class Usuario {
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
 	}
+	
 	public boolean isStatusPerfil() {
 		return statusPerfil;
 	}
-
-	public void setStatusPerfil(boolean statusPerfil) {
-		this.statusPerfil = statusPerfil;
-	}	
 	
 	protected List<Favoritos> favoritos;
 }
