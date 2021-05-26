@@ -9,6 +9,7 @@ import java.time.LocalDate;
 
 public class Conversa {
 
+	private int idConversa;
 	private LocalDate dataMensagem;
 	private Usuario usuarioRemetente;
 	private Usuario usuarioDestinatario;
@@ -41,6 +42,14 @@ public class Conversa {
 	}
 	public LocalDate getDataMensagem() {
 		return dataMensagem;
+	}
+
+	public int getIdConversa() {
+		return idConversa;
+	}
+
+	public void setIdConversa(int idConversa) {
+		this.idConversa = idConversa;
 	}
 
 }

@@ -9,15 +9,16 @@ import java.util.List;
 
 public class Usuario {
 
-	protected String nome;
-	protected String sobrenome;
-	protected String cpf;
-	protected String email;
-	protected String celular;
-	protected String senha;
-	protected String fotoPerfil;
-	protected Endereco endereco;
-	protected boolean statusPerfil;
+	private int idUsuario;
+	private String nome;
+	private String sobrenome;
+	private String cpf;
+	private String email;
+	private String celular;
+	private String senha;
+	private String fotoPerfil;
+	private Endereco endereco;
+	private boolean statusPerfil;
 
 	public Usuario(String nome, String sobrenome, String email, String senha) {
 		this.nome = nome;
@@ -95,5 +96,13 @@ public class Usuario {
 		return statusPerfil;
 	}
 	
+	public int getIdUsuario() {
+		return idUsuario;
+	}
+
+	public void setIdUsuario(int idUsuario) {
+		this.idUsuario = idUsuario;
+	}
+
 	protected List<Favoritos> favoritos;
 }

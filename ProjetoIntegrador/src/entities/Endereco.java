@@ -5,6 +5,8 @@ package entities;
  * @author Audryn Weber de Oliveira
  * */
 public class Endereco {
+	
+	private int idEndereco;
 	private String uf;
 	private String cidade;
 	private String bairro;
@@ -74,6 +76,14 @@ public class Endereco {
 
 	public void setCep(String cep) {
 		this.cep = cep;
+	}
+
+	public int getIdEndereco() {
+		return idEndereco;
+	}
+
+	public void setIdEndereco(int idEndereco) {
+		this.idEndereco = idEndereco;
 	}
 
 }

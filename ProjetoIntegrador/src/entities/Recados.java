@@ -7,6 +7,7 @@ package entities;
 
 public class Recados {
 	
+	private int idRecados;
 	private String titulo;
 	private String texto;
 	private String midia;
@@ -44,6 +45,14 @@ public class Recados {
 
 	public void setMidia(String midia) {
 		this.midia = midia;
+	}
+
+	public int getIdRecados() {
+		return idRecados;
+	}
+
+	public void setIdRecados(int idRecados) {
+		this.idRecados = idRecados;
 	}
 	
 }

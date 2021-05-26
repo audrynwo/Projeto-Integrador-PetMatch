@@ -11,6 +11,7 @@ import java.util.List;
 
 public class Anuncios {
 
+	private int idAnuncio;
 	private String descricao;
 	private List<String> midia = new ArrayList<>();
 	private String nomeDoAnimal;
@@ -191,5 +192,13 @@ public class Anuncios {
 		if(this.midia.size() > 0) {
 			this.midia.remove(midia);
 		}
+	}
+
+	public int getIdAnuncio() {
+		return idAnuncio;
+	}
+
+	public void setIdAnuncio(int idAnuncio) {
+		this.idAnuncio = idAnuncio;
 	}
 }
