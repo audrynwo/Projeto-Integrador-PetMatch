@@ -1,11 +1,15 @@
 package entities;
 
+import java.io.Serializable;
+
 /**
  * Classe responsavel por representar o Endereco do Usuario
  * @author Audryn Weber de Oliveira
  * */
-public class Endereco {
-	
+public class Endereco implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 	private int idEndereco;
 	private String uf;
 	private String cidade;
@@ -84,6 +88,28 @@ public class Endereco {
 
 	public void setIdEndereco(int idEndereco) {
 		this.idEndereco = idEndereco;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + idEndereco;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Endereco other = (Endereco) obj;
+		if (idEndereco != other.idEndereco)
+			return false;
+		return true;
 	}
 
 }

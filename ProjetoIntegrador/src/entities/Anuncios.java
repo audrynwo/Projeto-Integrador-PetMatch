@@ -1,15 +1,18 @@
 package entities;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Classe responsavel por representar os Anuncios do Usuario
  * @author Audryn Weber de Oliveira
  * */
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+public class Anuncios implements Serializable {
 
-public class Anuncios {
+	private static final long serialVersionUID = 1L;
 
 	private int idAnuncio;
 	private String descricao;
@@ -20,11 +23,10 @@ public class Anuncios {
 	private String genero;
 	private String porte;
 	private int idade;
-	private LocalDate dataAnuncio;
+	private LocalDateTime dataAnuncio;
 	private boolean statusVacinacao;
 	private boolean statusCastracao;
 	private boolean statusVermifugo;
-	private boolean statusAnuncio;
 	private boolean statusAdocao;
 	private Usuario autor;
 	private Endereco endereco;
@@ -43,8 +45,7 @@ public class Anuncios {
 		this.statusCastracao = statusCastracao;
 		this.statusVermifugo = statusVermifugo;
 		this.autor = autor;
-		dataAnuncio = LocalDate.now();
-		statusAnuncio = true;
+		dataAnuncio = LocalDateTime.now();
 		statusAdocao = false;
 	}
 
@@ -135,24 +136,16 @@ public class Anuncios {
 	public void setStatusVermifugo(boolean statusVermifugo) {
 		this.statusVermifugo = statusVermifugo;
 	}
-	
-	public boolean isStatusAnuncio() {
-		return statusAnuncio;
-	}
-	
-	public void setStatusAnuncio(boolean statusAnuncio) {
-		this.statusAnuncio = statusAnuncio;
-	}
-	
+
 	public boolean isStatusAdocao() {
 		return statusAdocao;
 	}
-	
+
 	public void setStatusAdocao(boolean statusAdocao) {
 		this.statusAdocao = statusAdocao;
 	}
 
-	public LocalDate getDataAnuncio() {
+	public LocalDateTime getDataAnuncio() {
 		return dataAnuncio;
 	}
 
@@ -201,4 +194,27 @@ public class Anuncios {
 	public void setIdAnuncio(int idAnuncio) {
 		this.idAnuncio = idAnuncio;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + idAnuncio;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Anuncios other = (Anuncios) obj;
+		if (idAnuncio != other.idAnuncio)
+			return false;
+		return true;
+	}
+
 }

@@ -1,11 +1,15 @@
 package entities;
 
+import java.io.Serializable;
+
 /**
  * Classe responsavel por representar os favoritos
  * @author Kaiane Ferreira
  * */
 
-public class Favoritos {
+public class Favoritos implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private int idFavoritos;
 	private Usuario usuario;
@@ -39,5 +43,27 @@ public class Favoritos {
 	public void setAnuncio(Anuncios anuncio) {
 		this.anuncio = anuncio;
 	}
-	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + idFavoritos;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Favoritos other = (Favoritos) obj;
+		if (idFavoritos != other.idFavoritos)
+			return false;
+		return true;
+	}
+
 }
