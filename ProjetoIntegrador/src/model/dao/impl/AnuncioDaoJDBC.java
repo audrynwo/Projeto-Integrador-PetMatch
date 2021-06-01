@@ -116,8 +116,12 @@ public class AnuncioDaoJDBC implements AnuncioDao {
 
 	@Override
 	public List<Anuncios> findByEspecie(String especie) {
-		// TODO Auto-generated method stub
-		return null;
+		/* PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = conn.prepareStatement("SELECT * FROM anuncio WHERE especie = ?");
+		} */
+		return null; 
 	} 
 
 
