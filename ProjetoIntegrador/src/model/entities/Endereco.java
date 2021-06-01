@@ -15,6 +15,7 @@ public class Endereco implements Serializable {
 	private String cidade;
 	private String bairro;
 	private String rua;
+	private int numero;
 	private String complemento;
 	private String cep;
 
@@ -24,7 +25,7 @@ public class Endereco implements Serializable {
 		this.cidade = cidade;
 	}
 
-	public Endereco(String cep, String uf, String cidade, String bairro, String rua, String complemento) {
+	public Endereco(String cep, String uf, String cidade, String bairro, String rua, int numero, String complemento) {
 		this.cep = cep;
 		this.uf = uf;
 		this.cidade = cidade;
@@ -110,6 +111,14 @@ public class Endereco implements Serializable {
 		if (idEndereco != other.idEndereco)
 			return false;
 		return true;
+	}
+
+	public int getNumero() {
+		return numero;
+	}
+
+	public void setNumero(int numero) {
+		this.numero = numero;
 	}
 
 }
