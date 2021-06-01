@@ -1,11 +1,14 @@
 package model.dao.impl;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
+import db.DB;
+import db.DbException;
 import model.dao.AnuncioDao;
 import model.entities.Anuncios;
 
@@ -19,7 +22,7 @@ public class AnuncioDaoJDBC implements AnuncioDao {
 
 	@Override
 	public void insert(Anuncios obj) {
-	/*	PreparedStatement st = null;
+		PreparedStatement st = null;
 		try {
 			st = conn.prepareStatement(
 					"INSERT INTO anuncio " 
@@ -29,7 +32,7 @@ public class AnuncioDaoJDBC implements AnuncioDao {
 							Statement.RETURN_GENERATED_KEYS);
 			st.setString(1, obj.getNomeDoAnimal());
 			st.setString(2, obj.getDescricao());
-			//st.setDate(3, obj.);
+			st.setTimestamp(3, obj.getDataAnuncio());
 			st.setInt(4, obj.getIdade());
 			st.setString(5, obj.getEspecie());
 			st.setString(6, obj.getRaca());
@@ -41,13 +44,33 @@ public class AnuncioDaoJDBC implements AnuncioDao {
 			st.setBoolean(12, obj.isStatusVermifugo());
 			st.setBoolean(13, obj.isStatusAdocao());
 			st.setString(14, obj.getDescricao());
-		} */
-	}
+
+			int rowsAffected = st.executeUpdate();
+			if(rowsAffected > 0) {
+				ResultSet rs = st.getGeneratedKeys();
+				if(rs.next()) {
+					int id = rs.getInt(1);
+					obj.setIdAnuncio(id);
+				}
+				DB.closeResultSet(rs);
+			} else {
+				throw new DbException("Unexpected error! No rows affected");
+			}
+		} 
+		catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+		}
+	} 
 
 	@Override
 	public void update(Anuncios obj) {
-		// TODO Auto-generated method stub
-
+		//PreparedStatement st = null;
+		/*try {
+			st = conn.prepareStatement("UPDATE anuncios " + "SET Name = ?, E")
+		}*/
 	}
 
 	@Override

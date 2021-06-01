@@ -1,6 +1,7 @@
 package model.entities;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,16 +32,16 @@ public class Anuncios implements Serializable {
 	private Usuario autor;
 	private Endereco endereco;
 
-	public Anuncios(String descricao, String midia, String nomeDoAnimal, String especie, String raca, String genero, 
-			String porte, int idade, boolean statusVacinacao, boolean statusCastracao, boolean statusVermifugo, Usuario autor) {
-		this.descricao = descricao;
-		this.midia.add(midia);
+	public Anuncios(String nomeDoAnimal,  String midia, String descricao, int idade, String especie, String raca, String genero, 
+			String porte, boolean statusVacinacao, boolean statusCastracao, boolean statusVermifugo, Usuario autor) {
 		this.nomeDoAnimal = nomeDoAnimal;
+		this.midia.add(midia);
+		this.descricao = descricao;
+		this.idade = idade;
 		this.especie = especie;
 		this.raca = raca;
 		this.genero = genero;
 		this.porte = porte;
-		this.idade = idade;
 		this.statusVacinacao = statusVacinacao;
 		this.statusCastracao = statusCastracao;
 		this.statusVermifugo = statusVermifugo;
@@ -145,8 +146,9 @@ public class Anuncios implements Serializable {
 		this.statusAdocao = statusAdocao;
 	}
 
-	public LocalDateTime getDataAnuncio() {
-		return dataAnuncio;
+	public Timestamp getDataAnuncio() {
+		Timestamp timestamp = Timestamp.valueOf(dataAnuncio);
+		return timestamp;
 	}
 
 	public Endereco getEndereco() {
