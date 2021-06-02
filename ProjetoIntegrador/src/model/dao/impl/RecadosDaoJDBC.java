@@ -12,11 +12,11 @@ import db.DbIntegrityException;
 import model.dao.RecadosDao;
 import model.entities.Recados;
 
-public class RecadosDAOJDBC implements RecadosDao {
+public class RecadosDaoJDBC implements RecadosDao {
 
 	Connection conn;
 
-	public RecadosDAOJDBC(Connection conn) {
+	public RecadosDaoJDBC(Connection conn) {
 		this.conn = conn;
 	}
 

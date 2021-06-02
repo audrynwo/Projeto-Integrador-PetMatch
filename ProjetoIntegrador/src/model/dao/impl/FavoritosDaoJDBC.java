@@ -12,11 +12,11 @@ import db.DbIntegrityException;
 import model.dao.FavoritosDao;
 import model.entities.Favoritos;
 
-public class FavoritosDAOJDBC implements FavoritosDao {
+public class FavoritosDaoJDBC implements FavoritosDao {
 
 	private Connection conn;
 	
-	public FavoritosDAOJDBC(Connection conn) {
+	public FavoritosDaoJDBC(Connection conn) {
 		this.conn = conn;
 	}
 
