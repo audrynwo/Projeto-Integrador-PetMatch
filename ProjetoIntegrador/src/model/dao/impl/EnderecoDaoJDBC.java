@@ -19,7 +19,7 @@ public class EnderecoDaoJDBC implements EnderecoDao{
 	public EnderecoDaoJDBC(Connection conn) {
 		this.conn = conn;
 	}
-	
+
 	private Endereco instantiateEndereco(ResultSet rs) throws SQLException {
 		Endereco obj = new Endereco();
 		obj.setIdEndereco(rs.getInt("id_endereco"));
@@ -30,7 +30,7 @@ public class EnderecoDaoJDBC implements EnderecoDao{
 		obj.setRua(rs.getString("rua"));
 		obj.setNumero(rs.getInt("numero"));
 		obj.setComplemento(rs.getString("complemento"));
-		
+
 		return obj;
 	}
 
@@ -42,7 +42,7 @@ public class EnderecoDaoJDBC implements EnderecoDao{
 					"INSERT INTO usuario "
 							+ "(cep, uf, cidade, bairro, rua, numero, complemento, id_usuario) "
 							+ "VALUES "
-							+ "(?, ?, ?, ?, ?, ?, ?, ?",
+							+ "(?, ?, ?, ?, ?, ?, ?, ?)",
 							Statement.RETURN_GENERATED_KEYS);
 			st.setString(1, obj.getCep());
 			st.setString(2, obj.getUf());

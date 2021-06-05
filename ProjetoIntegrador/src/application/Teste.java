@@ -2,10 +2,14 @@ package application;
 
 import java.util.Scanner;
 
+import model.dao.AnuncioDao;
 import model.dao.DaoFactory;
 import model.dao.EnderecoDao;
+import model.dao.RecadosDao;
 import model.dao.UsuarioDao;
+import model.entities.Anuncios;
 import model.entities.Endereco;
+import model.entities.Recados;
 import model.entities.Usuario;
 
 public class Teste {
@@ -22,7 +26,7 @@ public class Teste {
 		System.out.println("Apaagoouu"); **/
 
 		System.out.println("\n=== TESTE 1: insert(usuario obj) =====");
-		Usuario usuario1 = new Usuario("121-121-122-98", "Willow", "Smith", "jadensmith@gmail.com", "1234567");
+		Usuario usuario1 = new Usuario("121-121-122-51", "Willow", "Smith", "jadensmith4@gmail.com", "1234567");
 		usuarioDao.insert(usuario1);
 		System.out.println("Primeiro usuario inserido! Id_usuario = " + usuario1.getIdUsuario());
 
@@ -40,13 +44,32 @@ public class Teste {
 
 		EnderecoDao enderecoDao = DaoFactory.createEnderecoDao();
 		// String cep, String uf, String cidade, String bairro, String rua, int numero, String complemento, Usuario usuario
-		System.out.println("==== TESTE 1: INSERT ENDERECO =====");
-		Endereco endereco1 = new Endereco("93218432" , "rs" , "canoas" , "igara" , "tres marias" , 72 , usuario1 );
+		System.out.println("==== TESTE 3: INSERT ENDERECO =====");
+		Endereco endereco1 = new Endereco("9321-8432" , "rs" , "canoas" , "igara" , "tres marias" , 72 , usuario1 );
 		enderecoDao.insert(endereco1);
-		System.out.println("Primeiro usuario inserido! Id_usuario = " + endereco1.getIdEndereco());
+		System.out.println("Primeiro endereço inserido! Id_endereco = " + endereco1.getIdEndereco());
 		endereco1.setComplemento("casa roxa");
 		enderecoDao.update(endereco1);
 		System.out.println("Update completed");
+
+		AnuncioDao anuncioDao = DaoFactory.createAnuncioDao();
+		System.out.println("==== TESTE 4: INSERT ANUNCIO =====");
+		Anuncios anuncio = new Anuncios("Bolinha", "bolinnha.jpgMidia", "fofa", 2, "cao", "shitzu", "feminino", "pequeno", true, true, true, usuario1, endereco1);
+		anuncioDao.insert(anuncio);
+		System.out.println("Primeiro anuncio cadastrado! Id_anuncio: " + anuncio.getIdAnuncio());
+		anuncio.setDescricao("comilona");
+		anuncioDao.update(anuncio);
+		System.out.println("Atualizado!");
+
+		RecadosDao recadosDao = DaoFactory.createRecadosDao();
+		//string titulo string texto e string midia
+		System.out.println("==== TESTE 4: INSERT RECADO =====");
+		Recados recado = new Recados("cao para adocao amigavel", "amo muito meu doguinho mas n tenho mais espaco em casa", "lucy.jpgMidia");
+		recadosDao.insert(recado);
+		System.out.println("Primeiro recado cadastrado! Id_recado: " + recado.getIdRecados());
+		recado.setMidia("caoFofo.jpgMidia");
+		recadosDao.update(recado);
+		System.out.println("Atualizado!");		
 
 		scanner.close();
 	}

@@ -16,6 +16,9 @@ public class Recados implements Serializable {
 	private String texto;
 	private String midia;
 
+	public Recados() {
+	}
+
 	public Recados(String titulo, String texto, String midia) {
 		this.titulo = titulo;
 		this.texto = texto;

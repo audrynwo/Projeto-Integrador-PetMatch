@@ -11,6 +11,7 @@ import db.DbException;
 import db.DbIntegrityException;
 import model.dao.RecadosDao;
 import model.entities.Recados;
+import model.entities.Usuario;
 
 public class RecadosDaoJDBC implements RecadosDao {
 
@@ -18,6 +19,16 @@ public class RecadosDaoJDBC implements RecadosDao {
 
 	public RecadosDaoJDBC(Connection conn) {
 		this.conn = conn;
+	}
+
+	private Recados instantiateRecados(ResultSet rs) throws SQLException {
+		Recados obj = new Recados();
+		obj.setIdRecados(rs.getInt("id_recado"));
+		obj.setTitulo(rs.getString("titulo"));
+		obj.setTexto(rs.getString("texto"));
+		obj.setMidia(rs.getString("midia"));
+
+		return obj;
 	}
 
 	@Override
@@ -63,7 +74,7 @@ public class RecadosDaoJDBC implements RecadosDao {
 			st.setString(1, obj.getTitulo());
 			st.setString(2, obj.getTexto());
 			st.setString(3, obj.getMidia());
-			
+
 			st.executeUpdate();
 		}
 		catch (SQLException e) {
@@ -81,9 +92,9 @@ public class RecadosDaoJDBC implements RecadosDao {
 		try {
 			st = conn.prepareStatement(
 					"DELETE FROM recado WHERE id_recado = ?");
-			
+
 			st.setInt(1, id);
-			
+
 			st.executeUpdate();
 		}
 		catch (SQLException e) {
@@ -94,5 +105,26 @@ public class RecadosDaoJDBC implements RecadosDao {
 		}
 
 	}
-
+	@Override
+	public Recados findById(Integer id) {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = conn.prepareStatement("SELECT * FROM usuario WHERE id_recado = ?");
+			st.setInt(1, id);
+			rs = st.executeQuery();
+			if(rs.next()) {
+				Recados obj = instantiateRecados(rs);
+				return obj;
+			}
+			return null;
+		} 
+		catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeResultSet(rs);
+			DB.closeResultSet(rs);
+		}
+	}
 }
