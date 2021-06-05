@@ -21,9 +21,13 @@ public class Usuario implements Serializable {
 	private String celular;
 	private String senha;
 	private String fotoPerfil;
-	private Endereco endereco;
+	
+	public Usuario() {
+		
+	}
 
-	public Usuario(String nome, String sobrenome, String email, String senha) {
+	public Usuario(String cpf, String nome, String sobrenome, String email, String senha) {
+		this.cpf = cpf;
 		this.nome = nome;
 		this.sobrenome = sobrenome;
 		this.email = email;
@@ -95,14 +99,6 @@ public class Usuario implements Serializable {
 
 	public void setFotoPerfil(String fotoPerfil) {
 		this.fotoPerfil = fotoPerfil;
-	}
-
-	public Endereco getEndereco() {
-		return endereco;
-	}
-
-	public void setEndereco(Endereco endereco) {
-		this.endereco = endereco;
 	}
 
 	public int getIdUsuario() {

@@ -19,6 +19,20 @@ public class EnderecoDaoJDBC implements EnderecoDao{
 	public EnderecoDaoJDBC(Connection conn) {
 		this.conn = conn;
 	}
+	
+	private Endereco instantiateEndereco(ResultSet rs) throws SQLException {
+		Endereco obj = new Endereco();
+		obj.setIdEndereco(rs.getInt("id_endereco"));
+		obj.setCep(rs.getString("cep"));
+		obj.setUf(rs.getString("uf"));
+		obj.setCidade(rs.getString("cidade"));
+		obj.setBairro(rs.getString("bairro"));
+		obj.setRua(rs.getString("rua"));
+		obj.setNumero(rs.getInt("numero"));
+		obj.setComplemento(rs.getString("complemento"));
+		
+		return obj;
+	}
 
 	@Override
 	public void insert(Endereco obj) {
@@ -26,9 +40,9 @@ public class EnderecoDaoJDBC implements EnderecoDao{
 		try {
 			st = conn.prepareStatement(
 					"INSERT INTO usuario "
-							+ "(cep, uf, cidade, bairro, rua, numero, complemento) "
+							+ "(cep, uf, cidade, bairro, rua, numero, complemento, id_usuario) "
 							+ "VALUES "
-							+ "(?, ?, ?, ?, ?, ?, ?",
+							+ "(?, ?, ?, ?, ?, ?, ?, ?",
 							Statement.RETURN_GENERATED_KEYS);
 			st.setString(1, obj.getCep());
 			st.setString(2, obj.getUf());
@@ -37,6 +51,7 @@ public class EnderecoDaoJDBC implements EnderecoDao{
 			st.setString(5, obj.getRua());
 			st.setInt(6, obj.getNumero());
 			st.setString(7, obj.getComplemento());
+			st.setInt(8, obj.getUsuario().getIdUsuario());
 
 			int rowsAffected = st.executeUpdate();
 			if(rowsAffected > 0) {
@@ -60,7 +75,6 @@ public class EnderecoDaoJDBC implements EnderecoDao{
 	}
 	@Override
 	public void update(Endereco obj) {
-		// TODO Auto-generated method stub
 		PreparedStatement st = null;
 		try {
 			st = conn.prepareStatement(
@@ -102,8 +116,30 @@ public class EnderecoDaoJDBC implements EnderecoDao{
 
 	@Override
 	public List<Endereco> findByCidade(String cidade) {
-		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public Endereco findById(Integer id) {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = conn.prepareStatement("SELECT * FROM endereco WHERE id_endereco = ?");
+			st.setInt(1, id);
+			rs = st.executeQuery();
+			if(rs.next()) {
+				Endereco obj = instantiateEndereco(rs);
+				return obj;
+			}
+			return null;
+		} 
+		catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeResultSet(rs);
+			DB.closeResultSet(rs);
+		}
 	}
 
 }

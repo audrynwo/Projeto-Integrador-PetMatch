@@ -18,21 +18,29 @@ public class Endereco implements Serializable {
 	private int numero;
 	private String complemento;
 	private String cep;
+	private Usuario usuario;
 
-	public Endereco(String cep, String uf, String cidade) {
+	public Endereco() {
+		
+	}
+
+	public Endereco(String cep, String uf, String cidade, String bairro, String rua, int numero, Usuario usuario) {
 		this.cep = cep;
 		this.uf = uf;
 		this.cidade = cidade;
+		this.bairro = bairro;
+		this.rua = rua;
+		this.usuario = usuario;
 	}
-
-	public Endereco(String cep, String uf, String cidade, String bairro, String rua, int numero, String complemento) {
+	
+	public Endereco(String cep, String uf, String cidade, String bairro, String rua, int numero, String complemento, Usuario usuario) {
 		this.cep = cep;
 		this.uf = uf;
 		this.cidade = cidade;
 		this.bairro = bairro;
 		this.rua = rua;
 		this.complemento = complemento;
-
+		this.usuario = usuario;
 	}
 
 	public String getUf() {
@@ -90,7 +98,15 @@ public class Endereco implements Serializable {
 	public void setIdEndereco(int idEndereco) {
 		this.idEndereco = idEndereco;
 	}
+	
+	public Usuario getUsuario() {
+		return usuario;
+	}
 
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
