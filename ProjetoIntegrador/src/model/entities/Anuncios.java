@@ -37,7 +37,7 @@ public class Anuncios implements Serializable {
 	}
 
 	public Anuncios(String nomeDoAnimal,  String midia, String descricao, int idade, String especie, String raca, String genero, 
-			String porte, boolean statusVacinacao, boolean statusCastracao, boolean statusVermifugo, Usuario autor) {
+			String porte, boolean statusVacinacao, boolean statusCastracao, boolean statusVermifugo, Usuario autor, Endereco endereco) {
 		this.nomeDoAnimal = nomeDoAnimal;
 		this.midia.add(midia);
 		this.descricao = descricao;
@@ -50,6 +50,7 @@ public class Anuncios implements Serializable {
 		this.statusCastracao = statusCastracao;
 		this.statusVermifugo = statusVermifugo;
 		this.autor = autor;
+		this.endereco = endereco;
 		dataAnuncio = LocalDateTime.now();
 		statusAdocao = false;
 	}
@@ -150,15 +151,14 @@ public class Anuncios implements Serializable {
 		this.statusAdocao = statusAdocao;
 	}
 
-	public Timestamp getDataAnuncio() {
-		Timestamp timestamp = Timestamp.valueOf(dataAnuncio);
-		return timestamp;
+	public LocalDateTime getDataAnuncio() {
+		return dataAnuncio;
 	}
 
-	/**  public void setDataAnuncio(LocalDateTime dataAnuncio) {
+	public void setDataAnuncio(LocalDateTime dataAnuncio) {
 		this.dataAnuncio = dataAnuncio;
 	}
-*/
+	
 	public Endereco getEndereco() {
 		return endereco;
 	}

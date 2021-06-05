@@ -9,4 +9,5 @@ public interface AnuncioDao {
 	void update(Anuncios obj);
 	void deleteById(int id);
 	List<Anuncios> findByUserInput(String especie);
+	public Anuncios findById(Integer id);
 }

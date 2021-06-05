@@ -12,8 +12,6 @@ import db.DB;
 import db.DbException;
 import model.dao.AnuncioDao;
 import model.entities.Anuncios;
-import model.entities.Usuario;
-
 
 public class AnuncioDaoJDBC implements AnuncioDao {
 
@@ -22,7 +20,8 @@ public class AnuncioDaoJDBC implements AnuncioDao {
 	public AnuncioDaoJDBC(Connection conn) {
 		this.conn = conn;
 	}
-	private Anuncios instantiateAnuncio(ResultSet rs) throws SQLException {
+	
+	private Anuncios instantiateAnuncios(ResultSet rs) throws SQLException {
 		Anuncios obj = new Anuncios();
 		obj.setDescricao(rs.getString("descricao"));
 		obj.setNomeDoAnimal(rs.getString("nome_do_animal"));
@@ -31,11 +30,11 @@ public class AnuncioDaoJDBC implements AnuncioDao {
 		obj.setGenero(rs.getString("genero"));
 		obj.setPorte(rs.getString("porte"));
 		obj.setIdade(rs.getInt("idade"));
+		obj.setDataAnuncio(rs.getTimestamp("data_anuncio").toLocalDateTime());
 		
-		
-
 		return obj;
 	}
+	
 	@Override
 	public void insert(Anuncios obj) {
 		PreparedStatement st = null;
@@ -48,7 +47,7 @@ public class AnuncioDaoJDBC implements AnuncioDao {
 							Statement.RETURN_GENERATED_KEYS);
 			st.setString(1, obj.getNomeDoAnimal());
 			st.setString(2, obj.getDescricao());
-			// st.setTimestamp(3, obj.getDataAnuncio());
+			st.setTimestamp(3, Timestamp.valueOf(obj.getDataAnuncio()));
 			st.setInt(4, obj.getIdade());
 			st.setString(5, obj.getEspecie());
 			st.setString(6, obj.getRaca());
@@ -91,7 +90,7 @@ public class AnuncioDaoJDBC implements AnuncioDao {
 							+ "WHERE id_usuario = ?");	
 			st.setString(1, obj.getNomeDoAnimal());
 			st.setString(2, obj.getDescricao());
-			// st.setTimestamp(3, obj.getDataAnuncio());
+			st.setTimestamp(3, Timestamp.valueOf(obj.getDataAnuncio()));
 			st.setInt(4, obj.getIdade());
 			st.setString(5, obj.getEspecie());
 			st.setString(6, obj.getRaca());
@@ -144,6 +143,29 @@ public class AnuncioDaoJDBC implements AnuncioDao {
 			DB.closeStatement(st);
 		}*/
 		return null; 
+	}
+
+	@Override
+	public Anuncios findById(Integer id) {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = conn.prepareStatement("SELECT * FROM anuncio WHERE id_anuncio = ?");
+			st.setInt(1, id);
+			rs = st.executeQuery();
+			if(rs.next()) {
+				Anuncios obj = instantiateAnuncios(rs);
+				return obj;
+			}
+			return null;
+		} 
+		catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeResultSet(rs);
+			DB.closeResultSet(rs);
+		}
 	} 
 
 	/*

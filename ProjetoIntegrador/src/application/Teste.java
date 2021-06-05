@@ -2,9 +2,11 @@ package application;
 
 import java.util.Scanner;
 
+import model.dao.AnuncioDao;
 import model.dao.DaoFactory;
 import model.dao.EnderecoDao;
 import model.dao.UsuarioDao;
+import model.entities.Anuncios;
 import model.entities.Endereco;
 import model.entities.Usuario;
 
@@ -40,13 +42,23 @@ public class Teste {
 
 		EnderecoDao enderecoDao = DaoFactory.createEnderecoDao();
 		// String cep, String uf, String cidade, String bairro, String rua, int numero, String complemento, Usuario usuario
-		System.out.println("==== TESTE 1: INSERT ENDERECO =====");
-		Endereco endereco1 = new Endereco("93218432" , "rs" , "canoas" , "igara" , "tres marias" , 72 , usuario1 );
+		System.out.println("==== TESTE 3: INSERT ENDERECO =====");
+		Endereco endereco1 = new Endereco("93218432" , "rs" , "canoas" , "igara" , "tres marias" , 72 , usuario1);
 		enderecoDao.insert(endereco1);
 		System.out.println("Primeiro usuario inserido! Id_usuario = " + endereco1.getIdEndereco());
 		endereco1.setComplemento("casa roxa");
 		enderecoDao.update(endereco1);
 		System.out.println("Update completed");
+		
+		
+		AnuncioDao anuncioDao = DaoFactory.createAnuncioDao();
+		System.out.println("==== TESTE 4: INSERT ANUNCIO =====");
+		Anuncios anuncio = new Anuncios("Bolinha", "bolinnha.jpgMidia", "fofa", 2, "cao", "shitzu", "feminino", "pequeno", true, true, true, usuario1, endereco1);
+		anuncioDao.insert(anuncio);
+		System.out.println("Primeiro anuncio cadastrado! Id_anuncio: " + anuncio.getIdAnuncio());
+		anuncio.setDescricao("comilona");
+		anuncioDao.update(anuncio);
+		System.out.println("Atualizado!");
 
 		scanner.close();
 	}
