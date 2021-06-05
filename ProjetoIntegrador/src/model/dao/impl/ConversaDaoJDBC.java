@@ -1,6 +1,7 @@
 package model.dao.impl;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.List;
 
 import model.dao.ConversaDao;
@@ -15,7 +16,8 @@ public class ConversaDaoJDBC implements ConversaDao {
 
 	@Override
 	public void insert(Conversa obj) {
-
+		PreparedStatement st = null;
+	
 	}
 
 	@Override

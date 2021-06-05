@@ -15,6 +15,7 @@ public class Anuncios implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+
 	private int idAnuncio;
 	private String descricao;
 	private List<String> midia = new ArrayList<>();
@@ -31,6 +32,9 @@ public class Anuncios implements Serializable {
 	private boolean statusAdocao;
 	private Usuario autor;
 	private Endereco endereco;
+
+	public Anuncios () {
+	}
 
 	public Anuncios(String nomeDoAnimal,  String midia, String descricao, int idade, String especie, String raca, String genero, 
 			String porte, boolean statusVacinacao, boolean statusCastracao, boolean statusVermifugo, Usuario autor) {
@@ -151,6 +155,10 @@ public class Anuncios implements Serializable {
 		return timestamp;
 	}
 
+	/**  public void setDataAnuncio(LocalDateTime dataAnuncio) {
+		this.dataAnuncio = dataAnuncio;
+	}
+*/
 	public Endereco getEndereco() {
 		return endereco;
 	}

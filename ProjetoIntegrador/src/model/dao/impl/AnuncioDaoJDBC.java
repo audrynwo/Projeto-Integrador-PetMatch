@@ -5,12 +5,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.List;
 
 import db.DB;
 import db.DbException;
 import model.dao.AnuncioDao;
 import model.entities.Anuncios;
+import model.entities.Usuario;
 
 
 public class AnuncioDaoJDBC implements AnuncioDao {
@@ -20,7 +22,20 @@ public class AnuncioDaoJDBC implements AnuncioDao {
 	public AnuncioDaoJDBC(Connection conn) {
 		this.conn = conn;
 	}
+	private Anuncios instantiateAnuncio(ResultSet rs) throws SQLException {
+		Anuncios obj = new Anuncios();
+		obj.setDescricao(rs.getString("descricao"));
+		obj.setNomeDoAnimal(rs.getString("nome_do_animal"));
+		obj.setEspecie(rs.getString("especie"));
+		obj.setRaca(rs.getString("raca"));
+		obj.setGenero(rs.getString("genero"));
+		obj.setPorte(rs.getString("porte"));
+		obj.setIdade(rs.getInt("idade"));
+		
+		
 
+		return obj;
+	}
 	@Override
 	public void insert(Anuncios obj) {
 		PreparedStatement st = null;
@@ -33,7 +48,7 @@ public class AnuncioDaoJDBC implements AnuncioDao {
 							Statement.RETURN_GENERATED_KEYS);
 			st.setString(1, obj.getNomeDoAnimal());
 			st.setString(2, obj.getDescricao());
-			st.setTimestamp(3, obj.getDataAnuncio());
+			// st.setTimestamp(3, obj.getDataAnuncio());
 			st.setInt(4, obj.getIdade());
 			st.setString(5, obj.getEspecie());
 			st.setString(6, obj.getRaca());
@@ -45,7 +60,7 @@ public class AnuncioDaoJDBC implements AnuncioDao {
 			st.setBoolean(12, obj.isStatusAdocao());
 			st.setInt(13, obj.getAutor().getIdUsuario());
 			st.setInt(14, obj.getEndereco().getIdEndereco());
-			
+
 			int rowsAffected = st.executeUpdate();
 			if(rowsAffected > 0) {
 				ResultSet rs = st.getGeneratedKeys();
@@ -72,11 +87,11 @@ public class AnuncioDaoJDBC implements AnuncioDao {
 		try {
 			st = conn.prepareStatement(
 					"UPDATE anuncio "
-					+ "SET nome_do_animal = ?, descricao = ?, data_anuncio = ?, idade = ?, especie = ?, raca = ?, genero = ?, porte = ?, status_vacinacao = ?, status_castracao = ?, status_vermifugo = ?, status_adocao = ?, id_usuario = ?, id_endereco = ?,"
-					+ "WHERE id_usuario = ?");	
+							+ "SET nome_do_animal = ?, descricao = ?, data_anuncio = ?, idade = ?, especie = ?, raca = ?, genero = ?, porte = ?, status_vacinacao = ?, status_castracao = ?, status_vermifugo = ?, status_adocao = ?, id_usuario = ?, id_endereco = ?,"
+							+ "WHERE id_usuario = ?");	
 			st.setString(1, obj.getNomeDoAnimal());
 			st.setString(2, obj.getDescricao());
-			st.setTimestamp(3, obj.getDataAnuncio());
+			// st.setTimestamp(3, obj.getDataAnuncio());
 			st.setInt(4, obj.getIdade());
 			st.setString(5, obj.getEspecie());
 			st.setString(6, obj.getRaca());
@@ -116,7 +131,7 @@ public class AnuncioDaoJDBC implements AnuncioDao {
 
 	@Override
 	public List<Anuncios> findByUserInput(String userFilterInput) {
-	/*	PreparedStatement st = null;
+		/*	PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(userFilterInput);
@@ -131,11 +146,11 @@ public class AnuncioDaoJDBC implements AnuncioDao {
 		return null; 
 	} 
 
-/*
- * SELECT * FROM anuncio WHERE especie LIKE “%?” OR outraColuna = ? OR outraColuna=?;
- * 
- * findBy
- * qualidades, atributos, aspectos, particularidades, peculiaridades, tipos, padrões,
- * característicos, caraterísticas.
- * */
+	/*
+	 * SELECT * FROM anuncio WHERE especie LIKE â€œ%?â€� OR outraColuna = ? OR outraColuna=?;
+	 * 
+	 * findBy
+	 * qualidades, atributos, aspectos, particularidades, peculiaridades, tipos, padrÃµes,
+	 * caracterÃ­sticos, caraterÃ­sticas.
+	 * */
 }
