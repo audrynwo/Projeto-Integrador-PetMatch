@@ -19,6 +19,14 @@ public class FavoritosDaoJDBC implements FavoritosDao {
 	public FavoritosDaoJDBC(Connection conn) {
 		this.conn = conn;
 	}
+	
+	private Favoritos instantiateFavoritos(ResultSet rs) throws SQLException {
+		Favoritos obj = new Favoritos();
+		obj.setIdFavoritos(rs.getInt("id_favorito"));
+		obj.getAnuncio().setIdAnuncio(rs.getInt("id_anuncio"));
+		obj.getUsuario().setIdUsuario(rs.getInt("id_usuario"));
+		return obj;
+	}
 
 	@Override
 	public void insert(Favoritos obj) {

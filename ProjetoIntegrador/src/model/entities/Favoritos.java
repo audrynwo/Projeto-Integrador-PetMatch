@@ -15,6 +15,10 @@ public class Favoritos implements Serializable {
 	private Usuario usuario;
 	private Anuncios anuncio;
 
+	public Favoritos() {
+		
+	}
+	
 	public Favoritos(Usuario usuario, Anuncios anuncio) {
 		this.usuario = usuario;
 		this.anuncio = anuncio;

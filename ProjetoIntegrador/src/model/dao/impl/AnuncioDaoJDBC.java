@@ -31,6 +31,12 @@ public class AnuncioDaoJDBC implements AnuncioDao {
 		obj.setPorte(rs.getString("porte"));
 		obj.setIdade(rs.getInt("idade"));
 		obj.setDataAnuncio(rs.getTimestamp("data_anuncio").toLocalDateTime());
+		obj.getAutor().setIdUsuario(rs.getInt("id_usuario"));
+		obj.getEndereco().setIdEndereco(rs.getInt("id_endereco"));
+		obj.setStatusAdocao(rs.getBoolean("status_adocao"));
+		obj.setStatusVacinacao(rs.getBoolean("status_vacinacao"));
+		obj.setStatusCastracao(rs.getBoolean("status_castracao"));
+		obj.setStatusVermifugo(rs.getBoolean("status_vermifugo"));
 		
 		return obj;
 	}
@@ -41,9 +47,11 @@ public class AnuncioDaoJDBC implements AnuncioDao {
 		try {
 			st = conn.prepareStatement(
 					"INSERT INTO anuncio " 
-							+ "(nome_do_animal, descricao, data_anuncio, idade, especie, raca, genero, porte, status_vacinanao, status_castracao, status_vermifugo, status_adocao, id_usuario, id_endereco) "
+							+ "(nome_do_animal, descricao, data_anuncio, idade, especie, "
+							+ "raca, genero, porte, status_vacinacao, status_castracao, "
+							+ "status_vermifugo, status_adocao, id_usuario, id_endereco) "
 							+ "VALUES " 
-							+ "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,)",
+							+ "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 							Statement.RETURN_GENERATED_KEYS);
 			st.setString(1, obj.getNomeDoAnimal());
 			st.setString(2, obj.getDescricao());
@@ -86,8 +94,12 @@ public class AnuncioDaoJDBC implements AnuncioDao {
 		try {
 			st = conn.prepareStatement(
 					"UPDATE anuncio "
-							+ "SET nome_do_animal = ?, descricao = ?, data_anuncio = ?, idade = ?, especie = ?, raca = ?, genero = ?, porte = ?, status_vacinacao = ?, status_castracao = ?, status_vermifugo = ?, status_adocao = ?, id_usuario = ?, id_endereco = ?,"
-							+ "WHERE id_usuario = ?");	
+							+ "SET nome_do_animal = ?, descricao = ?, "
+							+ "data_anuncio = ?, idade = ?, especie = ?, "
+							+ "raca = ?, genero = ?, porte = ?, "
+							+ "status_vacinacao = ?, status_castracao = ?, "
+							+ "status_vermifugo = ?, status_adocao = ?, id_usuario = ?, "
+							+ " id_endereco = ? WHERE id_usuario = ?");	
 			st.setString(1, obj.getNomeDoAnimal());
 			st.setString(2, obj.getDescricao());
 			st.setTimestamp(3, Timestamp.valueOf(obj.getDataAnuncio()));
@@ -102,6 +114,7 @@ public class AnuncioDaoJDBC implements AnuncioDao {
 			st.setBoolean(12, obj.isStatusAdocao());
 			st.setInt(13, obj.getAutor().getIdUsuario());
 			st.setInt(14, obj.getEndereco().getIdEndereco());
+			st.setInt(15, obj.getAutor().getIdUsuario());
 			st.executeUpdate();
 		}
 		catch (SQLException e) {

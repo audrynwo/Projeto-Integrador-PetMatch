@@ -30,6 +30,7 @@ public class EnderecoDaoJDBC implements EnderecoDao{
 		obj.setRua(rs.getString("rua"));
 		obj.setNumero(rs.getInt("numero"));
 		obj.setComplemento(rs.getString("complemento"));
+		obj.getUsuario().setIdUsuario(rs.getInt("id_usuario"));
 
 		return obj;
 	}
@@ -39,7 +40,7 @@ public class EnderecoDaoJDBC implements EnderecoDao{
 		PreparedStatement st = null;
 		try {
 			st = conn.prepareStatement(
-					"INSERT INTO usuario "
+					"INSERT INTO endereco "
 							+ "(cep, uf, cidade, bairro, rua, numero, complemento, id_usuario) "
 							+ "VALUES "
 							+ "(?, ?, ?, ?, ?, ?, ?, ?)",
@@ -78,7 +79,7 @@ public class EnderecoDaoJDBC implements EnderecoDao{
 		PreparedStatement st = null;
 		try {
 			st = conn.prepareStatement(
-					"UPDATE usuario "
+					"UPDATE endereco "
 							+ "SET cep = ?, uf = ?, cidade = ?, bairro = ?, rua = ?, numero = ?, complemento = ? "
 							+ "WHERE id_usuario = ?");	
 			st.setString(1, obj.getCep());
@@ -88,6 +89,7 @@ public class EnderecoDaoJDBC implements EnderecoDao{
 			st.setString(5, obj.getRua());
 			st.setInt(6, obj.getNumero());
 			st.setString(7, obj.getComplemento());
+			st.setInt(8, obj.getUsuario().getIdUsuario());
 			st.executeUpdate();
 		}
 		catch (SQLException e) {

@@ -74,6 +74,7 @@ public class RecadosDaoJDBC implements RecadosDao {
 			st.setString(1, obj.getTitulo());
 			st.setString(2, obj.getTexto());
 			st.setString(3, obj.getMidia());
+			st.setInt(4, obj.getIdRecados());
 
 			st.executeUpdate();
 		}
