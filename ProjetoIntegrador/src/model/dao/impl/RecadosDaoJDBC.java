@@ -11,7 +11,6 @@ import db.DbException;
 import db.DbIntegrityException;
 import model.dao.RecadosDao;
 import model.entities.Recados;
-import model.entities.Usuario;
 
 public class RecadosDaoJDBC implements RecadosDao {
 

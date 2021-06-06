@@ -1,7 +1,5 @@
 package model.dao;
 
-import model.entities.Anuncios;
-//import java.util.List;
 import model.entities.Recados;
 
 public interface RecadosDao {

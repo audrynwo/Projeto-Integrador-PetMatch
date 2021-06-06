@@ -2,6 +2,7 @@ package model.dao;
 
 import db.DB;
 import model.dao.impl.AnuncioDaoJDBC;
+import model.dao.impl.ConversaDaoJDBC;
 import model.dao.impl.EnderecoDaoJDBC;
 import model.dao.impl.FavoritosDaoJDBC;
 import model.dao.impl.RecadosDaoJDBC;
@@ -23,6 +24,9 @@ public class DaoFactory {
 	}
 	public static UsuarioDao createUsuarioDao() {
 		return new UsuarioDaoJDBC(DB.getConnection());
+	}
+	public static ConversaDao createConversaDao() {
+		return new ConversaDaoJDBC(DB.getConnection());
 	}
 }
 

@@ -17,7 +17,7 @@ public class ConversaDaoJDBC implements ConversaDao {
 	@Override
 	public void insert(Conversa obj) {
 		PreparedStatement st = null;
-	
+
 	}
 
 	@Override
@@ -32,6 +32,12 @@ public class ConversaDaoJDBC implements ConversaDao {
 
 	@Override
 	public List<Conversa> findByIdUsuario(String id) {
+		return null;
+	}
+
+	@Override
+	public Conversa findById(Integer id) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 

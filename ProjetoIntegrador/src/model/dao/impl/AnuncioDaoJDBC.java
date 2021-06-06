@@ -143,18 +143,6 @@ public class AnuncioDaoJDBC implements AnuncioDao {
 
 	@Override
 	public List<Anuncios> findByUserInput(String userFilterInput) {
-		/*	PreparedStatement st = null;
-		ResultSet rs = null;
-		try {
-			st = conn.prepareStatement(userFilterInput);
-			st.execute();
-		}
-		catch (SQLException e) {
-			throw new DbException(e.getMessage());
-		}
-		finally {
-			DB.closeStatement(st);
-		}*/
 		return null; 
 	}
 
@@ -181,11 +169,4 @@ public class AnuncioDaoJDBC implements AnuncioDao {
 		}
 	} 
 
-	/*
-	 * SELECT * FROM anuncio WHERE especie LIKE â€œ%?â€� OR outraColuna = ? OR outraColuna=?;
-	 * 
-	 * findBy
-	 * qualidades, atributos, aspectos, particularidades, peculiaridades, tipos, padrÃµes,
-	 * caracterÃ­sticos, caraterÃ­sticas.
-	 * */
 }
