@@ -18,7 +18,7 @@ public class UsuarioDaoJDBC implements UsuarioDao {
 	public UsuarioDaoJDBC(Connection conn) {
 		this.conn = conn;
 	}
-	
+
 	private Usuario instantiateUsuario(ResultSet rs) throws SQLException {
 		Usuario obj = new Usuario();
 		obj.setIdUsuario(rs.getInt("id_usuario"));
@@ -29,7 +29,7 @@ public class UsuarioDaoJDBC implements UsuarioDao {
 		obj.setCelular(rs.getString("celular"));
 		obj.setSenha(rs.getString("senha"));
 		obj.setFotoPerfil(rs.getString("foto_de_perfil"));
-		
+
 		return obj;
 	}
 
@@ -76,8 +76,8 @@ public class UsuarioDaoJDBC implements UsuarioDao {
 		try {
 			st = conn.prepareStatement(
 					"UPDATE usuario "
-					+ "SET cpf = ?, email = ?, nome = ?, sobrenome = ?, senha = ?, celular = ?, foto_de_perfil = ? "
-					+ "WHERE id_usuario = ?");	
+							+ "SET cpf = ?, email = ?, nome = ?, sobrenome = ?, senha = ?, celular = ?, foto_de_perfil = ? "
+							+ "WHERE id_usuario = ?");	
 			st.setString(1, obj.getCpf());
 			st.setString(2, obj.getEmail());
 			st.setString(3, obj.getNome());
@@ -130,11 +130,11 @@ public class UsuarioDaoJDBC implements UsuarioDao {
 			throw new DbException(e.getMessage());
 		}
 		finally {
-			DB.closeResultSet(rs);
+			DB.closeStatement(st);
 			DB.closeResultSet(rs);
 		}
 	}
-	
-	
+
+
 
 }

@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import db.DB;
 import db.DbException;
@@ -15,11 +17,11 @@ import model.entities.Favoritos;
 public class FavoritosDaoJDBC implements FavoritosDao {
 
 	private Connection conn;
-	
+
 	public FavoritosDaoJDBC(Connection conn) {
 		this.conn = conn;
 	}
-	
+
 	private Favoritos instantiateFavoritos(ResultSet rs) throws SQLException {
 		Favoritos obj = new Favoritos();
 		obj.setIdFavoritos(rs.getInt("id_favorito"));
@@ -34,14 +36,14 @@ public class FavoritosDaoJDBC implements FavoritosDao {
 		try {
 			st = conn.prepareStatement(
 					"INSERT INTO favorito " 
-			+ "(id_usuario, id_anuncio) " + "VALUES "
-			+ "(?, ?)",
-			Statement.RETURN_GENERATED_KEYS);
+							+ "(id_usuario, id_anuncio) " + "VALUES "
+							+ "(?, ?)",
+							Statement.RETURN_GENERATED_KEYS);
 			st.setInt(1, obj.getUsuario().getIdUsuario());
 			st.setInt(2, obj.getAnuncio().getIdAnuncio());
-			
+
 			int rowsAffected = st.executeUpdate();
-			
+
 			if(rowsAffected > 0) {
 				ResultSet rs = st.getGeneratedKeys();
 				if(rs.next()) {
@@ -67,9 +69,9 @@ public class FavoritosDaoJDBC implements FavoritosDao {
 		try {
 			st = conn.prepareStatement(
 					"DELETE FROM favorito WHERE id_anuncio = ?");
-			
+
 			st.setInt(1, id);
-			
+
 			st.executeUpdate();
 		}
 		catch (SQLException e) {
@@ -78,7 +80,54 @@ public class FavoritosDaoJDBC implements FavoritosDao {
 		finally {
 			DB.closeStatement(st);
 		}
-		
+
+	}
+
+	@Override
+	public List<Favoritos> findFavorito(Favoritos obj) {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = conn.prepareStatement("SELECT id_anuncio FROM favorito WHERE id_usuario = ?");
+			st.setInt(1, obj.getUsuario().getIdUsuario());
+			rs = st.executeQuery();
+			List<Favoritos> list = new ArrayList<>();
+			while(rs.next()) {
+				obj.getAnuncio().setIdAnuncio(rs.getInt("id_anuncio"));;
+				list.add(obj);
+			}
+			return list;
+		}
+		catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+	}
+	@Override
+	public Favoritos findById(Integer id) {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = conn.prepareStatement("SELECT * FROM favorito WHERE id_favorito = ?");
+			st.setInt(1, id);
+			rs = st.executeQuery();
+			if(rs.next()) {
+				Favoritos obj = instantiateFavoritos(rs);
+				return obj;
+			}
+			return null;
+		} 
+		catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+
 	}
 
 }

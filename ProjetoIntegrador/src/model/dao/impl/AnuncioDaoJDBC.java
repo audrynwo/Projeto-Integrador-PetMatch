@@ -20,7 +20,7 @@ public class AnuncioDaoJDBC implements AnuncioDao {
 	public AnuncioDaoJDBC(Connection conn) {
 		this.conn = conn;
 	}
-	
+
 	private Anuncios instantiateAnuncios(ResultSet rs) throws SQLException {
 		Anuncios obj = new Anuncios();
 		obj.setDescricao(rs.getString("descricao"));
@@ -37,10 +37,10 @@ public class AnuncioDaoJDBC implements AnuncioDao {
 		obj.setStatusVacinacao(rs.getBoolean("status_vacinacao"));
 		obj.setStatusCastracao(rs.getBoolean("status_castracao"));
 		obj.setStatusVermifugo(rs.getBoolean("status_vermifugo"));
-		
+
 		return obj;
 	}
-	
+
 	@Override
 	public void insert(Anuncios obj) {
 		PreparedStatement st = null;
@@ -176,7 +176,7 @@ public class AnuncioDaoJDBC implements AnuncioDao {
 			throw new DbException(e.getMessage());
 		}
 		finally {
-			DB.closeResultSet(rs);
+			DB.closeStatement(st);
 			DB.closeResultSet(rs);
 		}
 	} 

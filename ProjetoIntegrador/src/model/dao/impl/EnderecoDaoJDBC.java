@@ -139,7 +139,7 @@ public class EnderecoDaoJDBC implements EnderecoDao{
 			throw new DbException(e.getMessage());
 		}
 		finally {
-			DB.closeResultSet(rs);
+			DB.closeStatement(st);
 			DB.closeResultSet(rs);
 		}
 	}

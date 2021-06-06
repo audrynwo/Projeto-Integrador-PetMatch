@@ -124,7 +124,7 @@ public class RecadosDaoJDBC implements RecadosDao {
 			throw new DbException(e.getMessage());
 		}
 		finally {
-			DB.closeResultSet(rs);
+			DB.closeStatement(st);
 			DB.closeResultSet(rs);
 		}
 	}
