@@ -6,12 +6,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import db.DB;
 import db.DbException;
 import model.dao.AnuncioDao;
 import model.entities.Anuncios;
+import model.entities.Favoritos;
 
 public class AnuncioDaoJDBC implements AnuncioDao {
 
@@ -23,6 +25,7 @@ public class AnuncioDaoJDBC implements AnuncioDao {
 
 	private Anuncios instantiateAnuncios(ResultSet rs) throws SQLException {
 		Anuncios obj = new Anuncios();
+		obj.setIdAnuncio(rs.getInt("id_anuncio"));
 		obj.setDescricao(rs.getString("descricao"));
 		obj.setNomeDoAnimal(rs.getString("nome_do_animal"));
 		obj.setEspecie(rs.getString("especie"));
@@ -140,10 +143,32 @@ public class AnuncioDaoJDBC implements AnuncioDao {
 			DB.closeStatement(st);
 		}
 	}
+	
+	/* obj.getAnuncio().setIdAnuncio(rs.getInt("id_anuncio"));;
+	   list.add(obj);
+			}*/
 
 	@Override
 	public List<Anuncios> findByUserInput(String userFilterInput) {
-		return null; 
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = conn.prepareStatement(userFilterInput);
+			st.executeQuery();
+			List<Anuncios> filterList = new ArrayList<>();
+			while(rs.next()) {
+			//	obj.
+				//filterList.add(obj);
+			}
+			return filterList;
+		}
+		catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
 	}
 
 	@Override

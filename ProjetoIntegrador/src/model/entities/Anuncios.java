@@ -1,7 +1,6 @@
 package model.entities;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +17,7 @@ public class Anuncios implements Serializable {
 
 	private int idAnuncio;
 	private String descricao;
-	private List<String> midia = new ArrayList<>();
+	private List<Midia> midia = new ArrayList<>();
 	private String nomeDoAnimal;
 	private String especie;
 	private String raca;
@@ -34,9 +33,10 @@ public class Anuncios implements Serializable {
 	private Endereco endereco;
 
 	public Anuncios () {
+		
 	}
 
-	public Anuncios(String nomeDoAnimal,  String midia, String descricao, int idade, String especie, String raca, String genero, 
+	public Anuncios(String nomeDoAnimal,  Midia midia, String descricao, int idade, String especie, String raca, String genero, 
 			String porte, boolean statusVacinacao, boolean statusCastracao, boolean statusVermifugo, Usuario autor, Endereco endereco) {
 		this.nomeDoAnimal = nomeDoAnimal;
 		this.midia.add(midia);
@@ -54,7 +54,7 @@ public class Anuncios implements Serializable {
 		dataAnuncio = LocalDateTime.now();
 		statusAdocao = false;
 	}
-
+	
 	public String getDescricao() {
 		return descricao;
 	}
@@ -63,11 +63,11 @@ public class Anuncios implements Serializable {
 		this.descricao = descricao;
 	}
 
-	public List<String> getMidia() {
+	public List<Midia> getMidia() {
 		return midia;
 	}
 
-	public void setMidia(List<String> midia) {
+	public void setMidia(List<Midia> midia) {
 		this.midia = midia;
 	}
 
@@ -179,22 +179,15 @@ public class Anuncios implements Serializable {
 	 * Metodo responsvel por controlar que nao tenham mais de cinco midias em um anuncio.
 	 * @authors Aundryn Weber e Kaiane Ferreira
 	 */
-	public void controlaMidia(String midia) {
+	
+	private int midiaCont = 0;
+	public void addMidia(Midia midia) {
 		if(this.midia.size() < 5) {
 			this.midia.add(midia);
-		}
-	}
-
-	/**
-	 * Metodo responsavel por remover midias e controlar que exista,
-	 * no minimo, uma midia no anuncio.
-	 * @authors Aundryn Weber e Kaiane Ferreira 
-	 */
-
-	public void excluiMidia(String midia) {
-		if(this.midia.size() > 0) {
-			this.midia.remove(midia);
-		}
+		} else {
+			System.out.println("Número máximo de imagens atingido!");
+		} 
+		 midiaCont++;
 	}
 
 	public int getIdAnuncio() {

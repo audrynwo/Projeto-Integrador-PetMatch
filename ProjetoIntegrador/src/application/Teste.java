@@ -20,7 +20,7 @@ public class Teste {
 	public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in);
 
-		UsuarioDao usuarioDao = DaoFactory.createUsuarioDao();
+		/*UsuarioDao usuarioDao = DaoFactory.createUsuarioDao();
 		EnderecoDao enderecoDao = DaoFactory.createEnderecoDao();
 		AnuncioDao anuncioDao = DaoFactory.createAnuncioDao();
 		FavoritosDao favoritoDao = DaoFactory.createFavoritosDao();
@@ -100,8 +100,9 @@ public class Teste {
 		System.out.println("===== Usuario apaagado! ====="); 
 
 		System.out.println("====== Fim do programa!! =======");
-		System.out.println("O CRUD ATUAL FUNCIONA!!! :D");
-
+		System.out.println("O CRUD ATUAL FUNCIONA!!! :D");*/
+		
+		
 		scanner.close();
 	}
 

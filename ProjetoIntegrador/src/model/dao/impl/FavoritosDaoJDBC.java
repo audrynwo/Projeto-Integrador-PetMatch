@@ -24,7 +24,6 @@ public class FavoritosDaoJDBC implements FavoritosDao {
 
 	private Favoritos instantiateFavoritos(ResultSet rs) throws SQLException {
 		Favoritos obj = new Favoritos();
-		obj.setIdFavoritos(rs.getInt("id_favorito"));
 		obj.getAnuncio().setIdAnuncio(rs.getInt("id_anuncio"));
 		obj.getUsuario().setIdUsuario(rs.getInt("id_usuario"));
 		return obj;
@@ -93,7 +92,7 @@ public class FavoritosDaoJDBC implements FavoritosDao {
 			rs = st.executeQuery();
 			List<Favoritos> list = new ArrayList<>();
 			while(rs.next()) {
-				obj.getAnuncio().setIdAnuncio(rs.getInt("id_anuncio"));;
+				obj.getAnuncio().setIdAnuncio(rs.getInt("id_anuncio"));
 				list.add(obj);
 			}
 			return list;
