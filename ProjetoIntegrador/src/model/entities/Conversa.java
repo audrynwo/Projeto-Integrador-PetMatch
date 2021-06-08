@@ -78,4 +78,10 @@ public class Conversa implements Serializable {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return ("dataMensagem = " + dataMensagem + "\nusuarioRemetente = " + usuarioRemetente
+				+ "\nusuarioDestinatario = " + usuarioDestinatario + "\nmensagem = " + mensagem);
+	}
+
 }

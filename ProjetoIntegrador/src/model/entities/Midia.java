@@ -60,5 +60,10 @@ public class Midia {
 	public void setCaminhoMidia(String caminhoMidia) {
 		this.caminhoMidia = caminhoMidia;
 	}
+
+	@Override
+	public String toString() {
+		return ("caminhoMidia = " + caminhoMidia);
+	}
 	
 }

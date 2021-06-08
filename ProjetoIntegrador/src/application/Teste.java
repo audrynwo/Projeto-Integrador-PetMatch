@@ -20,16 +20,18 @@ public class Teste {
 	public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in);
 
-		/*UsuarioDao usuarioDao = DaoFactory.createUsuarioDao();
+		UsuarioDao usuarioDao = DaoFactory.createUsuarioDao();
 		EnderecoDao enderecoDao = DaoFactory.createEnderecoDao();
 		AnuncioDao anuncioDao = DaoFactory.createAnuncioDao();
 		FavoritosDao favoritoDao = DaoFactory.createFavoritosDao();
 		RecadosDao recadosDao = DaoFactory.createRecadosDao();
 
-		System.out.println("\n=== TESTE 1: insert(usuario obj) =====");
-		Usuario usuario1 = new Usuario("121-121-122-15", "Willow", "Smith", "jadensmithK@gmail.com", "1234567");
+		/**System.out.println("\n=== TESTE 1: insert(usuario obj) =====");
+		Usuario usuario1 = new Usuario("121-121-122-83", "Willow", "Smith", "jadensmithsks@gmail.com", "1234567");
 		usuarioDao.insert(usuario1);
 		System.out.println("Primeiro usuario inserido! Id_usuario = " + usuario1.getIdUsuario());
+
+		System.out.println(usuario1);
 
 		System.out.println("\n=== TESTE 2: update(usuario obj) =====");
 		usuario1 = usuarioDao.findById(usuario1.getIdUsuario());
@@ -37,7 +39,7 @@ public class Teste {
 		usuarioDao.update(usuario1);
 		System.out.println("Update completed"); 
 
-		// String cep, String uf, String cidade, String bairro, String rua, int numero, String complemento, Usuario usuario
+		String cep, String uf, String cidade, String bairro, String rua, int numero, String complemento, Usuario usuario
 		System.out.println("\n==== TESTE 3: INSERT ENDERECO =====");
 		Endereco endereco1 = new Endereco("9321-8432" , "rs" , "canoas" , "igara" , "tres marias" , 72 , usuario1);
 		enderecoDao.insert(endereco1);
@@ -100,9 +102,9 @@ public class Teste {
 		System.out.println("===== Usuario apaagado! ====="); 
 
 		System.out.println("====== Fim do programa!! =======");
-		System.out.println("O CRUD ATUAL FUNCIONA!!! :D");*/
-		
-		
+		System.out.println("O CRUD ATUAL FUNCIONA!!! :D");
+		 */
+
 		scanner.close();
 	}
 

@@ -7,8 +7,6 @@ import java.io.Serializable;
  * @author Kaiane Ferreira
  * */
 
-import java.util.List;
-
 public class Usuario implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -21,9 +19,9 @@ public class Usuario implements Serializable {
 	private String celular;
 	private String senha;
 	private String fotoPerfil;
-	
+
 	public Usuario() {
-		
+
 	}
 
 	public Usuario(String cpf, String nome, String sobrenome, String email, String senha) {
@@ -109,7 +107,6 @@ public class Usuario implements Serializable {
 		this.idUsuario = idUsuario;
 	}
 
-	protected List<Favoritos> favoritos;
 
 	@Override
 	public int hashCode() {
@@ -132,4 +129,11 @@ public class Usuario implements Serializable {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return ("nome = " + nome + "\nsobrenome = " + sobrenome + "\ncpf = " + cpf + "\nemail = " + email + "\ncelular = "
+				+ celular + "\nsenha = " + senha + "\nfotoPerfil = " + fotoPerfil);
+	}
+
 }

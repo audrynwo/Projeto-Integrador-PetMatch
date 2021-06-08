@@ -33,7 +33,7 @@ public class Anuncios implements Serializable {
 	private Endereco endereco;
 
 	public Anuncios () {
-		
+
 	}
 
 	public Anuncios(String nomeDoAnimal,  Midia midia, String descricao, int idade, String especie, String raca, String genero, 
@@ -54,7 +54,7 @@ public class Anuncios implements Serializable {
 		dataAnuncio = LocalDateTime.now();
 		statusAdocao = false;
 	}
-	
+
 	public String getDescricao() {
 		return descricao;
 	}
@@ -158,7 +158,7 @@ public class Anuncios implements Serializable {
 	public void setDataAnuncio(LocalDateTime dataAnuncio) {
 		this.dataAnuncio = dataAnuncio;
 	}
-	
+
 	public Endereco getEndereco() {
 		return endereco;
 	}
@@ -179,7 +179,7 @@ public class Anuncios implements Serializable {
 	 * Metodo responsvel por controlar que nao tenham mais de cinco midias em um anuncio.
 	 * @authors Aundryn Weber e Kaiane Ferreira
 	 */
-	
+
 	private int midiaCont = 0;
 	public void addMidia(Midia midia) {
 		if(this.midia.size() < 5) {
@@ -187,7 +187,7 @@ public class Anuncios implements Serializable {
 		} else {
 			System.out.println("Número máximo de imagens atingido!");
 		} 
-		 midiaCont++;
+		midiaCont++;
 	}
 
 	public int getIdAnuncio() {
@@ -219,5 +219,12 @@ public class Anuncios implements Serializable {
 			return false;
 		return true;
 	}
-
+	@Override
+	public String toString() {
+		return ("\ndescricao = " + descricao + "\nnomeDoAnimal = " + nomeDoAnimal + "\nespecie = " + especie
+				+ "\nraca = " + raca + "\ngenero = " + genero + "\nporte = " + porte + "\nidade = " + idade + "\ndataAnuncio = "
+				+ dataAnuncio + "\nstatusVacinacao = " + statusVacinacao + "\nstatusCastracao = " + statusCastracao
+				+ "\nstatusVermifugo = " + statusVermifugo + "\nstatusAdocao = " + statusAdocao + "\nautor = " + autor
+				+ "\nendereco = " + endereco);
+	}
 }

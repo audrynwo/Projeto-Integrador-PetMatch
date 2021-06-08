@@ -16,9 +16,9 @@ public class Favoritos implements Serializable {
 	private Anuncios anuncio;
 
 	public Favoritos() {
-		
+
 	}
-	
+
 	public Favoritos(Usuario usuario, Anuncios anuncio) {
 		this.usuario = usuario;
 		this.anuncio = anuncio;
@@ -68,6 +68,11 @@ public class Favoritos implements Serializable {
 		if (idFavoritos != other.idFavoritos)
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return ("usuario = " + usuario + "\nanuncio = " + anuncio);
 	}
 
 }

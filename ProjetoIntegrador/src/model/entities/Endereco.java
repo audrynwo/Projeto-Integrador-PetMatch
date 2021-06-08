@@ -137,5 +137,11 @@ public class Endereco implements Serializable {
 		this.numero = numero;
 	}
 
+	@Override
+	public String toString() {
+		return ("uf = " + uf + "\ncidade = " + cidade + "\nbairro = " + bairro + "\nrua = " + rua + "\nnumero = "
+				+ numero + "\ncomplemento = " + complemento + "\ncep = " + cep + "\nusuario = " + usuario);
+	}
+
 }
 

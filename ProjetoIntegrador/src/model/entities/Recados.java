@@ -84,4 +84,9 @@ public class Recados implements Serializable {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return ("titulo = " + titulo + "\ntexto = " + texto + "\nmidia = " + midia);
+	}
+
 }
