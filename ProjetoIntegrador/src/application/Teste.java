@@ -5,18 +5,23 @@ import java.util.List;
 import java.util.Scanner;
 
 import model.dao.AnuncioDao;
+import model.dao.ConversaDao;
 import model.dao.DaoFactory;
 import model.dao.EnderecoDao;
 import model.dao.FavoritoDao;
+import model.dao.MensagemDao;
 import model.dao.MidiaDao;
 import model.dao.RecadosDao;
 import model.dao.UsuarioDao;
 import model.entities.Anuncio;
+import model.entities.Conversa;
 import model.entities.Endereco;
 import model.entities.Favorito;
+import model.entities.Mensagem;
 import model.entities.MidiaAnuncio;
 import model.entities.Recados;
 import model.entities.Usuario;
+
 
 public class Teste {
 
@@ -30,13 +35,45 @@ public class Teste {
 		FavoritoDao favoritoDao = DaoFactory.createFavoritosDao();
 		RecadosDao recadosDao = DaoFactory.createRecadosDao();
 		MidiaDao midiaDao = DaoFactory.createMidiaDao();
+		ConversaDao conversaDao = DaoFactory.createConversaDao();
+		MensagemDao mensagemDao = DaoFactory.createMensagemDao();
+
 
 		System.out.println("\n=== TESTE 1: insert(usuario obj) =====");
-		Usuario usuario1 = new Usuario("811-546-739-21", "Willow", "Smith", "jadensmith819@gmail.com", "1234567");
+		Usuario usuario1 = new Usuario("811-446-739-21", "Willow", "Smith", "jadensmith99@gmail.com", "1234567");
 		usuarioDao.insert(usuario1);
 		System.out.println("Primeiro usuario inserido! Id_usuario = " + usuario1.getIdUsuario()); 
 
-		// String cep, String uf, String cidade, String bairro, String rua, int numero, String complemento, Usuario usuario
+		System.out.println("\n=== TESTE 1: insert(usuario obj) =====");
+		Usuario usuario2 = new Usuario("351-456-999-21", "Lucas", "Smith", "lucassmith99@gmail.com", "1234567");
+		usuarioDao.insert(usuario2);
+		System.out.println("Primeiro usuario inserido! Id_usuario = " + usuario2.getIdUsuario()); 
+
+		System.out.println("\n=== TESTE CONVERSA =====");
+		Conversa conversaU = new Conversa(usuario1, usuario2);
+		conversaDao.insert(conversaU);
+		System.out.println("id_conversa " + conversaU.getIdConversa()); 
+
+
+		System.out.println("TESTE INSERT MENSAGEM");
+		Mensagem mensagemU = new Mensagem("oi" , conversaU);
+		mensagemDao.insert(mensagemU);	
+		System.out.println("id_mensagem " + mensagemU.getIdMensagem()); 
+
+
+		System.out.println("\n=== TESTE DELETE MENSAGEM =====");
+		System.out.println("Digite o ID da MENSAGEM que sera apagada do bd: ");
+		id = scanner.nextInt();
+		mensagemDao.deleteById(id);
+		System.out.println("======== mensagem apagada! ====="); 
+		
+		System.out.println("\n=== TESTE DELETE CONVERSA =====");
+		System.out.println("Digite o ID da CONVERSA que sera apagada do bd: ");
+		id = scanner.nextInt();
+		conversaDao.deleteById(id);
+		System.out.println("======== conversa apagada! ====="); 
+
+		/** String cep, String uf, String cidade, String bairro, String rua, int numero, String complemento, Usuario usuario
 		System.out.println("\n==== TESTE 2: INSERT ENDERECO =====");
 		Endereco endereco1 = new Endereco("9321-8432" , "rs" , "canoas" , "igara" , "tres marias" , 72 , usuario1);
 		enderecoDao.insert(endereco1); 
@@ -90,7 +127,7 @@ public class Teste {
 			System.out.println("Anuncios encontrados: ");
 			System.out.println(anuncioList.get(i).getNomeDoAnimal());
 		}
-
+		 **/
 
 		System.out.println("====== Fim do programa!! =======");
 		System.out.println("O CRUD ATUAL FUNCIONA!!! :D"); 

@@ -5,69 +5,68 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
 import db.DB;
 import db.DbException;
-import model.dao.ConversaDao;
-import model.entities.Conversa;
+import model.dao.MensagemDao;
+import model.entities.Mensagem;
 
-public class ConversaDaoJDBC implements ConversaDao {
+public class MensagemDaoJDBC implements MensagemDao {
 	private Connection conn;
 
-	public ConversaDaoJDBC(Connection conn) {
+	public MensagemDaoJDBC(Connection conn) {
 		this.conn = conn;
 	}
-
-	private Conversa instantiateConversa(ResultSet rs) throws SQLException {
-		Conversa obj = new Conversa();
-		obj.setIdConversa(rs.getInt("id_conversa"));
-		obj.getUsuarioRemetente().setIdUsuario(rs.getInt("id_usuario_remetente"));
-		obj.getUsuarioDestinatario().setIdUsuario(rs.getInt("id_usuario_destinatario"));
+	private Mensagem instantiateMensagem(ResultSet rs) throws SQLException {
+		Mensagem obj = new Mensagem();
+		obj.setIdMensagem(rs.getInt("id_mensagem"));
+		obj.setTextoMensagem(rs.getString("texto_mensagem"));
+		obj.setDataMensagem((rs.getTimestamp("data_mensagem").toLocalDateTime()));
+		obj.getConversa().setIdConversa(rs.getInt("id_conversa"));
 
 		return obj;
 	}
-
 	@Override
-	public void insert(Conversa obj) {
+	public void insert(Mensagem obj) {
 		PreparedStatement st = null;
 		try {
 			st = conn.prepareStatement(
-					"INSERT INTO conversa "
-							+ "(id_usuario_remetente, id_usuario_destinatario) "
-							+ "VALUES "
-							+ "(?, ?)",
+					"INSERT INTO mensagem " 
+							+ "(texto_mensagem, data_mensagem, id_conversa "
+							+ "VALUES " 
+							+ "(?, ?, ?)",
 							Statement.RETURN_GENERATED_KEYS);
-			st.setInt(1, obj.getUsuarioRemetente().getIdUsuario());
-			st.setInt(2, obj.getUsuarioDestinatario().getIdUsuario());
+			st.setString(1, obj.getTextoMensagem());
+			st.setTimestamp(2, Timestamp.valueOf(obj.getDataMensagem()));
+			st.setInt(3, obj.getConversa().getIdConversa());
 
 			int rowsAffected = st.executeUpdate();
 			if(rowsAffected > 0) {
 				ResultSet rs = st.getGeneratedKeys();
-				if (rs.next()) {
+				if(rs.next()) {
 					int id = rs.getInt(1);
-					obj.setIdConversa(id);
+					obj.setIdMensagem(id);
 				}
 				DB.closeResultSet(rs);
-			} 
-			else {
+			} else {
 				throw new DbException("Unexpected error! No rows affected");
 			}
-		}
+		} 
 		catch (SQLException e) {
 			throw new DbException(e.getMessage());
-		} 
+		}
 		finally {
 			DB.closeStatement(st);
 		}
 	}
-
 	@Override
 	public void deleteById(int id) {
 		PreparedStatement st = null;
 		try {
-			st = conn.prepareStatement("DELETE FROM conversa WHERE id_conversa = ?");
+			st = conn.prepareStatement("DELETE FROM mensagem WHERE id_mensagem = ?");
 			st.setInt(1, id);
 			st.executeUpdate();
 		}
@@ -78,17 +77,39 @@ public class ConversaDaoJDBC implements ConversaDao {
 			DB.closeStatement(st);
 		}
 	}
-
 	@Override
-	public Conversa findById(Integer id) {
+	public List<Mensagem> findByConversa(Integer idConversa) {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
-			st = conn.prepareStatement("SELECT * FROM conversa WHERE id_conversa = ?");
+			st = conn.prepareStatement("SELECT * FROM mensagem WHERE id_conversa = ?");
+			st.setInt(1, idConversa);
+			rs = st.executeQuery();
+			List<Mensagem> mensagemList = new ArrayList<>();
+			while(rs.next()) {
+				Mensagem obj = instantiateMensagem(rs);
+				mensagemList.add(obj);
+			}
+			return mensagemList;
+		}
+		catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+	}
+	@Override
+	public Mensagem findById(Integer id) {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = conn.prepareStatement("SELECT * FROM mensagem WHERE id_mensagem = ?");
 			st.setInt(1, id);
 			rs = st.executeQuery();
 			if(rs.next()) {
-				Conversa obj = instantiateConversa(rs);
+				Mensagem obj = instantiateMensagem(rs);
 				return obj;
 			}
 			return null;
@@ -100,30 +121,5 @@ public class ConversaDaoJDBC implements ConversaDao {
 			DB.closeStatement(st);
 			DB.closeResultSet(rs);
 		}
-	}
-
-	@Override
-	public List<Conversa> findByIdUsuario(Integer idRemetente) {
-		PreparedStatement st = null;
-		ResultSet rs = null;
-		try {
-			st = conn.prepareStatement("SELECT id_usuario_destinatario FROM conversa WHERE id_usuario_remetente = ?");
-			st.setInt(1, idRemetente);
-			rs = st.executeQuery();
-			List<Conversa> conversaList = new ArrayList<>();
-			while(rs.next()) {
-				Conversa obj = instantiateConversa(rs);
-				conversaList.add(obj);
-			}
-			return conversaList;
-		}
-		catch (SQLException e) {
-			throw new DbException(e.getMessage());
-		}
-		finally {
-			DB.closeStatement(st);
-			DB.closeResultSet(rs);
-		}
-	}
-
+	} 
 }

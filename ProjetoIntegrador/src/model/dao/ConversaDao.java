@@ -8,5 +8,5 @@ public interface ConversaDao {
 	void insert(Conversa obj);
 	void deleteById(int id);
 	public Conversa findById(Integer id);
-	List<Conversa> findByIdUsuario(Integer id_remetente);
+	List<Conversa> findByIdUsuario(Integer idRemetente);
 }
