@@ -1,10 +1,10 @@
 package model.dao;
 
-import model.entities.Midia;
+import model.entities.MidiaAnuncio;
 
 public interface MidiaDao {
-	void insert(Midia obj);
-	void update(Midia obj);
+	void insert(MidiaAnuncio obj);
+	void update(MidiaAnuncio obj);
 	void deleteById(int id);
-	public Midia findById(Integer id);
+	public MidiaAnuncio findById(Integer id);
 }

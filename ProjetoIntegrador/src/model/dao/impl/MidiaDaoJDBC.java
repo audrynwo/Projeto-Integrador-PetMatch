@@ -10,7 +10,7 @@ import db.DB;
 import db.DbException;
 import db.DbIntegrityException;
 import model.dao.MidiaDao;
-import model.entities.Midia;
+import model.entities.MidiaAnuncio;
 
 public class MidiaDaoJDBC implements MidiaDao{
 
@@ -20,16 +20,16 @@ public class MidiaDaoJDBC implements MidiaDao{
 		this.conn = conn;
 	}
 	
-	private Midia instantiateMidia(ResultSet rs) throws SQLException {
-		Midia obj = new Midia();
+	private MidiaAnuncio instantiateMidia(ResultSet rs) throws SQLException {
+		MidiaAnuncio obj = new MidiaAnuncio();
 		obj.setCaminhoMidia(rs.getString("caminho_midia"));
-		//obj.setIdAnuncio(rs.getInt("id_anuncio"));;
+		obj.getAnuncio().setIdAnuncio(rs.getInt("id_anuncio"));
 		obj.setIdMidia(rs.getInt("id_midia"));
 		return obj;
 	}
 
 	@Override
-	public void insert(Midia obj) {
+	public void insert(MidiaAnuncio obj) {
 		PreparedStatement st = null;
 		try {
 			st = conn.prepareStatement(
@@ -37,8 +37,8 @@ public class MidiaDaoJDBC implements MidiaDao{
 							+ "(caminho_midia, id_anuncio) " + "VALUES "
 							+ "(?, ?)",
 							Statement.RETURN_GENERATED_KEYS);
-		/*	st.setString(1, obj.getCaminhoMidia().get(0));
-			st.setInt(2, obj.getIdAnuncio()); */
+			st.setString(1, obj.getCaminhoMidia());
+			st.setInt(2, obj.getAnuncio().getIdAnuncio()); 
 
 			int rowsAffected = st.executeUpdate();
 
@@ -61,8 +61,25 @@ public class MidiaDaoJDBC implements MidiaDao{
 		}
 	}
 	@Override
-	public void update(Midia obj) {
-		// TODO Auto-generated method stub
+	public void update(MidiaAnuncio obj) {
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement(
+					"UPDATE midia "
+							+ "SET caminho_midia = ?, id_anuncio = ? "
+							+ "WHERE id_midia = ?");	
+			st.setString(1, obj.getCaminhoMidia());
+			st.setInt(2, obj.getAnuncio().getIdAnuncio());
+			st.setInt(3, obj.getIdMidia());
+			
+			st.executeUpdate();
+		}
+		catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} 
+		finally {
+			DB.closeStatement(st);
+		}
 		
 	}
 
@@ -74,7 +91,6 @@ public class MidiaDaoJDBC implements MidiaDao{
 					"DELETE FROM midia WHERE id_midia = ?");
 
 			st.setInt(1, id);
-
 			st.executeUpdate();
 		}
 		catch (SQLException e) {
@@ -87,9 +103,26 @@ public class MidiaDaoJDBC implements MidiaDao{
 	}
 
 	@Override
-	public Midia findById(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public MidiaAnuncio findById(Integer id) {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = conn.prepareStatement("SELECT * FROM midia WHERE id_midia = ?");
+			st.setInt(1, id);
+			rs = st.executeQuery();
+			if(rs.next()) {
+				MidiaAnuncio obj = instantiateMidia(rs);
+				return obj;
+			}
+			return null;
+		} 
+		catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+	} 
 
 }

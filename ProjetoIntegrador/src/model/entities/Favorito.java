@@ -7,19 +7,19 @@ import java.io.Serializable;
  * @author Kaiane Ferreira
  * */
 
-public class Favoritos implements Serializable {
+public class Favorito implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	private int idFavoritos;
 	private Usuario usuario;
-	private Anuncios anuncio;
+	private Anuncio anuncio;
 
-	public Favoritos() {
+	public Favorito() {
 
 	}
 
-	public Favoritos(Usuario usuario, Anuncios anuncio) {
+	public Favorito(Usuario usuario, Anuncio anuncio) {
 		this.usuario = usuario;
 		this.anuncio = anuncio;
 	}
@@ -40,11 +40,11 @@ public class Favoritos implements Serializable {
 		this.usuario = usuario;
 	}
 
-	public Anuncios getAnuncio() {
+	public Anuncio getAnuncio() {
 		return anuncio;
 	}
 
-	public void setAnuncio(Anuncios anuncio) {
+	public void setAnuncio(Anuncio anuncio) {
 		this.anuncio = anuncio;
 	}
 
@@ -64,7 +64,7 @@ public class Favoritos implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Favoritos other = (Favoritos) obj;
+		Favorito other = (Favorito) obj;
 		if (idFavoritos != other.idFavoritos)
 			return false;
 		return true;

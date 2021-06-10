@@ -1,7 +1,6 @@
 package model.entities;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 /**
  * Classe responsavel por representar a conversa entre usuarios
@@ -14,24 +13,18 @@ public class Conversa implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private int idConversa;
-	private LocalDateTime dataMensagem;
 	private Usuario usuarioRemetente;
 	private Usuario usuarioDestinatario;
-	private String mensagem;
 
-	public Conversa(Usuario usuarioRemetente, Usuario usuarioDestinatario, String mensagem) {
+	public Conversa() {
+		
+	}
+	
+	public Conversa(Usuario usuarioRemetente, Usuario usuarioDestinatario) {
 		this.usuarioRemetente = usuarioRemetente;
 		this.usuarioDestinatario = usuarioRemetente;
-		this.mensagem = mensagem;
-		dataMensagem = LocalDateTime.now(); 
 	}
 
-	public String getMensagem() {
-		return mensagem;
-	}
-	public void setMensagem(String mensagem) {
-		this.mensagem = mensagem;
-	}
 	public Usuario getUsuarioRemetente() {
 		return usuarioRemetente;
 	}
@@ -43,9 +36,6 @@ public class Conversa implements Serializable {
 	}
 	public void setUsuarioDestinatario(Usuario usuarioDestinatario) {
 		this.usuarioDestinatario = usuarioDestinatario;
-	}
-	public LocalDateTime getDataMensagem() {
-		return dataMensagem;
 	}
 
 	public int getIdConversa() {
@@ -80,8 +70,8 @@ public class Conversa implements Serializable {
 
 	@Override
 	public String toString() {
-		return ("dataMensagem = " + dataMensagem + "\nusuarioRemetente = " + usuarioRemetente
-				+ "\nusuarioDestinatario = " + usuarioDestinatario + "\nmensagem = " + mensagem);
+		return ( "\nUsuario Remetente: " + usuarioRemetente
+				+ "\nUsuario Destinatario: " + usuarioDestinatario + "\nId da Conversa: " + idConversa);
 	}
 
 }

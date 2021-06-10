@@ -12,8 +12,7 @@ import java.util.List;
 import db.DB;
 import db.DbException;
 import model.dao.AnuncioDao;
-import model.entities.Anuncios;
-import model.entities.Favoritos;
+import model.entities.Anuncio;
 
 public class AnuncioDaoJDBC implements AnuncioDao {
 
@@ -23,8 +22,8 @@ public class AnuncioDaoJDBC implements AnuncioDao {
 		this.conn = conn;
 	}
 
-	private Anuncios instantiateAnuncios(ResultSet rs) throws SQLException {
-		Anuncios obj = new Anuncios();
+	private Anuncio instantiateAnuncio(ResultSet rs) throws SQLException {
+		Anuncio obj = new Anuncio();
 		obj.setIdAnuncio(rs.getInt("id_anuncio"));
 		obj.setDescricao(rs.getString("descricao"));
 		obj.setNomeDoAnimal(rs.getString("nome_do_animal"));
@@ -45,7 +44,7 @@ public class AnuncioDaoJDBC implements AnuncioDao {
 	}
 
 	@Override
-	public void insert(Anuncios obj) {
+	public void insert(Anuncio obj) {
 		PreparedStatement st = null;
 		try {
 			st = conn.prepareStatement(
@@ -92,7 +91,7 @@ public class AnuncioDaoJDBC implements AnuncioDao {
 	} 
 
 	@Override
-	public void update(Anuncios obj) {
+	public void update(Anuncio obj) {
 		PreparedStatement st = null;
 		try {
 			st = conn.prepareStatement(
@@ -102,7 +101,7 @@ public class AnuncioDaoJDBC implements AnuncioDao {
 							+ "raca = ?, genero = ?, porte = ?, "
 							+ "status_vacinacao = ?, status_castracao = ?, "
 							+ "status_vermifugo = ?, status_adocao = ?, id_usuario = ?, "
-							+ " id_endereco = ? WHERE id_usuario = ?");	
+							+ " id_endereco = ? WHERE id_anuncio = ?");	
 			st.setString(1, obj.getNomeDoAnimal());
 			st.setString(2, obj.getDescricao());
 			st.setTimestamp(3, Timestamp.valueOf(obj.getDataAnuncio()));
@@ -117,7 +116,7 @@ public class AnuncioDaoJDBC implements AnuncioDao {
 			st.setBoolean(12, obj.isStatusAdocao());
 			st.setInt(13, obj.getAutor().getIdUsuario());
 			st.setInt(14, obj.getEndereco().getIdEndereco());
-			st.setInt(15, obj.getAutor().getIdUsuario());
+			st.setInt(15, obj.getIdAnuncio());
 			st.executeUpdate();
 		}
 		catch (SQLException e) {
@@ -144,21 +143,19 @@ public class AnuncioDaoJDBC implements AnuncioDao {
 		}
 	}
 	
-	/* obj.getAnuncio().setIdAnuncio(rs.getInt("id_anuncio"));;
-	   list.add(obj);
-			}*/
+	//espécie, raça, porte (tamanho), idade e gênero
 
 	@Override
-	public List<Anuncios> findByUserInput(String userFilterInput) {
+	public List<Anuncio> findByUserInput(String userFilterInput) {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(userFilterInput);
-			st.executeQuery();
-			List<Anuncios> filterList = new ArrayList<>();
+			rs = st.executeQuery();
+			List<Anuncio> filterList = new ArrayList<>();
 			while(rs.next()) {
-			//	obj.
-				//filterList.add(obj);
+				Anuncio obj = instantiateAnuncio(rs);
+				filterList.add(obj);
 			}
 			return filterList;
 		}
@@ -172,7 +169,7 @@ public class AnuncioDaoJDBC implements AnuncioDao {
 	}
 
 	@Override
-	public Anuncios findById(Integer id) {
+	public Anuncio findById(Integer id) {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
@@ -180,7 +177,7 @@ public class AnuncioDaoJDBC implements AnuncioDao {
 			st.setInt(1, id);
 			rs = st.executeQuery();
 			if(rs.next()) {
-				Anuncios obj = instantiateAnuncios(rs);
+				Anuncio obj = instantiateAnuncio(rs);
 				return obj;
 			}
 			return null;

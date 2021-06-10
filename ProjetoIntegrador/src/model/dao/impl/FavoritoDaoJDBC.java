@@ -11,26 +11,26 @@ import java.util.List;
 import db.DB;
 import db.DbException;
 import db.DbIntegrityException;
-import model.dao.FavoritosDao;
-import model.entities.Favoritos;
+import model.dao.FavoritoDao;
+import model.entities.Favorito;
 
-public class FavoritosDaoJDBC implements FavoritosDao {
+public class FavoritoDaoJDBC implements FavoritoDao {
 
 	private Connection conn;
 
-	public FavoritosDaoJDBC(Connection conn) {
+	public FavoritoDaoJDBC(Connection conn) {
 		this.conn = conn;
 	}
 
-	private Favoritos instantiateFavoritos(ResultSet rs) throws SQLException {
-		Favoritos obj = new Favoritos();
+	private Favorito instantiateFavoritos(ResultSet rs) throws SQLException {
+		Favorito obj = new Favorito();
 		obj.getAnuncio().setIdAnuncio(rs.getInt("id_anuncio"));
 		obj.getUsuario().setIdUsuario(rs.getInt("id_usuario"));
 		return obj;
 	}
 
 	@Override
-	public void insert(Favoritos obj) {
+	public void insert(Favorito obj) {
 		PreparedStatement st = null;
 		try {
 			st = conn.prepareStatement(
@@ -83,14 +83,14 @@ public class FavoritosDaoJDBC implements FavoritosDao {
 	}
 
 	@Override
-	public List<Favoritos> findFavorito(Favoritos obj) {
+	public List<Favorito> findFavorito(Favorito obj) {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement("SELECT id_anuncio FROM favorito WHERE id_usuario = ?");
 			st.setInt(1, obj.getUsuario().getIdUsuario());
 			rs = st.executeQuery();
-			List<Favoritos> list = new ArrayList<>();
+			List<Favorito> list = new ArrayList<>();
 			while(rs.next()) {
 				obj.getAnuncio().setIdAnuncio(rs.getInt("id_anuncio"));
 				list.add(obj);
@@ -106,7 +106,7 @@ public class FavoritosDaoJDBC implements FavoritosDao {
 		}
 	}
 	@Override
-	public Favoritos findById(Integer id) {
+	public Favorito findById(Integer id) {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
@@ -114,7 +114,7 @@ public class FavoritosDaoJDBC implements FavoritosDao {
 			st.setInt(1, id);
 			rs = st.executeQuery();
 			if(rs.next()) {
-				Favoritos obj = instantiateFavoritos(rs);
+				Favorito obj = instantiateFavoritos(rs);
 				return obj;
 			}
 			return null;

@@ -10,14 +10,14 @@ import java.util.List;
  * @author Audryn Weber de Oliveira
  * */
 
-public class Anuncios implements Serializable {
+public class Anuncio implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 
 	private int idAnuncio;
 	private String descricao;
-	private List<Midia> midia = new ArrayList<>();
+	private List<MidiaAnuncio> midia;
 	private String nomeDoAnimal;
 	private String especie;
 	private String raca;
@@ -32,14 +32,16 @@ public class Anuncios implements Serializable {
 	private Usuario autor;
 	private Endereco endereco;
 
-	public Anuncios () {
-
+	public Anuncio() {
+		this.autor = new Usuario();
+		this.endereco = new Endereco();
 	}
 
-	public Anuncios(String nomeDoAnimal,  Midia midia, String descricao, int idade, String especie, String raca, String genero, 
+	public Anuncio(String nomeDoAnimal,  List<MidiaAnuncio> midia, String descricao, int idade, String especie, String raca, String genero, 
 			String porte, boolean statusVacinacao, boolean statusCastracao, boolean statusVermifugo, Usuario autor, Endereco endereco) {
 		this.nomeDoAnimal = nomeDoAnimal;
-		this.midia.add(midia);
+		this.midia = new ArrayList<>(5);
+		this.midia.addAll(midia);
 		this.descricao = descricao;
 		this.idade = idade;
 		this.especie = especie;
@@ -63,11 +65,11 @@ public class Anuncios implements Serializable {
 		this.descricao = descricao;
 	}
 
-	public List<Midia> getMidia() {
+	public List<MidiaAnuncio> getMidia() {
 		return midia;
 	}
 
-	public void setMidia(List<Midia> midia) {
+	public void setMidia(List<MidiaAnuncio> midia) {
 		this.midia = midia;
 	}
 
@@ -168,26 +170,11 @@ public class Anuncios implements Serializable {
 	}
 
 	public Usuario getAutor() {
-		return autor;
+		return this.autor;
 	}
 
 	public void setAutor(Usuario usuario) {
 		this.autor = usuario;
-	}
-
-	/**
-	 * Metodo responsvel por controlar que nao tenham mais de cinco midias em um anuncio.
-	 * @authors Aundryn Weber e Kaiane Ferreira
-	 */
-
-	private int midiaCont = 0;
-	public void addMidia(Midia midia) {
-		if(this.midia.size() < 5) {
-			this.midia.add(midia);
-		} else {
-			System.out.println("Número máximo de imagens atingido!");
-		} 
-		midiaCont++;
 	}
 
 	public int getIdAnuncio() {
@@ -214,7 +201,7 @@ public class Anuncios implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Anuncios other = (Anuncios) obj;
+		Anuncio other = (Anuncio) obj;
 		if (idAnuncio != other.idAnuncio)
 			return false;
 		return true;
@@ -225,6 +212,6 @@ public class Anuncios implements Serializable {
 				+ "\nraca = " + raca + "\ngenero = " + genero + "\nporte = " + porte + "\nidade = " + idade + "\ndataAnuncio = "
 				+ dataAnuncio + "\nstatusVacinacao = " + statusVacinacao + "\nstatusCastracao = " + statusCastracao
 				+ "\nstatusVermifugo = " + statusVermifugo + "\nstatusAdocao = " + statusAdocao + "\nautor = " + autor
-				+ "\nendereco = " + endereco);
+				+ "\nendereco = " + endereco + "\nMidia" + midia.get(0));
 	}
 }

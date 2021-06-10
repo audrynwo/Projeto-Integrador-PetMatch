@@ -1,13 +1,13 @@
 package model.dao;
 
 import java.util.List;
-import model.entities.Anuncios;
+import model.entities.Anuncio;
 
 public interface AnuncioDao {
 	
-	void insert(Anuncios obj);
-	void update(Anuncios obj);
+	void insert(Anuncio obj);
+	void update(Anuncio obj);
 	void deleteById(int id);
-	List<Anuncios> findByUserInput(String especie);
-	public Anuncios findById(Integer id);
+	List<Anuncio> findByUserInput(String userFilterInput);
+	public Anuncio findById(Integer id);
 }

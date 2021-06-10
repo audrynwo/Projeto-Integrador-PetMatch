@@ -1,17 +1,16 @@
 package model.entities;
 
-public class Midia {
+public class MidiaAnuncio {
 
-	//ideal é que essa lista de midia estivesse na classe de anuncio, sendo cada elemento um obj de midia
 	private int idMidia;
-	private Anuncios anuncio;
+	private Anuncio anuncio;
 	private String caminhoMidia; 
 	
-	public Midia() {
+	public MidiaAnuncio() {
 		
 	}
 	
-	public Midia(String caminhoMidia) {
+	public MidiaAnuncio(String caminhoMidia) {
 		this.caminhoMidia = caminhoMidia;
 	}
 
@@ -31,7 +30,7 @@ public class Midia {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Midia other = (Midia) obj;
+		MidiaAnuncio other = (MidiaAnuncio) obj;
 		if (idMidia != other.idMidia)
 			return false;
 		return true;
@@ -45,11 +44,11 @@ public class Midia {
 		this.idMidia = idMidia;
 	}
 
-	public Anuncios getAnuncio() {
+	public Anuncio getAnuncio() {
 		return anuncio;
 	}
 
-	public void setIdAnuncio(Anuncios anuncio) {
+	public void setAnuncio(Anuncio anuncio) {
 		this.anuncio = anuncio;
 	}
 
