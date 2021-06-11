@@ -35,7 +35,7 @@ public class MensagemDaoJDBC implements MensagemDao {
 		try {
 			st = conn.prepareStatement(
 					"INSERT INTO mensagem " 
-							+ "(texto_mensagem, data_mensagem, id_conversa "
+							+ "(texto_mensagem, data_mensagem, id_conversa) "
 							+ "VALUES " 
 							+ "(?, ?, ?)",
 							Statement.RETURN_GENERATED_KEYS);

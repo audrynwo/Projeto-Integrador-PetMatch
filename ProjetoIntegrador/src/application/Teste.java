@@ -40,14 +40,26 @@ public class Teste {
 
 
 		System.out.println("\n=== TESTE 1: insert(usuario obj) =====");
-		Usuario usuario1 = new Usuario("811-446-739-21", "Willow", "Smith", "jadensmith99@gmail.com", "1234567");
+		Usuario usuario1 = new Usuario("989-876-543-21", "Willow", "Smith", "willowsmithE@gmail.com", "1234567");
 		usuarioDao.insert(usuario1);
-		System.out.println("Primeiro usuario inserido! Id_usuario = " + usuario1.getIdUsuario()); 
+		System.out.println("Usuario inserido! Id_usuario: " + usuario1.getIdUsuario()); 
 
-		System.out.println("\n=== TESTE 1: insert(usuario obj) =====");
-		Usuario usuario2 = new Usuario("351-456-999-21", "Lucas", "Smith", "lucassmith99@gmail.com", "1234567");
+		/**System.out.println("\n=== TESTE 2: insert(usuario obj) =====");
+		Usuario usuario2 = new Usuario("321-654-987-21", "Jaden", "Smith", "c.syresmith@gmail.com", "1234567");
 		usuarioDao.insert(usuario2);
-		System.out.println("Primeiro usuario inserido! Id_usuario = " + usuario2.getIdUsuario()); 
+		System.out.println("Usuario inserido! Id_usuario: " + usuario2.getIdUsuario());  **/
+		
+		System.out.println("\n=== TESTE DELETE USUARIO 1 =====");
+		System.out.println("Digite o ID dO USUARIO que sera apagado do bd: ");
+		id = scanner.nextInt();
+		usuarioDao.deleteById(id);
+		System.out.println("======== usuario apagado! =====");
+		
+		/**System.out.println("\n=== TESTE DELETE USUARIO 2 =====");
+		System.out.println("Digite o ID dO USUARIO que sera apagado do bd: ");
+		id = scanner.nextInt();
+		usuarioDao.deleteById(id);
+		System.out.println("======== usuario apagado! =====");
 
 		System.out.println("\n=== TESTE CONVERSA =====");
 		Conversa conversaU = new Conversa(usuario1, usuario2);
@@ -56,24 +68,18 @@ public class Teste {
 
 
 		System.out.println("TESTE INSERT MENSAGEM");
-		Mensagem mensagemU = new Mensagem("oi" , conversaU);
+		Mensagem mensagemU = new Mensagem("oi!" , conversaU);
 		mensagemDao.insert(mensagemU);	
 		System.out.println("id_mensagem " + mensagemU.getIdMensagem()); 
-
+		System.out.println(mensagemU.getTextoMensagem());
 
 		System.out.println("\n=== TESTE DELETE MENSAGEM =====");
 		System.out.println("Digite o ID da MENSAGEM que sera apagada do bd: ");
 		id = scanner.nextInt();
 		mensagemDao.deleteById(id);
 		System.out.println("======== mensagem apagada! ====="); 
-		
-		System.out.println("\n=== TESTE DELETE CONVERSA =====");
-		System.out.println("Digite o ID da CONVERSA que sera apagada do bd: ");
-		id = scanner.nextInt();
-		conversaDao.deleteById(id);
-		System.out.println("======== conversa apagada! ====="); 
 
-		/** String cep, String uf, String cidade, String bairro, String rua, int numero, String complemento, Usuario usuario
+		//String cep, String uf, String cidade, String bairro, String rua, int numero, String complemento, Usuario usuario
 		System.out.println("\n==== TESTE 2: INSERT ENDERECO =====");
 		Endereco endereco1 = new Endereco("9321-8432" , "rs" , "canoas" , "igara" , "tres marias" , 72 , usuario1);
 		enderecoDao.insert(endereco1); 
@@ -120,18 +126,17 @@ public class Teste {
 			System.out.println("Midia cadastrada! Id_midia: " + midias.get(i).getIdMidia()); 
 		}
 
-		String userFilterInput = "SELECT * FROM anuncio WHERE porte LIKE 'pequeno'";
+		String userFilterInput = "SELECT * FROM anuncio WHERE porte LIKE ";
+		
+		userFilterInput = userFilterInput + scanner.nextLine();
 		List <Anuncio> anuncioList = anuncioDao.findByUserInput(userFilterInput);
 
 		for(int i = 0; i < anuncioList.size(); i++) {
 			System.out.println("Anuncios encontrados: ");
-			System.out.println(anuncioList.get(i).getNomeDoAnimal());
-		}
-		 **/
+			System.out.println(anuncioList.get(i).getNomeDoAnimal()); 
+		} **/
 
 		System.out.println("====== Fim do programa!! =======");
-		System.out.println("O CRUD ATUAL FUNCIONA!!! :D"); 
-
 		scanner.close();
 	}
 
