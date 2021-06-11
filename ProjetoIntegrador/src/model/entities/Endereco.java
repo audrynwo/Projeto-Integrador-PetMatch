@@ -21,7 +21,7 @@ public class Endereco implements Serializable {
 	private Usuario usuario;
 
 	public Endereco() {
-		
+		this.usuario = new Usuario();
 	}
 
 	public Endereco(String cep, String uf, String cidade, String bairro, String rua, int numero, Usuario usuario) {
@@ -140,7 +140,7 @@ public class Endereco implements Serializable {
 	@Override
 	public String toString() {
 		return ("uf = " + uf + "\ncidade = " + cidade + "\nbairro = " + bairro + "\nrua = " + rua + "\nnumero = "
-				+ numero + "\ncomplemento = " + complemento + "\ncep = " + cep + "\nusuario = " + usuario);
+				+ numero + "\ncomplemento = " + complemento + "\ncep = " + cep);
 	}
 
 }

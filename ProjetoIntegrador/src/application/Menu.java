@@ -3,6 +3,7 @@ package application;
 import java.util.Scanner;
 
 import model.dao.DaoFactory;
+import model.dao.EnderecoDao;
 import model.dao.UsuarioDao;
 import model.entities.Endereco;
 import model.entities.Usuario;
@@ -12,15 +13,15 @@ public class Menu {
 	public static void main(String[] args) {
 		
 		// WilliwSmith@gmail.com 1234567 id no banco == 6
+		// jadensmith10@gmail.com 1234567 id no nanco == 15
 		UsuarioDao usuarioDao = DaoFactory.createUsuarioDao();
-		Scanner entrada = new Scanner(System.in);
-		System.out.print("EMAIL: ");
-		String a = entrada.nextLine();
-		System.out.print("SENHA: ");
-		String b = entrada.nextLine();
-		Usuario usuario = usuarioDao.login(a, b);
-		System.out.println(usuario);
-		entrada.close();
+		EnderecoDao enderecoDao = DaoFactory.createEnderecoDao();
+		//Usuario usuario = usuarioDao.login("WilliwSmith@gmail.com", "1234567");
+		Endereco endereco = enderecoDao.findById(4);
+		Usuario usuario = usuarioDao.findById(endereco.getUsuario().getIdUsuario());
+		endereco.setUsuario(usuario);
+		visualizaEnderecoInfo(endereco); 
+		
 	}
 
 	
@@ -140,7 +141,7 @@ public class Menu {
 		System.out.println("+ ------------------------------------------------------- +");
 	}
 
-/**	private static void visualizaEnderecoInfo(Endereco endereco) {
+	private static void visualizaEnderecoInfo(Endereco endereco) {
 		System.out.println("+ ------------------------------------------------------- +");
 		System.out.println("     Visualizacao das inforacoes de endereco:                             ");
 		System.out.println(" ");
@@ -153,25 +154,23 @@ public class Menu {
 		System.out.println("- ------------------------------------------------------- -");
 	}
 	
-	
-/**	private static void atualizaPerfil() {
+	private static void atualizaEndereco() {
 		System.out.println("+ ----------------------------------------- +");
-		System.out.println("|	 Atualizacao do perfil:             |");
+		System.out.println("|	 Atualizacao de endereco:           |");
 		System.out.println("+ ----------------------------------------- +");
-		System.out.println("|    00 - Atualizar foto de perfil 	    |");
-		System.out.println("|    01 - Alterar nome 	                    |");
-		System.out.println("|    02 - Alterar sobrenome	 	    |");
-		System.out.println("|    03 - Alterar CPF			    |");
-		System.out.println("|    04 - Alterar email 		    |");
-		System.out.println("|    05 - Alterar senha 	            |");
-		System.out.println("|    06 - Alterar celular 	   	    |");
-		System.out.println("|    07 - Alterar CPF			    |");
+		System.out.println("|    00 - Atualizar CEP 	            |");
+		System.out.println("|    01 - Alterar estado 	            |");
+		System.out.println("|    02 - Alterar cidade 	            |");
+		System.out.println("|    03 - Alterar bairro	            |");
+		System.out.println("|    04 - Alterar rua		            |");
+		System.out.println("|    05 - Alterar numero 	            |");
+		System.out.println("|    06 - Alterar complemento 	   	    |");
 		System.out.println("- ----------------------------------------- -");
 		System.out.println("|    11 - Para voltar ao menu principal	    |");
 		System.out.println("|    22 - Fechar o programa	            |");
 		System.out.println("- ----------------------------------------- -");
 	
-	} **/
+	} 
 
 }
 

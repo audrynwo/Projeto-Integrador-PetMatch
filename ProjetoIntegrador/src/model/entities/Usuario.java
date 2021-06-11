@@ -21,7 +21,6 @@ public class Usuario implements Serializable {
 	private String fotoPerfil;
 
 	public Usuario() {
-
 	}
 
 	public Usuario(String cpf, String nome, String sobrenome, String email, String senha) {

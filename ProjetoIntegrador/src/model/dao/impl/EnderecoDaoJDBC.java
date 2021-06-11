@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.List;
 
 import db.DB;
 import db.DbException;
@@ -114,11 +113,6 @@ public class EnderecoDaoJDBC implements EnderecoDao{
 		finally {
 			DB.closeStatement(st);
 		}
-	}
-
-	@Override
-	public List<Endereco> findByCidade(String cidade) {
-		return null;
 	}
 
 	@Override
