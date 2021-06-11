@@ -39,14 +39,14 @@ public class UsuarioDaoJDBC implements UsuarioDao {
 		try {
 			st = conn.prepareStatement(
 					"INSERT INTO usuario "
-							+ "(cpf, email, nome, sobrenome, senha) "
+							+ "(nome, sobrenome, cpf, email, senha) "
 							+ "VALUES "
 							+ "(?, ?, ?, ?, ?)",
 							Statement.RETURN_GENERATED_KEYS);
-			st.setString(1, obj.getCpf());
-			st.setString(2, obj.getEmail());
-			st.setString(3, obj.getNome());
-			st.setString(4, obj.getSobrenome());
+			st.setString(1, obj.getNome());
+			st.setString(2, obj.getSobrenome());
+			st.setString(3, obj.getCpf());
+			st.setString(4, obj.getEmail());
 			st.setString(5, obj.getSenha());
 
 			int rowsAffected = st.executeUpdate();
