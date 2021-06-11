@@ -4,19 +4,42 @@ import java.util.Scanner;
 
 import model.dao.DaoFactory;
 import model.dao.UsuarioDao;
+import model.entities.Endereco;
 import model.entities.Usuario;
 
 public class Menu {
 
 	public static void main(String[] args) {
-		//se tu quiser testar o visualizaPerfil() so descomenta as proximas duas linhas linhas:
-		Usuario usuario = menuInicial();
-		// visualizaPerfil(usuario);
-		// menuPrincipal();
-		// opcoesDePerfil();
+		
+		// WilliwSmith@gmail.com 1234567 id no banco == 6
+		UsuarioDao usuarioDao = DaoFactory.createUsuarioDao();
+		Scanner entrada = new Scanner(System.in);
+		System.out.print("EMAIL: ");
+		String a = entrada.nextLine();
+		System.out.print("SENHA: ");
+		String b = entrada.nextLine();
+		Usuario usuario = usuarioDao.login(a, b);
+		System.out.println(usuario);
+		entrada.close();
 	}
 
-	protected static Usuario menuInicial() {
+	
+	private static void menuInicial() {
+		System.out.println("+ ------------------------------------------------------------------------- +");
+		System.out.println("|	PetMatch: Te conectando com um animalzinho para adocao!             |");
+		System.out.println("+ ------------------------------------------------------------------------- +");
+		System.out.println("|	O “PetMatch” é uma proposta de sistema para adoção de animais,	    |");
+		System.out.println("| com o objetivo de criar caminhos  mais curtos e eficientes entre as duas  |");
+		System.out.println("| pontas do processo de adoção (o doador e o adotante), proporcionando uma  |");
+		System.out.println("| adoção responsável para os animaizinhos que precisam de uma família!      |");
+		System.out.println("+ ------------------------------------------------------------------------- +");
+		System.out.println("|   	Já possui cadastro?						    |");
+		System.out.println("|	1 - Sim. Fazer login.						    |");
+		System.out.println("|	2 - Não. Quero realizar meu cadastro!			            |");
+		System.out.println("+ ------------------------------------------------------------------------- +");
+	}
+	
+	protected static Usuario cadastraUsuario() {
 		
 		UsuarioDao usuarioDao = DaoFactory.createUsuarioDao();
 		Scanner entrada = new Scanner(System.in);
@@ -25,7 +48,7 @@ public class Menu {
 		System.out.println("+ ------------------------------------------------------------------------- +");
 		System.out.println("|	PetMatch: Te conectando com um animalzinho para adocao!             |");
 		System.out.println("+ ------------------------------------------------------------------------- +");
-		System.out.println(" Primeiro passo: Criacao de perfil. Por favor, preencha as informacoes abaixo: ");
+		System.out.println(" Para a criacao do perfil preencha as informacoes abaixo: ");
 		System.out.print(" Seu primeiro nome: ");
 		usuario.setNome(entrada.nextLine());
 		System.out.print(" Sobrenome: ");
@@ -51,8 +74,9 @@ public class Menu {
 		System.out.println("|	Bem-Vindo ao menu de opcoes do PetMatch!:         |");
 		System.out.println("+ ------------------------------------------------------- +");
 		System.out.println("|    01 - Opcoes de perfil 				  |");
+		System.out.println("|    02 - Opcoes de endereco 			 	  |");
 		System.out.println("|    02 - Opcoes de anuncios 			 	  |");
-		System.out.println("|    03 - Opcoes de favoritos 			 	  |");
+		System.out.println("|    03 - Acesso aos anuncios favoritos 	          |");
 		System.out.println("|    04 - Opcoes de conversa 			 	  |");
 		System.out.println("|    05 - Fechar o programa				  |");
 		System.out.println("+ ------------------------------------------------------- +");
@@ -103,6 +127,51 @@ public class Menu {
 		System.out.println("- ----------------------------------------- -");
 	
 	}
+	
+	private static void opcoesDeEndereco() {
+		System.out.println("+ ------------------------------------------------------- +");
+		System.out.println("|	Bem-Vindo as opcoes de endereco!                  |");
+		System.out.println("+ ------------------------------------------------------- +");
+		System.out.println("|    00 - Visualizar as informacoes de endereco 	  |");
+		System.out.println("|    01 - Para atualizar as informacoes de endereco 	  |");
+		System.out.println("|    01 - Para remover o endereco	                  |");
+		System.out.println("|    03 - Para voltar ao menu principal	 	   	  |");
+		System.out.println("|    04 - Fechar o programa				  |");
+		System.out.println("+ ------------------------------------------------------- +");
+	}
+
+/**	private static void visualizaEnderecoInfo(Endereco endereco) {
+		System.out.println("+ ------------------------------------------------------- +");
+		System.out.println("     Visualizacao das inforacoes de endereco:                             ");
+		System.out.println(" ");
+		System.out.println(endereco);
+		System.out.println(" ");
+		System.out.println("- ------------------------------------------------------- -");
+		System.out.println("|    01 - Para atualizar as informacoes 	  |");
+		System.out.println("|    02 - Para voltar ao menu principal	 	   	  |");
+		System.out.println("|    03 - Fechar o programa				  |");
+		System.out.println("- ------------------------------------------------------- -");
+	}
+	
+	
+/**	private static void atualizaPerfil() {
+		System.out.println("+ ----------------------------------------- +");
+		System.out.println("|	 Atualizacao do perfil:             |");
+		System.out.println("+ ----------------------------------------- +");
+		System.out.println("|    00 - Atualizar foto de perfil 	    |");
+		System.out.println("|    01 - Alterar nome 	                    |");
+		System.out.println("|    02 - Alterar sobrenome	 	    |");
+		System.out.println("|    03 - Alterar CPF			    |");
+		System.out.println("|    04 - Alterar email 		    |");
+		System.out.println("|    05 - Alterar senha 	            |");
+		System.out.println("|    06 - Alterar celular 	   	    |");
+		System.out.println("|    07 - Alterar CPF			    |");
+		System.out.println("- ----------------------------------------- -");
+		System.out.println("|    11 - Para voltar ao menu principal	    |");
+		System.out.println("|    22 - Fechar o programa	            |");
+		System.out.println("- ----------------------------------------- -");
+	
+	} **/
 
 }
 

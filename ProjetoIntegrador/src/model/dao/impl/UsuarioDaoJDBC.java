@@ -134,6 +134,29 @@ public class UsuarioDaoJDBC implements UsuarioDao {
 			DB.closeResultSet(rs);
 		}
 	}
-	
+
+	@Override
+	public Usuario login(String email, String senha) {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = conn.prepareStatement("SELECT * FROM usuario WHERE email LIKE ? AND senha LIKE ?");
+			st.setString(1, email);
+			st.setString(2, senha);
+			rs = st.executeQuery();
+			if(rs.next()) {
+				Usuario obj = instantiateUsuario(rs);
+				return obj;
+			}
+			return null;
+		} 
+		catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+	}
 	
 }

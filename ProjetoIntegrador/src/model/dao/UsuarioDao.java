@@ -7,4 +7,5 @@ public interface UsuarioDao {
 	void update(Usuario obj);
 	void deleteById(Integer id);
 	Usuario findById(Integer id);
+	Usuario login(String email, String senha);
 }
