@@ -132,8 +132,8 @@ public class Usuario implements Serializable {
 
 	@Override
 	public String toString() {
-		return ("nome = " + nome + "\nsobrenome = " + sobrenome + "\ncpf = " + cpf + "\nemail = " + email + "\ncelular = "
-				+ celular + "\nsenha = " + senha + "\nfotoPerfil = " + fotoPerfil);
+		return ("     Nome Completo: " + nome + " " + sobrenome + "\n     CPF: " + cpf + "\n     Email: " + email 
+				+ "\n     Celular: " + celular + "\n     Senha: " + senha + "\n     Foto de perfil: " + fotoPerfil);
 	}
 
 }
