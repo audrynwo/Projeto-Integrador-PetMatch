@@ -7,7 +7,7 @@ public class MidiaAnuncio {
 	private String caminhoMidia; 
 	
 	public MidiaAnuncio() {
-		
+		this.anuncio = new Anuncio();
 	}
 	
 	public MidiaAnuncio(String caminhoMidia) {

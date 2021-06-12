@@ -247,9 +247,21 @@ public class AnuncioDaoJDBC implements AnuncioDao {
 			st.setInt(1, obj.getIdUsuario());
 			rs = st.executeQuery();
 			while(rs.next()) {
-				//preencher os outros atributos
 				Anuncio anuncio = new Anuncio();
-				anuncio.setDescricao(rs.getString(""));
+				anuncio.setDescricao(rs.getString("descricao"));
+				anuncio.setNomeDoAnimal(rs.getString("nome_do_animal"));
+				anuncio.setEspecie(rs.getString("especie"));
+				anuncio.setRaca(rs.getString("raca"));
+				anuncio.setGenero(rs.getString("genero"));
+				anuncio.setPorte(rs.getString("porte"));
+				anuncio.setIdade(rs.getInt("idade"));
+				anuncio.setDataAnuncio(rs.getTimestamp("data_anuncio").toLocalDateTime());
+				anuncio.getAutor().setIdUsuario(rs.getInt("id_usuario"));
+				anuncio.getEndereco().setIdEndereco(rs.getInt("id_endereco"));
+				anuncio.setStatusAdocao(rs.getBoolean("status_adocao"));
+				anuncio.setStatusVacinacao(rs.getBoolean("status_vacinacao"));
+				anuncio.setStatusCastracao(rs.getBoolean("status_castracao"));
+				anuncio.setStatusVermifugo(rs.getBoolean("status_vermifugo"));
 				list.add(anuncio);
 			}
 			return list;

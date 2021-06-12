@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import db.DB;
 import db.DbException;
@@ -115,6 +117,30 @@ public class MidiaDaoJDBC implements MidiaDao{
 				return obj;
 			}
 			return null;
+		} 
+		catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+	} 
+	
+	@Override
+	public List<MidiaAnuncio> findByAnuncioId(Integer id) {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = conn.prepareStatement("SELECT * FROM midia WHERE id_anuncio = ?");
+			st.setInt(1, id);
+			rs = st.executeQuery();
+			List<MidiaAnuncio> midiaList = new ArrayList<>();
+			while(rs.next()) {
+				MidiaAnuncio obj = instantiateMidia(rs);
+				midiaList.add(obj);
+			}
+			return midiaList;
 		} 
 		catch (SQLException e) {
 			throw new DbException(e.getMessage());

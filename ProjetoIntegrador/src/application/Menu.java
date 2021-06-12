@@ -27,11 +27,10 @@ public class Menu {
 		// "jadensmith928@gmail.com", "1234567" id no banco == 59
 		UsuarioDao usuarioDao = DaoFactory.createUsuarioDao();
 		EnderecoDao enderecoDao = DaoFactory.createEnderecoDao();
-		Endereco endereco = enderecoDao.findById(33);
-		Usuario usuario = usuarioDao.login("jadensmith928@gmail.com", "1234567");
+		Endereco endereco = enderecoDao.findById(31);
+		Usuario usuario = usuarioDao.login("jadensmith921@gmail.com", "1234567");
 
-		//visualizarMeusAnuncios(usuario);
-		menuPrincipal(usuario);
+		visualizarMeusAnuncios(usuario);
 	}
 
 
@@ -39,7 +38,7 @@ public class Menu {
 		System.out.println("+ ------------------------------------------------------------------------- +");
 		System.out.println("|	PetMatch: Te conectando com um animalzinho para adocao!             |");
 		System.out.println("+ ------------------------------------------------------------------------- +");
-		System.out.println("|	O â€œPetMatchâ€� e uma proposta de sistema para adocao de animais,	    |");
+		System.out.println("|	O PetMatch eh uma proposta de sistema para adocao de animais,	    |");
 		System.out.println("| com o objetivo de criar caminhos  mais curtos e eficientes entre as duas  |");
 		System.out.println("| pontas do processo de adocao (o doador e o adotante), proporcionando uma  |");
 		System.out.println("| adocao responsavel para os animaizinhos que precisam de uma familia!      |");
@@ -87,12 +86,12 @@ public class Menu {
 		System.out.println("+ ------------------------------------------------------- +");
 		System.out.println("|	Bem-Vindo ao menu de opcoes do PetMatch!:         |");
 		System.out.println("+ ------------------------------------------------------- +");
-		System.out.println("|    01 - Opcoes de perfil 				  |");
-		System.out.println("|    02 - Opcoes de endereco 			 	  |");
-		System.out.println("|    03 - Opcoes de anuncios 			 	  |");
-		System.out.println("|    04 - Acesso aos anuncios favoritos 	          |");
-		System.out.println("|    05 - Opcoes de conversa 			 	  |");
-		System.out.println("|    06 - Fechar o programa				  |");
+		System.out.println("|     1 - Opcoes de perfil 				  |");
+		System.out.println("|     2 - Opcoes de endereco 			 	  |");
+		System.out.println("|     3 - Opcoes de anuncios 			 	  |");
+		System.out.println("|     4 - Acesso aos anuncios favoritos 	          |");
+		System.out.println("|     5 - Opcoes de conversa 			 	  |");
+		System.out.println("|     6 - Fechar o programa				  |");
 		System.out.println("+ ------------------------------------------------------- +");
 
 		System.out.println(" ");
@@ -100,21 +99,21 @@ public class Menu {
 		userAnswer = entrada.nextInt();
 		System.out.println(" ");
 		switch(userAnswer) {
-		case(01):
+		case(1):
 			opcoesDePerfil();
 		break;
-		case(02):
+		case(2):
 			opcoesDeEndereco();
 		break;
-		case(03):
+		case(3):
 			opcoesDeAnuncio();
 		break;
-		case(04):
+		case(4):
 			visualizarFavoritos(usuario);
 		break;
-		case(05):
+		case(5):
 			break;
-		case(06):
+		case(6):
 			break;
 		}
 		entrada.close();
@@ -242,7 +241,7 @@ public class Menu {
 	private static void opcoesDeAnuncio() {
 		Scanner entrada = new Scanner(System.in);
 		int userAnswer = 0;
-		
+
 		System.out.println("+ -------------------------------------- +");
 		System.out.println("|    Bem-Vindo as opcoes de anuncio!     |");
 		System.out.println("+ -------------------------------------- +");
@@ -252,16 +251,16 @@ public class Menu {
 		System.out.println("|    04 - Para voltar ao menu principal  |");
 		System.out.println("|    05 - Fechar o programa              |");
 		System.out.println("+ -------------------------------------- +");
-	
+
 		System.out.println(" ");
 		System.out.println("Digite sua resposta: ");
 		userAnswer = entrada.nextInt();
 
 		switch(userAnswer){
 		case 01:
-			 visualizarAnuncios();
-		break;
-		
+			visualizarAnuncios();
+			break;
+
 		}
 	}
 
@@ -349,13 +348,15 @@ public class Menu {
 		Scanner entrada = new Scanner (System.in);
 		int userAnswer = 0;
 		AnuncioDao anuncioDao = DaoFactory.createAnuncioDao();
+		MidiaDao midiaDao = DaoFactory.createMidiaDao();
 		List <Anuncio> anuncioList = anuncioDao.findByUserId(usuario.getIdUsuario());
+		
 		if(anuncioList != null) {
 			System.out.println("   Anuncios encontrados: ");
 			for(int i = 0; i < anuncioList.size(); i++) {
 				System.out.println("   Anuncio " + anuncioList.get(i).getIdAnuncio() + ":");
 				System.out.println(anuncioList.get(i));
-				System.out.print("   Para: ");
+				System.out.println(" ");
 				System.out.println("   Visualizar o proximo (1)");
 				System.out.println("   Atualizar o anuncio (2)");
 				System.out.println("   Deletar anuncio (3)");
@@ -363,8 +364,22 @@ public class Menu {
 				userAnswer = entrada.nextInt();
 
 				if(userAnswer == 2) {
-					//atualizaAnuncio(anuncioList.get(i));
+					atualizaAnuncio(anuncioList.get(i));
+					/**while(userAnswer != 5) {
+						atualizaAnuncio(anuncioList.get(i));
+						System.out.println(" ");
+						System.out.println("Anuncio atualizado!");
+						System.out.println(" ");
+						System.out.println("Fazer outra atualizacao?");
+						System.out.print("SIM (4), NÃO (5)");
+						userAnswer = entrada.nextInt();
+					} **/
 				} else if (userAnswer == 3) {
+					anuncioList.get(i).setMidia(midiaDao.findByAnuncioId(anuncioList.get(i).getIdAnuncio()));
+					for(int j = 0; j < anuncioList.get(i).getMidia().size(); j++) {
+						MidiaAnuncio midia = anuncioList.get(i).getMidia().get(j);
+						midiaDao.deleteById(midia.getIdMidia());
+					}
 					anuncioDao.deleteById(anuncioList.get(i).getIdAnuncio());
 					System.out.println("Anuncio excluido.");
 				}
@@ -387,14 +402,14 @@ public class Menu {
 				System.out.println(anuncio);
 				cont++;
 				System.out.println(" ");
-			if(cont %3 == 0) {
-				Recados recados = new Recados();
-				recados = recadosDao.findById(contId);
-				System.out.println(recados);
-				System.out.println(" ");
-				contId++;
-				//
-			}
+				if(cont %3 == 0) {
+					Recados recados = new Recados();
+					recados = recadosDao.findById(contId);
+					System.out.println(recados);
+					System.out.println(" ");
+					contId++;
+					//
+				}
 			}
 		} else {
 			System.out.println("Ainda nao temos anuncios publicados!");
@@ -418,24 +433,94 @@ public class Menu {
 
 	}
 
-	private static void atualizaAnuncio() {
-		System.out.println("+ ----------------------------------------- +");
-		System.out.println("|	 Atualizacao de anuncio:             |");
-		System.out.println("+ ----------------------------------------- +");
-		System.out.println("|    00 - Alterar nome do pet            |");
-		System.out.println("|    01 - Alterar descricao              |");
-		System.out.println("|    02 - Alterar idade                  |");
-		System.out.println("|    03 - Alterar especie                |");
-		System.out.println("|    04 - Alterar raca                   |");
-		System.out.println("|    05 - Alterar genero                 |");
-		System.out.println("|    06 - Alterar porte                  |");
-		System.out.println("|    07 - Status de Vacinacao            |");
-		System.out.println("|    07 - Status de Castracao            |");
-		System.out.println("|    07 - Status do Vermifugo			    |");
-		System.out.println("- ----------------------------------------- -");
-		System.out.println("|    11 - Para voltar ao menu principal	    |");
-		System.out.println("|    22 - Fechar o programa	            |");
-		System.out.println("- ----------------------------------------- -");
+	private static void atualizaAnuncio(Anuncio anuncio) {
+		AnuncioDao anuncioDao = DaoFactory.createAnuncioDao();
+		UsuarioDao usuarioDao = DaoFactory.createUsuarioDao();
+		Usuario usuario = usuarioDao.findById(anuncio.getAutor().getIdUsuario());
+		Scanner entrada = new Scanner(System.in);
+		int userAnswer = 0; 
+
+		System.out.println("+ -------------------------------------- +");
+		System.out.println("|	 Atualizacao de anuncio:         |");
+		System.out.println("+ -------------------------------------- +");
+		System.out.println("|     1 - Alterar nome do pet            |");
+		System.out.println("|     2 - Alterar descricao              |");
+		System.out.println("|     3 - Alterar idade                  |");
+		System.out.println("|     4 - Alterar especie                |");
+		System.out.println("|     5 - Alterar raca                   |");
+		System.out.println("|     6 - Alterar genero                 |");
+		System.out.println("|     7 - Alterar porte                  |");
+		System.out.println("|     8 - Status de Vacinacao            |");
+		System.out.println("|     9 - Status de Castracao            |");
+		System.out.println("|    10 - Status do Vermifugo		 |");
+		System.out.println("- -------------------------------------- -");
+		System.out.println("|    11 - Para voltar ao menu principal	 |");
+		System.out.println("|    12 - Fechar o programa	         |");
+		System.out.println("- -------------------------------------- -");
+
+		System.out.println(" ");
+		System.out.print("Sua resposta: ");
+		userAnswer = entrada.nextInt();
+		entrada.nextLine();
+		System.out.println(" ");
+		switch(userAnswer) {
+		case(1):
+			System.out.print("Novo nome: ");
+			anuncio.setNomeDoAnimal(entrada.nextLine());
+		anuncioDao.update(anuncio);
+		break;
+		case(2):
+			System.out.print("Nova descricao: ");
+			anuncio.setDescricao(entrada.nextLine());
+		anuncioDao.update(anuncio);
+		break;
+		case(3):
+			System.out.print("Nova idade: ");
+			anuncio.setIdade(entrada.nextInt());
+			entrada.nextLine();
+		anuncioDao.update(anuncio);
+		break;
+		case(4):
+			System.out.print("Defina a especie: ");
+			anuncio.setEspecie(entrada.nextLine());
+		anuncioDao.update(anuncio);
+		break;
+		case(5):
+			System.out.print("Defina a raca: ");
+			anuncio.setRaca(entrada.nextLine());
+		anuncioDao.update(anuncio);
+		break;
+		case(6):
+			System.out.print("Defina o genero: ");
+			anuncio.setGenero(entrada.nextLine());
+		anuncioDao.update(anuncio);
+		break;
+		case(7):
+			System.out.print("Defina o porte: ");
+			anuncio.setPorte(entrada.nextLine());
+		anuncioDao.update(anuncio);
+		break;
+		case(8):
+			System.out.print("Status de Vacinacao: digite true para SIM e false para NAO:");
+		anuncio.setStatusVacinacao(entrada.nextBoolean());
+		anuncioDao.update(anuncio);
+		break;
+		case(9):
+			System.out.print("Status de Castracao: digite true para SIM e false para NAO:");
+			anuncio.setStatusCastracao(entrada.nextBoolean());
+		anuncioDao.update(anuncio);
+		break;
+		case(10):
+			System.out.print("Status de Vermifugo: digite true para SIM e false para NAO:");
+			anuncio.setStatusVermifugo(entrada.nextBoolean());
+		anuncioDao.update(anuncio);
+		break;
+		case(11):
+			menuPrincipal(usuario);
+		case(12):
+			break;
+		}
+		entrada.close();
 	}
 }
 
