@@ -32,8 +32,34 @@ public class Menu {
 
 		visualizarMeusAnuncios(usuario);
 	}
-
-
+	UsuarioDao usuarioDao = DaoFactory.createUsuarioDao();
+	Usuario usuario = new Usuario();
+	Scanner entrada = new Scanner(System.in);
+	/**int userAnswer = 0;
+	userAnswer = entrada.nextInt();
+	switch(userAnswer) {
+	case 1:
+		while(true) {
+			String email = "";
+			String senha = "";
+			System.out.print("Digite o seu e-mail: ");
+			email = entrada.nextLine();
+			System.out.print("Digite sua senha: ");
+			senha = entrada.nextLine();
+			usuario = usuarioDao.login(email, senha);
+			if(usuario != null )
+				break;
+			else {
+				System.out.println("Senha ou e-mail incorreto. Por favor, tente novamente.");
+			}
+		}																						
+		break;
+	case 2:
+		//	cadastraUsuario();
+		break;
+	}
+}
+}**/
 	private static void menuInicial() {
 		System.out.println("+ ------------------------------------------------------------------------- +");
 		System.out.println("|	PetMatch: Te conectando com um animalzinho para adocao!             |");
@@ -79,7 +105,7 @@ public class Menu {
 		return usuario;
 	}
 
-	private static void menuPrincipal(Usuario usuario) {
+	private static void menuPrincipal(Endereco endereco, Usuario usuario) {
 		Scanner entrada = new Scanner(System.in);
 		int userAnswer = 0;
 
@@ -106,7 +132,7 @@ public class Menu {
 			opcoesDeEndereco();
 		break;
 		case(3):
-			opcoesDeAnuncio();
+			opcoesDeAnuncio(endereco, usuario);
 		break;
 		case(4):
 			visualizarFavoritos(usuario);
@@ -238,7 +264,7 @@ public class Menu {
 		entrada.close();
 	}
 
-	private static void opcoesDeAnuncio() {
+	private static void opcoesDeAnuncio(Endereco endereco, Usuario usuario) {
 		Scanner entrada = new Scanner(System.in);
 		int userAnswer = 0;
 
@@ -261,9 +287,19 @@ public class Menu {
 			visualizarAnuncios();
 			break;
 
+		case 02:
+			cadastrarAnuncio(endereco, usuario);
+			break;
+		case 03:
+			visualizarAnuncios();
+			break;
+		case 04:
+			menuPrincipal(endereco, usuario);
+			break;
+		case 05:
+			break;
 		}
 	}
-
 	private static void cadastrarAnuncio(Endereco endereco, Usuario autor) {
 
 		Scanner entrada = new Scanner(System.in);
@@ -516,7 +552,7 @@ public class Menu {
 		anuncioDao.update(anuncio);
 		break;
 		case(11):
-			menuPrincipal(usuario);
+		//	menuPrincipal(endereco, usuario);
 		case(12):
 			break;
 		}
