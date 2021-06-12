@@ -28,8 +28,8 @@ public class Menu {
 		Endereco endereco = enderecoDao.findById(33);
 		Usuario usuario = usuarioDao.login("jadensmith928@gmail.com", "1234567");
 
-		visualizarAnuncios();
-
+		//visualizarMeusAnuncios(usuario);
+		menuPrincipal(usuario);
 	}
 
 
@@ -37,14 +37,14 @@ public class Menu {
 		System.out.println("+ ------------------------------------------------------------------------- +");
 		System.out.println("|	PetMatch: Te conectando com um animalzinho para adocao!             |");
 		System.out.println("+ ------------------------------------------------------------------------- +");
-		System.out.println("|	O “PetMatch” é uma proposta de sistema para adoção de animais,	    |");
+		System.out.println("|	O “PetMatch” e uma proposta de sistema para adocao de animais,	    |");
 		System.out.println("| com o objetivo de criar caminhos  mais curtos e eficientes entre as duas  |");
-		System.out.println("| pontas do processo de adoção (o doador e o adotante), proporcionando uma  |");
-		System.out.println("| adoção responsável para os animaizinhos que precisam de uma família!      |");
+		System.out.println("| pontas do processo de adocao (o doador e o adotante), proporcionando uma  |");
+		System.out.println("| adocao responsavel para os animaizinhos que precisam de uma familia!      |");
 		System.out.println("+ ------------------------------------------------------------------------- +");
-		System.out.println("|   	Já possui cadastro?						    |");
+		System.out.println("|   	Ja possui cadastro?						    |");
 		System.out.println("|	1 - Sim. Fazer login.						    |");
-		System.out.println("|	2 - Não. Quero realizar meu cadastro!			            |");
+		System.out.println("|	2 - Nao. Quero realizar meu cadastro!			            |");
 		System.out.println("+ ------------------------------------------------------------------------- +");
 	}
 
@@ -78,19 +78,44 @@ public class Menu {
 		return usuario;
 	}
 
-	private static void menuPrincipal() {
+	private static void menuPrincipal(Usuario usuario) {
+		Scanner entrada = new Scanner(System.in);
+		int userAnswer = 0;
+
 		System.out.println("+ ------------------------------------------------------- +");
 		System.out.println("|	Bem-Vindo ao menu de opcoes do PetMatch!:         |");
 		System.out.println("+ ------------------------------------------------------- +");
 		System.out.println("|    01 - Opcoes de perfil 				  |");
 		System.out.println("|    02 - Opcoes de endereco 			 	  |");
-		System.out.println("|    02 - Opcoes de anuncios 			 	  |");
-		System.out.println("|    03 - Acesso aos anuncios favoritos 	          |");
-		System.out.println("|    04 - Opcoes de conversa 			 	  |");
-		System.out.println("|    05 - Fechar o programa				  |");
+		System.out.println("|    03 - Opcoes de anuncios 			 	  |");
+		System.out.println("|    04 - Acesso aos anuncios favoritos 	          |");
+		System.out.println("|    05 - Opcoes de conversa 			 	  |");
+		System.out.println("|    06 - Fechar o programa				  |");
 		System.out.println("+ ------------------------------------------------------- +");
 
-
+		System.out.println(" ");
+		System.out.print("Sua resposta: ");
+		userAnswer = entrada.nextInt();
+		System.out.println(" ");
+		switch(userAnswer) {
+		case(01):
+			opcoesDePerfil();
+		break;
+		case(02):
+			opcoesDeEndereco();
+		break;
+		case(03):
+			opcoesDeAnuncio();
+		break;
+		case(04):
+			visualizarFavoritos(usuario);
+		break;
+		case(05):
+			break;
+		case(06):
+			break;
+		}
+		entrada.close();
 	}
 
 	private static void opcoesDePerfil() {
@@ -233,7 +258,7 @@ public class Menu {
 
 		anuncio.setAutor(autor);
 		anuncio.setEndereco(endereco);
-		
+
 		//fazer verificacao do endereco
 
 		System.out.println("+ ----------------------------------------- +");
@@ -314,10 +339,22 @@ public class Menu {
 			for(int i = 0; i < anuncioList.size(); i++) {
 				System.out.println("   Anuncio " + anuncioList.get(i).getIdAnuncio() + ":");
 				System.out.println(anuncioList.get(i));
-				System.out.println("");
+				System.out.print("   Para: ");
+				System.out.println("   Visualizar o proximo (1)");
+				System.out.println("   Atualizar o anuncio (2)");
+				System.out.println("   Deletar anuncio (3)");
+				System.out.print("   Digite sua resposta: ");
+				userAnswer = entrada.nextInt();
+
+				if(userAnswer == 2) {
+					//atualizaAnuncio(anuncioList.get(i));
+				} else if (userAnswer == 3) {
+					anuncioDao.deleteById(anuncioList.get(i).getIdAnuncio());
+					System.out.println("Anuncio excluido.");
+				}
 			}
 		} else {
-			System.out.println("Nenhum anuncio foi encontrado!");
+			System.out.println("Voce nao criou nenhum anuncio ainda!");
 		}
 		entrada.close();
 	}
@@ -338,7 +375,7 @@ public class Menu {
 		}
 
 	}
-	
+
 	private static void visualizarFavoritos(Usuario usuario) {
 		AnuncioDao anuncioDao = DaoFactory.createAnuncioDao();
 		List<Anuncio> listFavorito = anuncioDao.findAnunciosFavoritados(usuario);
@@ -353,7 +390,26 @@ public class Menu {
 		}
 
 	}
-	
+
+	private static void atualizaAnuncio() {
+		System.out.println("+ ----------------------------------------- +");
+		System.out.println("|	 Atualizacao de anuncio:             |");
+		System.out.println("+ ----------------------------------------- +");
+		System.out.println("|    00 - Alterar nome do pet            |");
+		System.out.println("|    01 - Alterar descricao              |");
+		System.out.println("|    02 - Alterar idade                  |");
+		System.out.println("|    03 - Alterar especie                |");
+		System.out.println("|    04 - Alterar raca                   |");
+		System.out.println("|    05 - Alterar genero                 |");
+		System.out.println("|    06 - Alterar porte                  |");
+		System.out.println("|    07 - Status de Vacinacao            |");
+		System.out.println("|    07 - Status de Castracao            |");
+		System.out.println("|    07 - Status do Vermifugo			    |");
+		System.out.println("- ----------------------------------------- -");
+		System.out.println("|    11 - Para voltar ao menu principal	    |");
+		System.out.println("|    22 - Fechar o programa	            |");
+		System.out.println("- ----------------------------------------- -");
+	}
 }
 
 
