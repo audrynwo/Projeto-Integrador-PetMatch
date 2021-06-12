@@ -10,10 +10,12 @@ import model.dao.DaoFactory;
 import model.dao.EnderecoDao;
 import model.dao.FavoritoDao;
 import model.dao.MidiaDao;
+import model.dao.RecadosDao;
 import model.dao.UsuarioDao;
 import model.entities.Anuncio;
 import model.entities.Endereco;
 import model.entities.MidiaAnuncio;
+import model.entities.Recados;
 import model.entities.Usuario;
 
 public class Menu {
@@ -37,7 +39,7 @@ public class Menu {
 		System.out.println("+ ------------------------------------------------------------------------- +");
 		System.out.println("|	PetMatch: Te conectando com um animalzinho para adocao!             |");
 		System.out.println("+ ------------------------------------------------------------------------- +");
-		System.out.println("|	O “PetMatch” e uma proposta de sistema para adocao de animais,	    |");
+		System.out.println("|	O â€œPetMatchâ€� e uma proposta de sistema para adocao de animais,	    |");
 		System.out.println("| com o objetivo de criar caminhos  mais curtos e eficientes entre as duas  |");
 		System.out.println("| pontas do processo de adocao (o doador e o adotante), proporcionando uma  |");
 		System.out.println("| adocao responsavel para os animaizinhos que precisam de uma familia!      |");
@@ -238,15 +240,29 @@ public class Menu {
 	}
 
 	private static void opcoesDeAnuncio() {
+		Scanner entrada = new Scanner(System.in);
+		int userAnswer = 0;
+		
 		System.out.println("+ -------------------------------------- +");
 		System.out.println("|    Bem-Vindo as opcoes de anuncio!     |");
 		System.out.println("+ -------------------------------------- +");
-		System.out.println("|    00 - Visualizar todos os anuncios   |");
-		System.out.println("|    01 - Criar Anuncio                  |");
-		System.out.println("|    01 - Acesso aos meus anuncios       |");
-		System.out.println("|    03 - Para voltar ao menu principal  |");
-		System.out.println("|    04 - Fechar o programa              |");
+		System.out.println("|    01 - Visualizar todos os anuncios   |");
+		System.out.println("|    02 - Criar Anuncio                  |");
+		System.out.println("|    03 - Acesso aos meus anuncios       |");
+		System.out.println("|    04 - Para voltar ao menu principal  |");
+		System.out.println("|    05 - Fechar o programa              |");
 		System.out.println("+ -------------------------------------- +");
+	
+		System.out.println(" ");
+		System.out.println("Digite sua resposta: ");
+		userAnswer = entrada.nextInt();
+
+		switch(userAnswer){
+		case 01:
+			 visualizarAnuncios();
+		break;
+		
+		}
 	}
 
 	private static void cadastrarAnuncio(Endereco endereco, Usuario autor) {
@@ -268,7 +284,7 @@ public class Menu {
 		anuncio.setNomeDoAnimal(entrada.nextLine());
 		System.out.print("    Escreva uma descricao: ");
 		anuncio.setDescricao(entrada.nextLine());
-		System.out.print("    Idade (apenas em números): ");
+		System.out.print("    Idade (apenas em nÃºmeros): ");
 		anuncio.setIdade(entrada.nextInt());
 		entrada.nextLine();
 		System.out.print("    Especie: ");
@@ -361,16 +377,27 @@ public class Menu {
 
 	private static void visualizarAnuncios() {
 		AnuncioDao anuncioDao = DaoFactory.createAnuncioDao();
+		RecadosDao recadosDao = DaoFactory.createRecadosDao();
 		List <Anuncio> anuncioList = anuncioDao.getAllAnuncios();
-
+		int cont = 0;
+		int contId = 0;
 		if(anuncioList != null) {
 			for(Anuncio anuncio : anuncioList) {
 				System.out.println("   Anuncio " + anuncio.getIdAnuncio() + ":");
 				System.out.println(anuncio);
+				cont++;
 				System.out.println(" ");
+			if(cont %3 == 0) {
+				Recados recados = new Recados();
+				recados = recadosDao.findById(contId);
+				System.out.println(recados);
+				System.out.println(" ");
+				contId++;
+				//
+			}
 			}
 		} else {
-			System.out.println("Ainda não temos anuncios publicados!");
+			System.out.println("Ainda nao temos anuncios publicados!");
 			System.out.println("Seja o primeiro a criar um anuncio!");
 		}
 
