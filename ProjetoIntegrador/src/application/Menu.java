@@ -51,17 +51,23 @@ public class Menu {
 				usuario = cadastraUsuario();
 			break;
 		}
+		
+		while(true) {
 			menuPrincipal();
 			System.out.println(" ");
-			System.out.print("Sua resposta: ");
+			System.out.println("Sua resposta: ");
 			userAnswer = entrada.nextInt();
+			
+			if(userAnswer == 55)
+				break;
+			
 			System.out.println(" ");
 			switch (userAnswer) {
 			case(1):
 				opcoesDePerfil(usuario);
 			break;
 			case(2):
-				opcoesDeEndereco();
+				opcoesDeEndereco(endereco);
 			break;
 			case(3):
 				opcoesDeAnuncio(endereco, usuario);
@@ -76,7 +82,11 @@ public class Menu {
 				break;
 			case(55):
 				break;
+			case(7):
+				cadastraEndereco(usuario);
+			break;
 			}
+		}
 		
 		entrada.close();
 	}
@@ -136,6 +146,7 @@ public class Menu {
 		System.out.println("|     4 - Acesso aos anuncios favoritos 	          |");
 		System.out.println("|     5 - Opcoes de conversa 			 	  |");
 		System.out.println("|     6 - Excluir perfil 			     	  |");
+		System.out.println("|     7 - Cadastrar Endereco 			      |");
 		System.out.println("|    55 - Fechar o programa				  |");
 		System.out.println("+ ------------------------------------------------------- +");
 	}
@@ -155,11 +166,9 @@ public class Menu {
 		switch (userAnswer) {
 		case(1):
 			 visualizaPerfil(usuario);
-		break;
+			break;
 		case(2):
 			atualizaPerfil(usuario);
-		break;
-		case(3):
 		break;
 	}
 		entrada.close();
@@ -192,9 +201,6 @@ public class Menu {
 		System.out.println("|     6 - Alterar senha 	            |");
 		System.out.println("|     7 - Alterar celular 	   	    |");
 		System.out.println("- ----------------------------------------- -");
-		System.out.println("|     8 - Para voltar ao menu principal	    |");
-		System.out.println("|     9 - Fechar o programa	            |");
-		System.out.println("- ----------------------------------------- -");
 		
 		System.out.print("Sua resposta: ");
 		int userAnswer = entrada.nextInt();
@@ -226,7 +232,7 @@ public class Menu {
 		} 
 		usuarioDao.update(usuario);
 		System.out.println("Infomacao atualizada!");
-		entrada.close();
+		
 	}
 
 	private static void apagaPerfil(Usuario usuario, Endereco endereco) {
@@ -250,30 +256,71 @@ public class Menu {
 		System.out.println("Perfil apagado!");
 	}
 	
-	private static void opcoesDeEndereco() {
+	private static void removeEndereco(Endereco endereco) {
+		AnuncioDao anuncioDao = DaoFactory.createAnuncioDao();
+		EnderecoDao enderecoDao = DaoFactory.createEnderecoDao();
+		MidiaDao midiaDao = DaoFactory.createMidiaDao();
+		
+		List <Anuncio> anuncioList = anuncioDao.findByUserId(endereco.getUsuario().getIdUsuario());
+		for(int i = 0; i < anuncioList.size(); i++) {
+			anuncioList.get(i).setMidia(midiaDao.findByAnuncioId(anuncioList.get(i).getIdAnuncio()));
+			for(int j = 0; j < anuncioList.get(i).getMidia().size(); j++) {
+				MidiaAnuncio midia = anuncioList.get(i).getMidia().get(j);
+				midiaDao.deleteById(midia.getIdMidia());
+			}
+			anuncioDao.deleteById(anuncioList.get(i).getIdAnuncio());
+		}
+		
+		enderecoDao.deleteById(endereco.getIdEndereco());
+		System.out.println("Endereco apagado!");
+	}
+	
+	private static void opcoesDeEndereco(Endereco endereco) {
+		Scanner entrada = new Scanner(System.in);
 		System.out.println("+ ------------------------------------------------------- +");
 		System.out.println("|	Bem-Vindo as opcoes de endereco!                  |");
 		System.out.println("+ ------------------------------------------------------- +");
-		System.out.println("|    00 - Visualizar as informacoes de endereco 	  |");
-		System.out.println("|    01 - Para atualizar as informacoes de endereco 	  |");
-		System.out.println("|    01 - Para remover o endereco	                  |");
-		System.out.println("|    03 - Para voltar ao menu principal	 	   	  |");
-		System.out.println("|    04 - Fechar o programa				  |");
+		System.out.println("|     1 - Visualizar as informacoes de endereco 	  |");
+		System.out.println("|     2 - Para atualizar as informacoes de endereco 	  |");
+		System.out.println("|     3 - Para remover o endereco	                  |");
 		System.out.println("+ ------------------------------------------------------- +");
+		System.out.println(" ");
+		System.out.print("Sua resposta: ");
+		int userAnswer = entrada.nextInt();
+		System.out.println(" ");
+		switch (userAnswer) {
+		case(1):
+			 visualizaEnderecoInfo(endereco);
+			break;
+		case(2):
+			atualizaEndereco(endereco);
+		break;
+		case(3):
+			removeEndereco(endereco);
+		break;
+	}
+		entrada.close();
 	}
 
 	private static void visualizaEnderecoInfo(Endereco endereco) {
+		Scanner entrada = new Scanner(System.in);
 		System.out.println("+ ------------------------------------------- +");
 		System.out.println("   Visualizacao das informacoes de endereco:    ");
 		System.out.println(endereco);
 		System.out.println("+ ------------------------------------------- +");
-		System.out.println("|    01 - Para atualizar as informacoes       |");
-		System.out.println("|    02 - Para voltar ao menu principal       |");
-		System.out.println("|    03 - Fechar o programa                   |");
+		System.out.println("|     1 - Para atualizar as informacoes       |");
 		System.out.println("+ ------------------------------------------- +");
+		
+		int userInput = entrada.nextInt();
+		if(userInput == 1) {
+			atualizaEndereco(endereco);
+		}
+		entrada.close();
 	}
 
-	private static void atualizaEndereco() {
+	private static void atualizaEndereco(Endereco endereco) {
+		Scanner entrada = new Scanner(System.in);
+		EnderecoDao enderecoDao = DaoFactory.createEnderecoDao(); 
 		System.out.println("+ ----------------------------------------- +");
 		System.out.println("|	 Atualizacao de endereco:           |");
 		System.out.println("+ ----------------------------------------- +");
@@ -285,9 +332,36 @@ public class Menu {
 		System.out.println("|    05 - Alterar numero 	            |");
 		System.out.println("|    06 - Alterar complemento 	   	    |");
 		System.out.println("- ----------------------------------------- -");
-		System.out.println("|    11 - Para voltar ao menu principal	    |");
-		System.out.println("|    22 - Fechar o programa	            |");
-		System.out.println("- ----------------------------------------- -");
+		
+		System.out.print("Sua resposta: ");
+		int userAnswer = entrada.nextInt();
+		entrada.nextLine();
+		if(userAnswer == 1) {
+			System.out.print("Nova informacao: ");
+			endereco.setCep(entrada.nextLine());
+		} else if (userAnswer == 2) {
+			System.out.print("Nova informacao: ");
+			endereco.setUf(entrada.nextLine());
+		} else if (userAnswer == 3) {
+			System.out.print("Nova informacao: ");
+			endereco.setCidade(entrada.nextLine());
+		} else if (userAnswer == 4) {
+			System.out.print("Nova informacao: ");
+			endereco.setBairro(entrada.nextLine());
+		} else if (userAnswer == 5) {
+			System.out.print("Nova informacao: ");
+			endereco.setRua(entrada.nextLine());
+		} else if (userAnswer == 6) {
+			System.out.print("Nova informacao: ");
+			endereco.setNumero(entrada.nextInt());
+		} else if (userAnswer == 7) {
+			System.out.print("Nova informacao: ");
+			endereco.setComplemento(entrada.nextLine());
+		} 
+		enderecoDao.update(endereco);
+		System.out.println("Infomacao atualizada!");
+		
+		entrada.close();
 
 	} 
 
@@ -360,6 +434,7 @@ public class Menu {
 		case 05:
 			break;
 		}
+		entrada.close();
 	}
 	private static void cadastrarAnuncio(Endereco endereco, Usuario autor) {
 
@@ -551,9 +626,6 @@ public class Menu {
 		System.out.println("|     9 - Status de Castracao            |");
 		System.out.println("|    10 - Status do Vermifugo		 |");
 		System.out.println("- -------------------------------------- -");
-		System.out.println("|    11 - Para voltar ao menu principal	 |");
-		System.out.println("|    12 - Fechar o programa	         |");
-		System.out.println("- -------------------------------------- -");
 
 		System.out.println(" ");
 		System.out.print("Sua resposta: ");
@@ -612,10 +684,6 @@ public class Menu {
 			anuncio.setStatusVermifugo(entrada.nextBoolean());
 		anuncioDao.update(anuncio);
 		break;
-		case(11):
-		//	menuPrincipal(endereco, usuario);
-		case(12):
-			break;
 		}
 		entrada.close();
 	}
