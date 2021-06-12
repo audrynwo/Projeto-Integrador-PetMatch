@@ -21,45 +21,66 @@ import model.entities.Usuario;
 public class Menu {
 
 	public static void main(String[] args) {
-
-		// WilliwSmith@gmail.com 1234567 id no banco == 6
-		// jadensmith10@gmail.com 1234567 id no nanco == 15
-		// "jadensmith928@gmail.com", "1234567" id no banco == 59
+		Scanner entrada = new Scanner(System.in);
 		UsuarioDao usuarioDao = DaoFactory.createUsuarioDao();
 		EnderecoDao enderecoDao = DaoFactory.createEnderecoDao();
-		Endereco endereco = enderecoDao.findById(31);
-		Usuario usuario = usuarioDao.login("jadensmith921@gmail.com", "1234567");
+		
+		Endereco endereco = new Endereco();
+		endereco = enderecoDao.findById(13);
+		Usuario usuario = new Usuario();
 
-		visualizarMeusAnuncios(usuario);
-	}
-	UsuarioDao usuarioDao = DaoFactory.createUsuarioDao();
-	Usuario usuario = new Usuario();
-	Scanner entrada = new Scanner(System.in);
-	/**int userAnswer = 0;
-	userAnswer = entrada.nextInt();
-	switch(userAnswer) {
-	case 1:
-		while(true) {
-			String email = "";
-			String senha = "";
-			System.out.print("Digite o seu e-mail: ");
-			email = entrada.nextLine();
-			System.out.print("Digite sua senha: ");
-			senha = entrada.nextLine();
-			usuario = usuarioDao.login(email, senha);
-			if(usuario != null )
+		menuInicial();
+		int userAnswer = entrada.nextInt();
+		entrada.nextLine();
+		switch(userAnswer) {
+		case 1:
+			while(true) {
+				System.out.print("Digite o seu e-mail: ");
+				String email = entrada.nextLine();
+				System.out.print("Digite sua senha: ");
+				String senha = entrada.nextLine();
+				usuario = usuarioDao.login(email, senha);
+				if(usuario != null )
+					break;
+				else {
+					System.out.println("Senha ou e-mail incorreto. Por favor, tente novamente.");
+				}
+			}																						
+			break;
+		case 2:
+				usuario = cadastraUsuario();
+			break;
+		}
+			menuPrincipal();
+			System.out.println(" ");
+			System.out.print("Sua resposta: ");
+			userAnswer = entrada.nextInt();
+			System.out.println(" ");
+			switch (userAnswer) {
+			case(1):
+				opcoesDePerfil(usuario);
+			break;
+			case(2):
+				opcoesDeEndereco();
+			break;
+			case(3):
+				opcoesDeAnuncio(endereco, usuario);
+			break;
+			case(4):
+				visualizarFavoritos(usuario);
+			break;
+			case(5):
 				break;
-			else {
-				System.out.println("Senha ou e-mail incorreto. Por favor, tente novamente.");
+			case(6):
+				apagaPerfil(usuario, endereco);
+				break;
+			case(55):
+				break;
 			}
-		}																						
-		break;
-	case 2:
-		//	cadastraUsuario();
-		break;
+		
+		entrada.close();
 	}
-}
-}**/
+	
 	private static void menuInicial() {
 		System.out.println("+ ------------------------------------------------------------------------- +");
 		System.out.println("|	PetMatch: Te conectando com um animalzinho para adocao!             |");
@@ -105,10 +126,7 @@ public class Menu {
 		return usuario;
 	}
 
-	private static void menuPrincipal(Endereco endereco, Usuario usuario) {
-		Scanner entrada = new Scanner(System.in);
-		int userAnswer = 0;
-
+	private static void menuPrincipal() {
 		System.out.println("+ ------------------------------------------------------- +");
 		System.out.println("|	Bem-Vindo ao menu de opcoes do PetMatch!:         |");
 		System.out.println("+ ------------------------------------------------------- +");
@@ -117,44 +135,34 @@ public class Menu {
 		System.out.println("|     3 - Opcoes de anuncios 			 	  |");
 		System.out.println("|     4 - Acesso aos anuncios favoritos 	          |");
 		System.out.println("|     5 - Opcoes de conversa 			 	  |");
-		System.out.println("|     6 - Fechar o programa				  |");
+		System.out.println("|     6 - Excluir perfil 			     	  |");
+		System.out.println("|    55 - Fechar o programa				  |");
 		System.out.println("+ ------------------------------------------------------- +");
-
-		System.out.println(" ");
-		System.out.print("Sua resposta: ");
-		userAnswer = entrada.nextInt();
-		System.out.println(" ");
-		switch(userAnswer) {
-		case(1):
-			opcoesDePerfil();
-		break;
-		case(2):
-			opcoesDeEndereco();
-		break;
-		case(3):
-			opcoesDeAnuncio(endereco, usuario);
-		break;
-		case(4):
-			visualizarFavoritos(usuario);
-		break;
-		case(5):
-			break;
-		case(6):
-			break;
-		}
-		entrada.close();
 	}
 
-	private static void opcoesDePerfil() {
+	private static void opcoesDePerfil(Usuario usuario) {
+		Scanner entrada = new Scanner(System.in);
 		System.out.println("+ ------------------------------------------------------- +");
 		System.out.println("|	Bem-Vindo ao seu perfil!                          |");
 		System.out.println("+ ------------------------------------------------------- +");
-		System.out.println("|    00 - Visualizar as informacoes do perfil 		  |");
-		System.out.println("|    01 - Para atualizar as informacoes do perfil 	  |");
-		System.out.println("|    01 - Para apagar o perfil 	                          |");
-		System.out.println("|    03 - Para voltar ao menu principal	 	   	  |");
-		System.out.println("|    04 - Fechar o programa				  |");
+		System.out.println("|     1 - Visualizar as informacoes do perfil 		  |");
+		System.out.println("|     2 - Para atualizar as informacoes do perfil 	  |");
 		System.out.println("+ ------------------------------------------------------- +");
+		System.out.println(" ");
+		System.out.print("Sua resposta: ");
+		int userAnswer = entrada.nextInt();
+		System.out.println(" ");
+		switch (userAnswer) {
+		case(1):
+			 visualizaPerfil(usuario);
+		break;
+		case(2):
+			atualizaPerfil(usuario);
+		break;
+		case(3):
+		break;
+	}
+		entrada.close();
 	}
 
 	private static void visualizaPerfil(Usuario usuario) {
@@ -170,25 +178,78 @@ public class Menu {
 		System.out.println("- ------------------------------------------------------- -");
 	}
 
-	private static void atualizaPerfil() {
+	private static void atualizaPerfil(Usuario usuario) {
+		Scanner entrada = new Scanner(System.in); 
+		UsuarioDao usuarioDao = DaoFactory.createUsuarioDao();
 		System.out.println("+ ----------------------------------------- +");
 		System.out.println("|	 Atualizacao do perfil:             |");
 		System.out.println("+ ----------------------------------------- +");
-		System.out.println("|    00 - Atualizar foto de perfil 	    |");
-		System.out.println("|    01 - Alterar nome 	                    |");
-		System.out.println("|    02 - Alterar sobrenome	 	    |");
-		System.out.println("|    03 - Alterar CPF			    |");
-		System.out.println("|    04 - Alterar email 		    |");
-		System.out.println("|    05 - Alterar senha 	            |");
-		System.out.println("|    06 - Alterar celular 	   	    |");
-		System.out.println("|    07 - Alterar CPF			    |");
+		System.out.println("|     1 - Atualizar foto de perfil 	    |");
+		System.out.println("|     2 - Alterar nome 	                    |");
+		System.out.println("|     3 - Alterar sobrenome	 	    |");
+		System.out.println("|     4 - Alterar CPF			    |");
+		System.out.println("|     5 - Alterar email 		    |");
+		System.out.println("|     6 - Alterar senha 	            |");
+		System.out.println("|     7 - Alterar celular 	   	    |");
 		System.out.println("- ----------------------------------------- -");
-		System.out.println("|    11 - Para voltar ao menu principal	    |");
-		System.out.println("|    22 - Fechar o programa	            |");
+		System.out.println("|     8 - Para voltar ao menu principal	    |");
+		System.out.println("|     9 - Fechar o programa	            |");
 		System.out.println("- ----------------------------------------- -");
-
+		
+		System.out.print("Sua resposta: ");
+		int userAnswer = entrada.nextInt();
+		entrada.nextLine();
+		if(userAnswer == 1) {
+			System.out.print("Nova informacao: ");
+			usuario.setFotoPerfil(entrada.nextLine());
+		} else if (userAnswer == 2) {
+			System.out.print("Nova informacao: ");
+			usuario.setNome(entrada.nextLine());
+		} else if (userAnswer == 3) {
+			System.out.print("Nova informacao: ");
+			usuario.setSobrenome(entrada.nextLine());
+		} else if (userAnswer == 4) {
+			System.out.print("Nova informacao: ");
+			usuario.setCpf(entrada.nextLine());
+		} else if (userAnswer == 5) {
+			System.out.print("Nova informacao: ");
+			usuario.setEmail(entrada.nextLine());
+		} else if (userAnswer == 6) {
+			System.out.print("Nova informacao: ");
+			usuario.setSenha(entrada.nextLine());
+		} else if (userAnswer == 7) {
+			System.out.print("Nova informacao: ");
+			usuario.setCelular(entrada.nextLine());
+		} else if (userAnswer == 8) {
+			System.out.print("Nova informacao: ");
+			usuario.setNome(entrada.nextLine());
+		} 
+		usuarioDao.update(usuario);
+		System.out.println("Infomacao atualizada!");
+		entrada.close();
 	}
 
+	private static void apagaPerfil(Usuario usuario, Endereco endereco) {
+		AnuncioDao anuncioDao = DaoFactory.createAnuncioDao();
+		EnderecoDao enderecoDao = DaoFactory.createEnderecoDao();
+		MidiaDao midiaDao = DaoFactory.createMidiaDao();
+		UsuarioDao usuarioDao = DaoFactory.createUsuarioDao();
+		
+		List <Anuncio> anuncioList = anuncioDao.findByUserId(usuario.getIdUsuario());
+		for(int i = 0; i < anuncioList.size(); i++) {
+			anuncioList.get(i).setMidia(midiaDao.findByAnuncioId(anuncioList.get(i).getIdAnuncio()));
+			for(int j = 0; j < anuncioList.get(i).getMidia().size(); j++) {
+				MidiaAnuncio midia = anuncioList.get(i).getMidia().get(j);
+				midiaDao.deleteById(midia.getIdMidia());
+			}
+			anuncioDao.deleteById(anuncioList.get(i).getIdAnuncio());
+		}
+		
+		enderecoDao.deleteById(endereco.getIdEndereco());
+		usuarioDao.deleteById(usuario.getIdUsuario());
+		System.out.println("Perfil apagado!");
+	}
+	
 	private static void opcoesDeEndereco() {
 		System.out.println("+ ------------------------------------------------------- +");
 		System.out.println("|	Bem-Vindo as opcoes de endereco!                  |");
@@ -294,7 +355,7 @@ public class Menu {
 			visualizarAnuncios();
 			break;
 		case 04:
-			menuPrincipal(endereco, usuario);
+			menuPrincipal();
 			break;
 		case 05:
 			break;
