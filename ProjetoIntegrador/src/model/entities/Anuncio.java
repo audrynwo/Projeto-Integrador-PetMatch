@@ -37,11 +37,9 @@ public class Anuncio implements Serializable {
 		this.endereco = new Endereco();
 	}
 
-	public Anuncio(String nomeDoAnimal,  List<MidiaAnuncio> midia, String descricao, int idade, String especie, String raca, String genero, 
+	public Anuncio(String nomeDoAnimal, String descricao, int idade, String especie, String raca, String genero, 
 			String porte, boolean statusVacinacao, boolean statusCastracao, boolean statusVermifugo, Usuario autor, Endereco endereco) {
 		this.nomeDoAnimal = nomeDoAnimal;
-		this.midia = new ArrayList<>(5);
-		this.midia.addAll(midia);
 		this.descricao = descricao;
 		this.idade = idade;
 		this.especie = especie;
@@ -53,6 +51,7 @@ public class Anuncio implements Serializable {
 		this.statusVermifugo = statusVermifugo;
 		this.autor = autor;
 		this.endereco = endereco;
+		this.midia = new ArrayList<>();
 		dataAnuncio = LocalDateTime.now();
 		statusAdocao = false;
 	}
@@ -72,7 +71,7 @@ public class Anuncio implements Serializable {
 	public void setMidia(List<MidiaAnuncio> midia) {
 		this.midia = midia;
 	}
-
+	
 	public String getNomeDoAnimal() {
 		return nomeDoAnimal;
 	}
@@ -184,6 +183,7 @@ public class Anuncio implements Serializable {
 	public void setIdAnuncio(int idAnuncio) {
 		this.idAnuncio = idAnuncio;
 	}
+	
 
 	@Override
 	public int hashCode() {
@@ -208,10 +208,11 @@ public class Anuncio implements Serializable {
 	}
 	@Override
 	public String toString() {
-		return ("\ndescricao = " + descricao + "\nnomeDoAnimal = " + nomeDoAnimal + "\nespecie = " + especie
-				+ "\nraca = " + raca + "\ngenero = " + genero + "\nporte = " + porte + "\nidade = " + idade + "\ndataAnuncio = "
-				+ dataAnuncio + "\nstatusVacinacao = " + statusVacinacao + "\nstatusCastracao = " + statusCastracao
-				+ "\nstatusVermifugo = " + statusVermifugo + "\nstatusAdocao = " + statusAdocao + "\nautor = " + autor
-				+ "\nendereco = " + endereco + "\nMidia" + midia.get(0));
+		return ("   Descricao: " + descricao + "\n   Nome: " + nomeDoAnimal + "\n   Especie: " + especie
+				+ "\n   Raca: " + raca + "\n   Genero: " + genero + "\n   Porte: " + porte + "\n   Idade: " + idade 
+				+ "\n   Vacinacao: " + statusVacinacao + "\n   Castracao: " + statusCastracao
+				+ "\n   Vermifugo: " + statusVermifugo + "\n   Status de Adocao: " + statusAdocao 
+				+ "\n   Autor: " + autor.getNome() + " " + autor.getSobrenome()
+				+ "\n   Data de publicacao: " + dataAnuncio);
 	}
 }

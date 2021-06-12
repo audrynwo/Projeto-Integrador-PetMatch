@@ -13,6 +13,7 @@ import db.DB;
 import db.DbException;
 import model.dao.AnuncioDao;
 import model.entities.Anuncio;
+import model.entities.Usuario;
 
 public class AnuncioDaoJDBC implements AnuncioDao {
 
@@ -142,8 +143,29 @@ public class AnuncioDaoJDBC implements AnuncioDao {
 			DB.closeStatement(st);
 		}
 	}
-	
-	//espécie, raça, porte (tamanho), idade e gênero
+
+	@Override
+	public Anuncio findById(Integer id) {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = conn.prepareStatement("SELECT * FROM anuncio WHERE id_anuncio = ?");
+			st.setInt(1, id);
+			rs = st.executeQuery();
+			if(rs.next()) {
+				Anuncio obj = instantiateAnuncio(rs);
+				return obj;
+			}
+			return null;
+		} 
+		catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+	}
 
 	@Override
 	public List<Anuncio> findByUserInput(String userFilterInput) {
@@ -169,18 +191,19 @@ public class AnuncioDaoJDBC implements AnuncioDao {
 	}
 
 	@Override
-	public Anuncio findById(Integer id) {
+	public List<Anuncio> findByUserId(Integer id) {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
-			st = conn.prepareStatement("SELECT * FROM anuncio WHERE id_anuncio = ?");
+			st = conn.prepareStatement("SELECT * FROM anuncio WHERE id_usuario = ?");
 			st.setInt(1, id);
 			rs = st.executeQuery();
-			if(rs.next()) {
+			List<Anuncio> filterList = new ArrayList<>();
+			while(rs.next()) {
 				Anuncio obj = instantiateAnuncio(rs);
-				return obj;
+				filterList.add(obj);
 			}
-			return null;
+			return filterList;
 		} 
 		catch (SQLException e) {
 			throw new DbException(e.getMessage());
@@ -190,5 +213,55 @@ public class AnuncioDaoJDBC implements AnuncioDao {
 			DB.closeResultSet(rs);
 		}
 	} 
+
+	@Override
+	public List<Anuncio> getAllAnuncios() {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = conn.prepareStatement("SELECT * FROM anuncio");
+			rs = st.executeQuery();
+			List<Anuncio> filterList = new ArrayList<>();
+			while(rs.next()) {
+				Anuncio obj = instantiateAnuncio(rs);
+				filterList.add(obj);
+			}
+			return filterList;
+		} 
+		catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+	}
+
+	@Override
+	public List<Anuncio> findAnunciosFavoritados(Usuario obj) {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		List<Anuncio> list = new ArrayList<>();
+		try {
+			st = conn.prepareStatement("SELECT a.* FROM favorito f INNER JOIN anuncio a ON f.id_anuncio = a.id_anuncio WHERE f.id_usuario = ?");
+			st.setInt(1, obj.getIdUsuario());
+			rs = st.executeQuery();
+			while(rs.next()) {
+				//preencher os outros atributos
+				Anuncio anuncio = new Anuncio();
+				anuncio.setDescricao(rs.getString(""));
+				list.add(anuncio);
+			}
+			return list;
+		}
+		catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+
+	}
 
 }

@@ -139,8 +139,9 @@ public class Endereco implements Serializable {
 
 	@Override
 	public String toString() {
-		return ("uf = " + uf + "\ncidade = " + cidade + "\nbairro = " + bairro + "\nrua = " + rua + "\nnumero = "
-				+ numero + "\ncomplemento = " + complemento + "\ncep = " + cep);
+		return ("   Estado: " + uf + "\n   Cidade: " + cidade 
+				+ "\n   Bairro: " + bairro + "\n   Rua: " + rua 
+				+ "\n   Numero: " + numero + "\n   Complemento: " + complemento + "\n   CEP: " + cep);
 	}
 
 }

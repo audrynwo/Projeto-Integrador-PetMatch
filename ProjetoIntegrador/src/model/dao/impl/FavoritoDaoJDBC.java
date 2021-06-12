@@ -5,8 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 
 import db.DB;
 import db.DbException;
@@ -82,29 +80,6 @@ public class FavoritoDaoJDBC implements FavoritoDao {
 
 	}
 
-	@Override
-	public List<Favorito> findFavorito(Favorito obj) {
-		PreparedStatement st = null;
-		ResultSet rs = null;
-		try {
-			st = conn.prepareStatement("SELECT id_anuncio FROM favorito WHERE id_usuario = ?");
-			st.setInt(1, obj.getUsuario().getIdUsuario());
-			rs = st.executeQuery();
-			List<Favorito> list = new ArrayList<>();
-			while(rs.next()) {
-				obj.getAnuncio().setIdAnuncio(rs.getInt("id_anuncio"));
-				list.add(obj);
-			}
-			return list;
-		}
-		catch (SQLException e) {
-			throw new DbException(e.getMessage());
-		}
-		finally {
-			DB.closeStatement(st);
-			DB.closeResultSet(rs);
-		}
-	}
 	@Override
 	public Favorito findById(Integer id) {
 		PreparedStatement st = null;
