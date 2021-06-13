@@ -14,6 +14,7 @@ import model.dao.RecadosDao;
 import model.dao.UsuarioDao;
 import model.entities.Anuncio;
 import model.entities.Endereco;
+import model.entities.Favorito;
 import model.entities.MidiaAnuncio;
 import model.entities.Recados;
 import model.entities.Usuario;
@@ -400,10 +401,10 @@ public class Menu {
 		System.out.println("+ -------------------------------------- +");
 		System.out.println("|    Bem-Vindo as opcoes de anuncio!     |");
 		System.out.println("+ -------------------------------------- +");
-		System.out.println("|    01 - Visualizar todos os anuncios   |");
-		System.out.println("|    02 - Criar Anuncio                  |");
-		System.out.println("|    03 - Acesso aos meus anuncios       |");
-		System.out.println("|    04 - Para voltar ao menu principal  |");
+		System.out.println("|     1 - Visualizar todos os anuncios   |");
+		System.out.println("|     2 - Criar Anuncio                  |");
+		System.out.println("|     3 - Acesso aos meus anuncios       |");
+		System.out.println("|     4 - Para voltar ao menu principal  |");
 		System.out.println("+ -------------------------------------- +");
 
 		System.out.println(" ");
@@ -412,17 +413,17 @@ public class Menu {
 		entrada.nextLine();
 
 		switch(userAnswer){
-		case 01:
-			visualizarAnuncios();
+		case 1:
+			visualizarAnuncios(usuario);
 			break;
 
-		case 02:
+		case 2:
 			cadastrarAnuncio(endereco, usuario);
 			break;
-		case 03:
-			visualizarAnuncios();
+		case 3:
+			visualizarMeusAnuncios(usuario);
 			break;
-		case 04:
+		case 4:
 			break;
 		}
 	}
@@ -550,25 +551,41 @@ public class Menu {
 		entrada.close();
 	}
 
-	private static void visualizarAnuncios() {
+	private static void visualizarAnuncios(Usuario usuario) {
+		Scanner entrada = new Scanner(System.in);
 		AnuncioDao anuncioDao = DaoFactory.createAnuncioDao();
 		RecadosDao recadosDao = DaoFactory.createRecadosDao();
+		FavoritoDao favoritoDao = DaoFactory.createFavoritosDao();
 		List <Anuncio> anuncioList = anuncioDao.getAllAnuncios();
 		int cont = 0;
-		int contId = 0;
+		//int contId = 0;
 		if(anuncioList != null) {
 			for(Anuncio anuncio : anuncioList) {
 				System.out.println("   Anuncio " + anuncio.getIdAnuncio() + ":");
 				System.out.println(anuncio);
-				cont++;
 				System.out.println(" ");
+				System.out.println("   (1) Favoritar anuncio");
+				System.out.println("   (2) Visuaizar proximo anuncio");
+				System.out.print("   Digite sua resposta: ");
+				int userAnswer = entrada.nextInt();
+				entrada.nextLine();
+				System.out.println(" ");
+				
+				if(userAnswer == 1) {
+					Favorito favorito = new Favorito(usuario, anuncio);
+					favoritoDao.insert(favorito);
+					System.out.println(" ");
+					System.out.println("Anuncio Favoritado!");
+					System.out.println(" ");
+				}
+				cont++;
 				if(cont %3 == 0) {
 					Recados recados = new Recados();
-					recados = recadosDao.findById(contId);
+					System.out.println(" ");
+					recados = recadosDao.findById(3);
 					System.out.println(recados);
 					System.out.println(" ");
-					contId++;
-					//
+					//contId++;
 				}
 			}
 		} else {
@@ -579,18 +596,38 @@ public class Menu {
 	}
 
 	private static void visualizarFavoritos(Usuario usuario) {
+		Scanner entrada = new Scanner(System.in);
 		AnuncioDao anuncioDao = DaoFactory.createAnuncioDao();
+		FavoritoDao favoritoDao = DaoFactory.createFavoritosDao();
+		UsuarioDao usuarioDao = DaoFactory.createUsuarioDao();
 		List<Anuncio> listFavorito = anuncioDao.findAnunciosFavoritados(usuario);
+		System.out.println("Bem vindo aos anuncios favoritos!");
+		System.out.println(" ");
 		if(listFavorito != null) {
+			for(Anuncio anuncio : listFavorito) {
+				anuncio.setAutor(usuarioDao.findById(anuncio.getAutor().getIdUsuario()));
+			}
 			for(Anuncio anuncio : listFavorito) {
 				System.out.println("   Anuncio " + anuncio.getIdAnuncio() + ":");
 				System.out.println(anuncio);
 				System.out.println(" ");
+				System.out.println("   Remover anuncio dos favoritos?");
+				System.out.println("   Desfavoritar anuncio (1) || Proximo anuncio (2)");
+				System.out.print("   Digite sua resposta: ");
+				int userAnswer = entrada.nextInt();
+				System.out.println(" ");
+				
+				if(userAnswer == 1) {
+					favoritoDao.deleteByUserAndAnuncioId(usuario, anuncio);
+					System.out.println("   Anuncio removido dos favoritos!");
+					System.out.println("   Próximo anuncio: ");
+					System.out.println(" ");
+				}
 			}
-		} else {
+		} 
+		if(listFavorito == null ){
 			System.out.println("Voce ainda nao possui anuncios favoritados");
 		}
-
 	}
 
 	private static void atualizaAnuncio(Anuncio anuncio) {

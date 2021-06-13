@@ -10,7 +10,9 @@ import db.DB;
 import db.DbException;
 import db.DbIntegrityException;
 import model.dao.FavoritoDao;
+import model.entities.Anuncio;
 import model.entities.Favorito;
+import model.entities.Usuario;
 
 public class FavoritoDaoJDBC implements FavoritoDao {
 
@@ -61,13 +63,14 @@ public class FavoritoDaoJDBC implements FavoritoDao {
 	}
 
 	@Override
-	public void deleteById(int id) {
+	public void deleteByUserAndAnuncioId(Usuario usuario, Anuncio anuncio) {
 		PreparedStatement st = null;
 		try {
 			st = conn.prepareStatement(
-					"DELETE FROM favorito WHERE id_anuncio = ?");
+					"DELETE FROM favorito WHERE id_anuncio = ? AND id_usuario = ?");
 
-			st.setInt(1, id);
+			st.setInt(1, anuncio.getIdAnuncio());
+			st.setInt(2, usuario.getIdUsuario());
 
 			st.executeUpdate();
 		}

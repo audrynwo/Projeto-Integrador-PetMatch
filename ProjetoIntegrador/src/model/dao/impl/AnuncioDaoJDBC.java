@@ -248,6 +248,7 @@ public class AnuncioDaoJDBC implements AnuncioDao {
 			rs = st.executeQuery();
 			while(rs.next()) {
 				Anuncio anuncio = new Anuncio();
+				anuncio.setIdAnuncio(rs.getInt("id_anuncio"));
 				anuncio.setDescricao(rs.getString("descricao"));
 				anuncio.setNomeDoAnimal(rs.getString("nome_do_animal"));
 				anuncio.setEspecie(rs.getString("especie"));
