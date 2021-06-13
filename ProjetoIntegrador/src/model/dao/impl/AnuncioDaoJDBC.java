@@ -32,7 +32,7 @@ public class AnuncioDaoJDBC implements AnuncioDao {
 		obj.setRaca(rs.getString("raca"));
 		obj.setGenero(rs.getString("genero"));
 		obj.setPorte(rs.getString("porte"));
-		obj.setIdade(rs.getInt("idade"));
+		obj.setIdade(rs.getString("idade"));
 		obj.setDataAnuncio(rs.getTimestamp("data_anuncio").toLocalDateTime());
 		obj.getAutor().setIdUsuario(rs.getInt("id_usuario"));
 		obj.getEndereco().setIdEndereco(rs.getInt("id_endereco"));
@@ -59,7 +59,7 @@ public class AnuncioDaoJDBC implements AnuncioDao {
 			st.setString(1, obj.getNomeDoAnimal());
 			st.setString(2, obj.getDescricao());
 			st.setTimestamp(3, Timestamp.valueOf(obj.getDataAnuncio()));
-			st.setInt(4, obj.getIdade());
+			st.setString(4, obj.getIdade());
 			st.setString(5, obj.getEspecie());
 			st.setString(6, obj.getRaca());
 			st.setString(7, obj.getGenero());
@@ -106,7 +106,7 @@ public class AnuncioDaoJDBC implements AnuncioDao {
 			st.setString(1, obj.getNomeDoAnimal());
 			st.setString(2, obj.getDescricao());
 			st.setTimestamp(3, Timestamp.valueOf(obj.getDataAnuncio()));
-			st.setInt(4, obj.getIdade());
+			st.setString(4, obj.getIdade());
 			st.setString(5, obj.getEspecie());
 			st.setString(6, obj.getRaca());
 			st.setString(7, obj.getGenero());
@@ -255,7 +255,7 @@ public class AnuncioDaoJDBC implements AnuncioDao {
 				anuncio.setRaca(rs.getString("raca"));
 				anuncio.setGenero(rs.getString("genero"));
 				anuncio.setPorte(rs.getString("porte"));
-				anuncio.setIdade(rs.getInt("idade"));
+				anuncio.setIdade(rs.getString("idade"));
 				anuncio.setDataAnuncio(rs.getTimestamp("data_anuncio").toLocalDateTime());
 				anuncio.getAutor().setIdUsuario(rs.getInt("id_usuario"));
 				anuncio.getEndereco().setIdEndereco(rs.getInt("id_endereco"));

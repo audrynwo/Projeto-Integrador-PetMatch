@@ -25,7 +25,7 @@ public class Anuncio implements Serializable {
 	private String raca;
 	private String genero;
 	private String porte;
-	private int idade;
+	private String idade;
 	private LocalDateTime dataAnuncio;
 	private boolean statusVacinacao;
 	private boolean statusCastracao;
@@ -39,7 +39,7 @@ public class Anuncio implements Serializable {
 		this.endereco = new Endereco();
 	}
 
-	public Anuncio(String nomeDoAnimal, String descricao, int idade, String especie, String raca, String genero, 
+	public Anuncio(String nomeDoAnimal, String descricao, String idade, String especie, String raca, String genero, 
 			String porte, boolean statusVacinacao, boolean statusCastracao, boolean statusVermifugo, Usuario autor, Endereco endereco) {
 		this.nomeDoAnimal = nomeDoAnimal;
 		this.descricao = descricao;
@@ -114,11 +114,11 @@ public class Anuncio implements Serializable {
 		this.porte = porte;
 	}
 
-	public int getIdade() {
+	public String getIdade() {
 		return idade;
 	}
 
-	public void setIdade(int idade) {
+	public void setIdade(String idade) {
 		this.idade = idade;
 	}
 

@@ -112,8 +112,8 @@ public class Menu {
 		System.out.println("| adocao responsavel para os animaizinhos que precisam de uma familia!      |");
 		System.out.println("+ ------------------------------------------------------------------------- +");
 		System.out.println("|   	Ja possui cadastro?						    |");
-		System.out.println("|	1 - Sim. Fazer login.						    |");
-		System.out.println("|	2 - Nao. Quero realizar meu cadastro!			            |");
+		System.out.println("|	1 - Sim! Fazer login.						    |");
+		System.out.println("|	2 - Nao, mas quero realizar meu cadastro!			            |");
 		System.out.println("+ ------------------------------------------------------------------------- +");
 	}
 
@@ -444,9 +444,8 @@ public class Menu {
 		anuncio.setNomeDoAnimal(entrada.nextLine());
 		System.out.print("    Escreva uma descricao: ");
 		anuncio.setDescricao(entrada.nextLine());
-		System.out.print("    Idade (apenas em numeros): ");
-		anuncio.setIdade(entrada.nextInt());
-		entrada.nextLine();
+		System.out.print("    Idade (especifique se é em anos, meses, semanas ou dias): ");
+		anuncio.setIdade(entrada.nextLine());
 		System.out.print("    Especie: ");
 		anuncio.setEspecie(entrada.nextLine());
 		System.out.print("    Raca: ");
@@ -680,7 +679,7 @@ public class Menu {
 		break;
 		case(3):
 			System.out.print("Nova idade: ");
-		anuncio.setIdade(entrada.nextInt());
+		anuncio.setIdade(entrada.nextLine());
 		entrada.nextLine();
 		anuncioDao.update(anuncio);
 		break;
