@@ -2,6 +2,7 @@ package model.entities;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,8 @@ import java.util.List;
 public class Anuncio implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
+	private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+	
 
 	private int idAnuncio;
 	private String descricao;
@@ -208,11 +210,10 @@ public class Anuncio implements Serializable {
 	}
 	@Override
 	public String toString() {
-		return ("   Descricao: " + descricao + "\n   Nome: " + nomeDoAnimal + "\n   Especie: " + especie
+		return ("   Nome: " + nomeDoAnimal + "\n   Descricao: " + descricao + "\n   Especie: " + especie
 				+ "\n   Raca: " + raca + "\n   Genero: " + genero + "\n   Porte: " + porte + "\n   Idade: " + idade 
 				+ "\n   Vacinacao: " + statusVacinacao + "\n   Castracao: " + statusCastracao
 				+ "\n   Vermifugo: " + statusVermifugo + "\n   Status de Adocao: " + statusAdocao 
-				+ "\n   Autor: " + autor.getNome() + " " + autor.getSobrenome()
-				+ "\n   Data de publicacao: " + dataAnuncio);
+				+ "\n   Data de publicacao: " + dataAnuncio.format(formatter));
 	}
 }

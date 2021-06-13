@@ -514,9 +514,11 @@ public class Menu {
 			for(Anuncio anuncio : anuncioList) {
 				anuncio.setAutor(usuarioDao.findById(anuncio.getAutor().getIdUsuario()));
 			}
-			System.out.println("   Anuncios encontrados: ");
+			System.out.println("   Anuncios encontrados ");
+			System.out.println(" ");
 			for(int i = 0; i < anuncioList.size(); i++) {
-				System.out.println("   Anuncio " + anuncioList.get(i).getIdAnuncio() + ":");
+				System.out.println("   Anuncio publicado por: " + anuncioList.get(i).getAutor().getNome() 
+						+ anuncioList.get(i).getAutor().getSobrenome());
 				System.out.println(anuncioList.get(i));
 				System.out.println(" ");
 				System.out.println("   Atualizar o anuncio (1)");
@@ -566,7 +568,8 @@ public class Menu {
 				anuncio.setAutor(usuarioDao.findById(anuncio.getAutor().getIdUsuario()));
 			}
 			for(Anuncio anuncio : anuncioList) {
-				System.out.println("   Anuncio " + anuncio.getIdAnuncio() + ":");
+				System.out.println("   Anuncio publicado por: " + anuncio.getAutor().getNome() 
+						+ anuncio.getAutor().getSobrenome());
 				System.out.println(anuncio);
 				System.out.println(" ");
 				System.out.println("   (1) Favoritar anuncio");
@@ -613,7 +616,8 @@ public class Menu {
 				anuncio.setAutor(usuarioDao.findById(anuncio.getAutor().getIdUsuario()));
 			}
 			for(Anuncio anuncio : listFavorito) {
-				System.out.println("   Anuncio " + anuncio.getIdAnuncio() + ":");
+				System.out.println("   Anuncio publicado por: " + anuncio.getAutor().getNome() 
+						+ anuncio.getAutor().getSobrenome());
 				System.out.println(anuncio);
 				System.out.println(" ");
 				System.out.println("   Remover anuncio dos favoritos?");
