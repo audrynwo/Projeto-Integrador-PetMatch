@@ -88,11 +88,14 @@ public class Menu {
 				opcoesDeAnuncio(endereco, usuario);
 			break;
 			case(4):
+				pesquisaPorAnuncio(usuario);
+				break;
+			case(5):
 				visualizarFavoritos(usuario);
 			break;
-			case(5):
-				break;
 			case(6):
+				break;
+			case(7):
 				apagaPerfil(usuario, endereco);
 			break;
 			case(55):
@@ -113,7 +116,7 @@ public class Menu {
 		System.out.println("+ ------------------------------------------------------------------------- +");
 		System.out.println("|   	Ja possui cadastro?						    |");
 		System.out.println("|	1 - Sim! Fazer login.						    |");
-		System.out.println("|	2 - Nao, mas quero realizar meu cadastro!			            |");
+		System.out.println("|	2 - Nao, mas quero realizar meu cadastro!                           |");
 		System.out.println("+ ------------------------------------------------------------------------- +");
 	}
 
@@ -189,9 +192,10 @@ public class Menu {
 		System.out.println("|     1 - Opcoes de perfil 				  |");
 		System.out.println("|     2 - Opcoes de endereco 			 	  |");
 		System.out.println("|     3 - Opcoes de anuncios 			 	  |");
-		System.out.println("|     4 - Acesso aos anuncios favoritos 	          |");
-		System.out.println("|     5 - Opcoes de conversa 			 	  |");
-		System.out.println("|     6 - Excluir perfil 			     	  |");
+		System.out.println("|     4 - Filtrar a visualizacao dos anuncios 	          |");
+		System.out.println("|     5 - Acesso aos anuncios favoritos 	          |");
+		System.out.println("|     6 - Opcoes de conversa 			 	  |");
+		System.out.println("|     7 - Excluir perfil 			     	  |");
 		System.out.println("|    55 - Fechar o programa				  |");
 		System.out.println("+ ------------------------------------------------------- +");
 	}
@@ -639,7 +643,7 @@ public class Menu {
 		}
 	}
 
-	private static void atualizaAnuncio(Anuncio anuncio) {
+	private static void atualizaAnuncio(Anuncio anuncio) { 
 		AnuncioDao anuncioDao = DaoFactory.createAnuncioDao();
 		UsuarioDao usuarioDao = DaoFactory.createUsuarioDao();
 		Usuario usuario = usuarioDao.findById(anuncio.getAutor().getIdUsuario());
@@ -718,6 +722,140 @@ public class Menu {
 		anuncio.setStatusVermifugo(entrada.nextBoolean());
 		anuncioDao.update(anuncio);
 		break;
+		}
+	}
+	
+	private static void pesquisaPorAnuncio(Usuario usuario) {
+		Scanner entrada = new Scanner(System.in);
+		AnuncioDao anuncioDao = DaoFactory.createAnuncioDao();
+		FavoritoDao favoritoDao = DaoFactory.createFavoritosDao();
+		String userFilterInput = "SELECT * FROM anuncio WHERE especie LIKE '";
+
+		System.out.println("Vamos definir seus filtros! ");
+		System.out.println("Por favor, defina uma especie (OBRIGATORIO!!): ");
+		System.out.println("(1) Cachorro");
+		System.out.println("(2) Passaro");
+		System.out.println("(3) Coelho");
+		System.out.println("(4) Gato");
+		System.out.println("(5) Hamster");
+		System.out.println("(6) Tartatura");
+		System.out.println(" ");
+		System.out.print("Sua resposta: ");
+		int userAnswer = entrada.nextInt();
+
+		switch(userAnswer) {
+		case (1):
+			userFilterInput = userFilterInput + "cachorro'";
+		break;
+		case (2):
+			userFilterInput = userFilterInput + "passaro'";
+		break;
+		case (3):
+			userFilterInput = userFilterInput + "coelho'";
+		break;
+		case (4):
+			userFilterInput = userFilterInput + "gato'";
+		break;
+		case (5):
+			userFilterInput = userFilterInput + "hamster'";
+		break;
+		case (6):
+			userFilterInput = userFilterInput + "tartaruga'";
+		break;
+		}
+
+		System.out.println(" ");
+		System.out.println("Filtro definido com sucesso!");
+		System.out.print("Deseja definir uma raca? (1) SIM (2) NAO: ");
+		userAnswer = entrada.nextInt();
+		if(userAnswer == 1) {
+			System.out.println(" ");
+			System.out.print("Digite (EM LETRAS MINUSCULAS, SEM ACENTO) a raca desejada: ");
+			String userStringAnswer = entrada.nextLine();
+
+			userFilterInput += " AND raca LIKE '" + userStringAnswer + "'";
+		}
+
+		System.out.println(" ");
+		System.out.println("Filtro definido com sucesso!");
+		System.out.print("Deseja definir o porte? (1) SIM (2) NAO: ");
+		userAnswer = entrada.nextInt();
+
+		if(userAnswer == 1) {
+			System.out.println(" ");
+			System.out.println("Defina o porte: ");
+			System.out.println("Para ");
+			System.out.println("pequeno porte digite: 1");
+			System.out.println("medio porte digite: 2");
+			System.out.println("grande porte digite: 3");
+			System.out.println(" ");
+			System.out.print("Sua resposta: ");
+			userAnswer = entrada.nextInt();
+			switch(userAnswer) {
+			case (1):
+				userFilterInput = userFilterInput + " AND porte LIKE 'pequeno'";
+			break;
+			case (2):
+				userFilterInput = userFilterInput + " AND porte LIKE 'medio'";
+			break;
+			case (3):
+				userFilterInput = userFilterInput + " AND porte LIKE 'grande'";
+			break;
+			}
+		}
+		System.out.println(" ");
+		System.out.println("Filtro definido com sucesso!");
+		System.out.print("Deseja definir o genero? (1) SIM (2) NAO: ");
+		userAnswer = entrada.nextInt();
+
+		if(userAnswer == 1) {
+			System.out.println(" ");
+			System.out.println("Para feminino digite 1: ");
+			System.out.println("Para masculino digite 2: ");
+			userAnswer = entrada.nextInt();
+
+			switch(userAnswer) {
+			case (1):
+				userFilterInput = userFilterInput + " AND genero LIKE 'feminino'";
+			break;
+			case (2):
+				userFilterInput = userFilterInput + " AND genero LIKE 'masculino'";
+			break;
+			}
+		}
+		
+		userFilterInput += ";";
+		System.out.println(" ");
+		System.out.println("Filtros definidos com sucesso!");
+		List<Anuncio> resultPesquisa = anuncioDao.findByUserInput(userFilterInput);
+		if(resultPesquisa.size() > 0 ) {
+			System.out.println(" ");
+			System.out.println("Resultados da sua pesquisa: ");
+			for(Anuncio anuncio : resultPesquisa) {
+				System.out.println(" ");
+				System.out.println(anuncio);
+				System.out.println("   Anuncio publicado por: " + anuncio.getAutor().getNome() 
+						+ anuncio.getAutor().getSobrenome());
+				System.out.println(anuncio);
+				System.out.println(" ");
+				System.out.println("   (1) Favoritar anuncio");
+				System.out.println("   (2) Visuaizar proximo anuncio");
+				System.out.println("   (3) Sair.");
+				System.out.print("   Digite sua resposta: ");
+				userAnswer = entrada.nextInt();
+				entrada.nextLine();
+				System.out.println(" ");
+				
+				if(userAnswer == 1) {
+					Favorito favorito = new Favorito(usuario, anuncio);
+					favoritoDao.insert(favorito);
+					System.out.println(" ");
+					System.out.println("Anuncio Favoritado!");
+					System.out.println(" ");
+				}
+			}
+		} else {
+			System.out.println("Nenhum anuncio foi encontrado! :(");
 		}
 	}
 }
