@@ -7,4 +7,5 @@ public interface EnderecoDao {
 	void update(Endereco obj);
 	void deleteById(int id);
 	public Endereco findById(Integer id);
+	public Endereco findByUserId(Integer id);
 }

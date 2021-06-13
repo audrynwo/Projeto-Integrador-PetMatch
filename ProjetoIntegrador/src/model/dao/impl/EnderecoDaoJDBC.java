@@ -138,4 +138,27 @@ public class EnderecoDaoJDBC implements EnderecoDao{
 		}
 	}
 
+	@Override
+	public Endereco findByUserId(Integer id) {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = conn.prepareStatement("SELECT * FROM endereco WHERE id_usuario = ?");
+			st.setInt(1, id);
+			rs = st.executeQuery();
+			if(rs.next()) {
+				Endereco obj = instantiateEndereco(rs);
+				return obj;
+			}
+			return null;
+		} 
+		catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+	}
 }
+

@@ -24,9 +24,8 @@ public class Menu {
 		Scanner entrada = new Scanner(System.in);
 		UsuarioDao usuarioDao = DaoFactory.createUsuarioDao();
 		EnderecoDao enderecoDao = DaoFactory.createEnderecoDao();
-		
+
 		Endereco endereco = new Endereco();
-		endereco = enderecoDao.findById(13);
 		Usuario usuario = new Usuario();
 
 		menuInicial();
@@ -48,19 +47,34 @@ public class Menu {
 			}																						
 			break;
 		case 2:
-				usuario = cadastraUsuario();
+			usuario = cadastraUsuario();
+			System.out.println(" ");
+			System.out.println(" ...");
+			System.out.println("Falta só mais um pouquinho para completar seu cadastro... ;D");
+			System.out.println(" ...");
+			System.out.println(" ");
+			endereco = cadastraEndereco(usuario);
 			break;
 		}
-		
+
+		if(userAnswer == 1) {
+			endereco = enderecoDao.findByUserId(usuario.getIdUsuario());
+		}
+
 		while(true) {
 			menuPrincipal();
 			System.out.println(" ");
 			System.out.println("Sua resposta: ");
+			while(!entrada.hasNextInt()) {
+				entrada.next();
+			} 
+			//String userInput = entrada.nextLine();
+			//userAnswer = Integer.parseInt(userInput);
+
 			userAnswer = entrada.nextInt();
-			
 			if(userAnswer == 55)
 				break;
-			
+
 			System.out.println(" ");
 			switch (userAnswer) {
 			case(1):
@@ -79,18 +93,14 @@ public class Menu {
 				break;
 			case(6):
 				apagaPerfil(usuario, endereco);
-				break;
+			break;
 			case(55):
 				break;
-			case(7):
-				cadastraEndereco(usuario);
-			break;
 			}
 		}
-		
 		entrada.close();
 	}
-	
+
 	private static void menuInicial() {
 		System.out.println("+ ------------------------------------------------------------------------- +");
 		System.out.println("|	PetMatch: Te conectando com um animalzinho para adocao!             |");
@@ -131,9 +141,43 @@ public class Menu {
 		System.out.println("+ ------------------------------------------------------------------------- +");
 
 		usuarioDao.insert(usuario);
-		entrada.close();
 
 		return usuario;
+	}
+
+	private static Endereco cadastraEndereco(Usuario usuario) {
+		EnderecoDao enderecoDao = DaoFactory.createEnderecoDao();
+		Scanner entrada = new Scanner(System.in);
+		Endereco endereco = new Endereco();
+
+		endereco.setUsuario(usuario);
+
+		System.out.println("+ ------------------------------------------------------------------------- +");
+		System.out.println("|	PetMatch: Te conectando com um animalzinho para adocao!             |");
+		System.out.println("+ ------------------------------------------------------------------------- +");
+		System.out.println(" Para o cadastro do endereco preencha as informacoes abaixo: ");
+		System.out.print(" CEP: ");
+		endereco.setCep(entrada.nextLine());
+		System.out.print(" Estado: ");
+		endereco.setUf(entrada.nextLine());
+		System.out.print(" Cidade: ");
+		endereco.setCidade(entrada.nextLine());
+		System.out.print(" Bairro: ");
+		endereco.setBairro(entrada.nextLine());
+		System.out.print(" Rua: ");
+		endereco.setRua(entrada.nextLine());
+		System.out.print(" Numero: ");
+		endereco.setNumero(entrada.nextInt());
+		entrada.nextLine();
+		System.out.print(" Complemento: ");
+		endereco.setComplemento(entrada.nextLine());
+		System.out.println("+ ------------------------------------------------------------------------- +");
+		System.out.println("|	Cadastro registrado com sucesso! :D                                 |");
+		System.out.println("+ ------------------------------------------------------------------------- +");
+		System.out.println(" ");
+
+		enderecoDao.insert(endereco);
+		return endereco;
 	}
 
 	private static void menuPrincipal() {
@@ -146,7 +190,6 @@ public class Menu {
 		System.out.println("|     4 - Acesso aos anuncios favoritos 	          |");
 		System.out.println("|     5 - Opcoes de conversa 			 	  |");
 		System.out.println("|     6 - Excluir perfil 			     	  |");
-		System.out.println("|     7 - Cadastrar Endereco 			      |");
 		System.out.println("|    55 - Fechar o programa				  |");
 		System.out.println("+ ------------------------------------------------------- +");
 	}
@@ -165,13 +208,38 @@ public class Menu {
 		System.out.println(" ");
 		switch (userAnswer) {
 		case(1):
-			 visualizaPerfil(usuario);
-			break;
+			visualizaPerfil(usuario);
+		break;
 		case(2):
 			atualizaPerfil(usuario);
 		break;
+		}
 	}
-		entrada.close();
+
+	private static void opcoesDeEndereco(Endereco endereco) {
+		Scanner entrada = new Scanner(System.in);
+		System.out.println("+ ------------------------------------------------------- +");
+		System.out.println("|	Bem-Vindo as opcoes de endereco!                  |");
+		System.out.println("+ ------------------------------------------------------- +");
+		System.out.println("|     1 - Visualizar as informacoes de endereco 	  |");
+		System.out.println("|     2 - Para atualizar as informacoes de endereco 	  |");
+		System.out.println("|     3 - Para remover o endereco	                  |");
+		System.out.println("+ ------------------------------------------------------- +");
+		System.out.println(" ");
+		System.out.print("Sua resposta: ");
+		int userAnswer = entrada.nextInt();
+		System.out.println(" ");
+		switch (userAnswer) {
+		case(1):
+			visualizaEnderecoInfo(endereco);
+		break;
+		case(2):
+			atualizaEndereco(endereco);
+		break;
+		case(3):
+			removeEndereco(endereco);
+		break;
+		}
 	}
 
 	private static void visualizaPerfil(Usuario usuario) {
@@ -181,10 +249,14 @@ public class Menu {
 		System.out.println(usuario);
 		System.out.println(" ");
 		System.out.println("- ------------------------------------------------------- -");
-		System.out.println("|    01 - Para atualizar as informacoes do perfil 	  |");
-		System.out.println("|    02 - Para voltar ao menu principal	 	   	  |");
-		System.out.println("|    03 - Fechar o programa				  |");
-		System.out.println("- ------------------------------------------------------- -");
+	}
+
+	private static void visualizaEnderecoInfo(Endereco endereco) {
+		System.out.println("+ ------------------------------------------- +");
+		System.out.println("   Visualizacao das informacoes de endereco:    ");
+		System.out.println(endereco);
+		System.out.println(" ");
+		System.out.println("+ ------------------------------------------- +");
 	}
 
 	private static void atualizaPerfil(Usuario usuario) {
@@ -201,7 +273,7 @@ public class Menu {
 		System.out.println("|     6 - Alterar senha 	            |");
 		System.out.println("|     7 - Alterar celular 	   	    |");
 		System.out.println("- ----------------------------------------- -");
-		
+
 		System.out.print("Sua resposta: ");
 		int userAnswer = entrada.nextInt();
 		entrada.nextLine();
@@ -232,90 +304,8 @@ public class Menu {
 		} 
 		usuarioDao.update(usuario);
 		System.out.println("Infomacao atualizada!");
-		
-	}
-
-	private static void apagaPerfil(Usuario usuario, Endereco endereco) {
-		AnuncioDao anuncioDao = DaoFactory.createAnuncioDao();
-		EnderecoDao enderecoDao = DaoFactory.createEnderecoDao();
-		MidiaDao midiaDao = DaoFactory.createMidiaDao();
-		UsuarioDao usuarioDao = DaoFactory.createUsuarioDao();
-		
-		List <Anuncio> anuncioList = anuncioDao.findByUserId(usuario.getIdUsuario());
-		for(int i = 0; i < anuncioList.size(); i++) {
-			anuncioList.get(i).setMidia(midiaDao.findByAnuncioId(anuncioList.get(i).getIdAnuncio()));
-			for(int j = 0; j < anuncioList.get(i).getMidia().size(); j++) {
-				MidiaAnuncio midia = anuncioList.get(i).getMidia().get(j);
-				midiaDao.deleteById(midia.getIdMidia());
-			}
-			anuncioDao.deleteById(anuncioList.get(i).getIdAnuncio());
-		}
-		
-		enderecoDao.deleteById(endereco.getIdEndereco());
-		usuarioDao.deleteById(usuario.getIdUsuario());
-		System.out.println("Perfil apagado!");
-	}
-	
-	private static void removeEndereco(Endereco endereco) {
-		AnuncioDao anuncioDao = DaoFactory.createAnuncioDao();
-		EnderecoDao enderecoDao = DaoFactory.createEnderecoDao();
-		MidiaDao midiaDao = DaoFactory.createMidiaDao();
-		
-		List <Anuncio> anuncioList = anuncioDao.findByUserId(endereco.getUsuario().getIdUsuario());
-		for(int i = 0; i < anuncioList.size(); i++) {
-			anuncioList.get(i).setMidia(midiaDao.findByAnuncioId(anuncioList.get(i).getIdAnuncio()));
-			for(int j = 0; j < anuncioList.get(i).getMidia().size(); j++) {
-				MidiaAnuncio midia = anuncioList.get(i).getMidia().get(j);
-				midiaDao.deleteById(midia.getIdMidia());
-			}
-			anuncioDao.deleteById(anuncioList.get(i).getIdAnuncio());
-		}
-		
-		enderecoDao.deleteById(endereco.getIdEndereco());
-		System.out.println("Endereco apagado!");
-	}
-	
-	private static void opcoesDeEndereco(Endereco endereco) {
-		Scanner entrada = new Scanner(System.in);
-		System.out.println("+ ------------------------------------------------------- +");
-		System.out.println("|	Bem-Vindo as opcoes de endereco!                  |");
-		System.out.println("+ ------------------------------------------------------- +");
-		System.out.println("|     1 - Visualizar as informacoes de endereco 	  |");
-		System.out.println("|     2 - Para atualizar as informacoes de endereco 	  |");
-		System.out.println("|     3 - Para remover o endereco	                  |");
-		System.out.println("+ ------------------------------------------------------- +");
 		System.out.println(" ");
-		System.out.print("Sua resposta: ");
-		int userAnswer = entrada.nextInt();
-		System.out.println(" ");
-		switch (userAnswer) {
-		case(1):
-			 visualizaEnderecoInfo(endereco);
-			break;
-		case(2):
-			atualizaEndereco(endereco);
-		break;
-		case(3):
-			removeEndereco(endereco);
-		break;
-	}
-		entrada.close();
-	}
 
-	private static void visualizaEnderecoInfo(Endereco endereco) {
-		Scanner entrada = new Scanner(System.in);
-		System.out.println("+ ------------------------------------------- +");
-		System.out.println("   Visualizacao das informacoes de endereco:    ");
-		System.out.println(endereco);
-		System.out.println("+ ------------------------------------------- +");
-		System.out.println("|     1 - Para atualizar as informacoes       |");
-		System.out.println("+ ------------------------------------------- +");
-		
-		int userInput = entrada.nextInt();
-		if(userInput == 1) {
-			atualizaEndereco(endereco);
-		}
-		entrada.close();
 	}
 
 	private static void atualizaEndereco(Endereco endereco) {
@@ -324,15 +314,15 @@ public class Menu {
 		System.out.println("+ ----------------------------------------- +");
 		System.out.println("|	 Atualizacao de endereco:           |");
 		System.out.println("+ ----------------------------------------- +");
-		System.out.println("|    00 - Atualizar CEP 	            |");
-		System.out.println("|    01 - Alterar estado 	            |");
-		System.out.println("|    02 - Alterar cidade 	            |");
-		System.out.println("|    03 - Alterar bairro	            |");
-		System.out.println("|    04 - Alterar rua		            |");
-		System.out.println("|    05 - Alterar numero 	            |");
-		System.out.println("|    06 - Alterar complemento 	   	    |");
+		System.out.println("|     1 - Atualizar CEP 	            |");
+		System.out.println("|     2 - Alterar estado 	            |");
+		System.out.println("|     3 - Alterar cidade 	            |");
+		System.out.println("|     4 - Alterar bairro	            |");
+		System.out.println("|     5 - Alterar rua		            |");
+		System.out.println("|     6 - Alterar numero 	            |");
+		System.out.println("|     7 - Alterar complemento 	   	    |");
 		System.out.println("- ----------------------------------------- -");
-		
+
 		System.out.print("Sua resposta: ");
 		int userAnswer = entrada.nextInt();
 		entrada.nextLine();
@@ -360,44 +350,48 @@ public class Menu {
 		} 
 		enderecoDao.update(endereco);
 		System.out.println("Infomacao atualizada!");
-		
-		entrada.close();
-
-	} 
-
-	private static void cadastraEndereco(Usuario usuario) {
-		EnderecoDao enderecoDao = DaoFactory.createEnderecoDao();
-		Scanner entrada = new Scanner(System.in);
-		Endereco endereco = new Endereco();
-
-		endereco.setUsuario(usuario);
-
-		System.out.println("+ ------------------------------------------------------------------------- +");
-		System.out.println("|	PetMatch: Te conectando com um animalzinho para adocao!             |");
-		System.out.println("+ ------------------------------------------------------------------------- +");
-		System.out.println(" Para o cadastro do endereco preencha as informacoes abaixo: ");
-		System.out.print(" CEP: ");
-		endereco.setCep(entrada.nextLine());
-		System.out.print(" Estado: ");
-		endereco.setUf(entrada.nextLine());
-		System.out.print(" Cidade: ");
-		endereco.setCidade(entrada.nextLine());
-		System.out.print(" Bairro: ");
-		endereco.setBairro(entrada.nextLine());
-		System.out.print(" Rua: ");
-		endereco.setRua(entrada.nextLine());
-		System.out.print(" Numero: ");
-		endereco.setNumero(entrada.nextInt());
-		System.out.print(" Complemento: ");
-		endereco.setComplemento(entrada.nextLine());
-		System.out.println("+ ------------------------------------------------------------------------- +");
-		System.out.println("|	Cadastro registrado com sucesso! :D                                 |");
-		System.out.println("+ ------------------------------------------------------------------------- +");
-
-		enderecoDao.insert(endereco);
-
-		entrada.close();
 	}
+
+	private static void apagaPerfil(Usuario usuario, Endereco endereco) {
+		AnuncioDao anuncioDao = DaoFactory.createAnuncioDao();
+		EnderecoDao enderecoDao = DaoFactory.createEnderecoDao();
+		MidiaDao midiaDao = DaoFactory.createMidiaDao();
+		UsuarioDao usuarioDao = DaoFactory.createUsuarioDao();
+
+		List <Anuncio> anuncioList = anuncioDao.findByUserId(usuario.getIdUsuario());
+		for(int i = 0; i < anuncioList.size(); i++) {
+			anuncioList.get(i).setMidia(midiaDao.findByAnuncioId(anuncioList.get(i).getIdAnuncio()));
+			for(int j = 0; j < anuncioList.get(i).getMidia().size(); j++) {
+				MidiaAnuncio midia = anuncioList.get(i).getMidia().get(j);
+				midiaDao.deleteById(midia.getIdMidia());
+			}
+			anuncioDao.deleteById(anuncioList.get(i).getIdAnuncio());
+		}
+
+		enderecoDao.deleteById(endereco.getIdEndereco());
+		usuarioDao.deleteById(usuario.getIdUsuario());
+		System.out.println("Perfil apagado!");
+	}
+
+	private static void removeEndereco(Endereco endereco) {
+		AnuncioDao anuncioDao = DaoFactory.createAnuncioDao();
+		EnderecoDao enderecoDao = DaoFactory.createEnderecoDao();
+		MidiaDao midiaDao = DaoFactory.createMidiaDao();
+
+		List <Anuncio> anuncioList = anuncioDao.findByUserId(endereco.getUsuario().getIdUsuario());
+		for(int i = 0; i < anuncioList.size(); i++) {
+			anuncioList.get(i).setMidia(midiaDao.findByAnuncioId(anuncioList.get(i).getIdAnuncio()));
+			for(int j = 0; j < anuncioList.get(i).getMidia().size(); j++) {
+				MidiaAnuncio midia = anuncioList.get(i).getMidia().get(j);
+				midiaDao.deleteById(midia.getIdMidia());
+			}
+			anuncioDao.deleteById(anuncioList.get(i).getIdAnuncio());
+		}
+
+		enderecoDao.deleteById(endereco.getIdEndereco());
+		System.out.println("Endereco apagado!");
+	}
+
 
 	private static void opcoesDeAnuncio(Endereco endereco, Usuario usuario) {
 		Scanner entrada = new Scanner(System.in);
@@ -410,12 +404,12 @@ public class Menu {
 		System.out.println("|    02 - Criar Anuncio                  |");
 		System.out.println("|    03 - Acesso aos meus anuncios       |");
 		System.out.println("|    04 - Para voltar ao menu principal  |");
-		System.out.println("|    05 - Fechar o programa              |");
 		System.out.println("+ -------------------------------------- +");
 
 		System.out.println(" ");
 		System.out.println("Digite sua resposta: ");
 		userAnswer = entrada.nextInt();
+		entrada.nextLine();
 
 		switch(userAnswer){
 		case 01:
@@ -429,15 +423,11 @@ public class Menu {
 			visualizarAnuncios();
 			break;
 		case 04:
-			menuPrincipal();
-			break;
-		case 05:
 			break;
 		}
-		entrada.close();
 	}
-	private static void cadastrarAnuncio(Endereco endereco, Usuario autor) {
 
+	private static void cadastrarAnuncio(Endereco endereco, Usuario autor) { 
 		Scanner entrada = new Scanner(System.in);
 
 		AnuncioDao anuncioDao = DaoFactory.createAnuncioDao();
@@ -512,8 +502,6 @@ public class Menu {
 		}
 
 		System.out.println("+ -------------------------------------- +");
-
-		entrada.close();
 	}
 
 	private static void visualizarMeusAnuncios(Usuario usuario) {
@@ -522,7 +510,7 @@ public class Menu {
 		AnuncioDao anuncioDao = DaoFactory.createAnuncioDao();
 		MidiaDao midiaDao = DaoFactory.createMidiaDao();
 		List <Anuncio> anuncioList = anuncioDao.findByUserId(usuario.getIdUsuario());
-		
+
 		if(anuncioList != null) {
 			System.out.println("   Anuncios encontrados: ");
 			for(int i = 0; i < anuncioList.size(); i++) {
@@ -635,38 +623,38 @@ public class Menu {
 		switch(userAnswer) {
 		case(1):
 			System.out.print("Novo nome: ");
-			anuncio.setNomeDoAnimal(entrada.nextLine());
+		anuncio.setNomeDoAnimal(entrada.nextLine());
 		anuncioDao.update(anuncio);
 		break;
 		case(2):
 			System.out.print("Nova descricao: ");
-			anuncio.setDescricao(entrada.nextLine());
+		anuncio.setDescricao(entrada.nextLine());
 		anuncioDao.update(anuncio);
 		break;
 		case(3):
 			System.out.print("Nova idade: ");
-			anuncio.setIdade(entrada.nextInt());
-			entrada.nextLine();
+		anuncio.setIdade(entrada.nextInt());
+		entrada.nextLine();
 		anuncioDao.update(anuncio);
 		break;
 		case(4):
 			System.out.print("Defina a especie: ");
-			anuncio.setEspecie(entrada.nextLine());
+		anuncio.setEspecie(entrada.nextLine());
 		anuncioDao.update(anuncio);
 		break;
 		case(5):
 			System.out.print("Defina a raca: ");
-			anuncio.setRaca(entrada.nextLine());
+		anuncio.setRaca(entrada.nextLine());
 		anuncioDao.update(anuncio);
 		break;
 		case(6):
 			System.out.print("Defina o genero: ");
-			anuncio.setGenero(entrada.nextLine());
+		anuncio.setGenero(entrada.nextLine());
 		anuncioDao.update(anuncio);
 		break;
 		case(7):
 			System.out.print("Defina o porte: ");
-			anuncio.setPorte(entrada.nextLine());
+		anuncio.setPorte(entrada.nextLine());
 		anuncioDao.update(anuncio);
 		break;
 		case(8):
@@ -676,12 +664,12 @@ public class Menu {
 		break;
 		case(9):
 			System.out.print("Status de Castracao: digite true para SIM e false para NAO:");
-			anuncio.setStatusCastracao(entrada.nextBoolean());
+		anuncio.setStatusCastracao(entrada.nextBoolean());
 		anuncioDao.update(anuncio);
 		break;
 		case(10):
 			System.out.print("Status de Vermifugo: digite true para SIM e false para NAO:");
-			anuncio.setStatusVermifugo(entrada.nextBoolean());
+		anuncio.setStatusVermifugo(entrada.nextBoolean());
 		anuncioDao.update(anuncio);
 		break;
 		}
