@@ -182,6 +182,7 @@ public class Menu {
 	}
 
 	private static void menuPrincipal() {
+		System.out.println(" ");
 		System.out.println("+ ------------------------------------------------------- +");
 		System.out.println("|	Bem-Vindo ao menu de opcoes do PetMatch!:         |");
 		System.out.println("+ ------------------------------------------------------- +");
@@ -393,7 +394,6 @@ public class Menu {
 		System.out.println("Endereco apagado!");
 	}
 
-
 	private static void opcoesDeAnuncio(Endereco endereco, Usuario usuario) {
 		Scanner entrada = new Scanner(System.in);
 		int userAnswer = 0;
@@ -437,8 +437,6 @@ public class Menu {
 		anuncio.setAutor(autor);
 		anuncio.setEndereco(endereco);
 
-		//fazer verificacao do endereco
-
 		System.out.println("+ ----------------------------------------- +");
 		System.out.println("|    Preencha TODAS as informacoes abaixo:  |");
 		System.out.println("+ ----------------------------------------- +");
@@ -446,7 +444,7 @@ public class Menu {
 		anuncio.setNomeDoAnimal(entrada.nextLine());
 		System.out.print("    Escreva uma descricao: ");
 		anuncio.setDescricao(entrada.nextLine());
-		System.out.print("    Idade (apenas em nÃºmeros): ");
+		System.out.print("    Idade (apenas em numeros): ");
 		anuncio.setIdade(entrada.nextInt());
 		entrada.nextLine();
 		System.out.print("    Especie: ");
@@ -507,26 +505,29 @@ public class Menu {
 
 	private static void visualizarMeusAnuncios(Usuario usuario) {
 		Scanner entrada = new Scanner (System.in);
-		int userAnswer = 0;
 		AnuncioDao anuncioDao = DaoFactory.createAnuncioDao();
 		MidiaDao midiaDao = DaoFactory.createMidiaDao();
+		UsuarioDao usuarioDao = DaoFactory.createUsuarioDao();
 		List <Anuncio> anuncioList = anuncioDao.findByUserId(usuario.getIdUsuario());
 
 		if(anuncioList != null) {
+			for(Anuncio anuncio : anuncioList) {
+				anuncio.setAutor(usuarioDao.findById(anuncio.getAutor().getIdUsuario()));
+			}
 			System.out.println("   Anuncios encontrados: ");
 			for(int i = 0; i < anuncioList.size(); i++) {
 				System.out.println("   Anuncio " + anuncioList.get(i).getIdAnuncio() + ":");
 				System.out.println(anuncioList.get(i));
 				System.out.println(" ");
-				System.out.println("   Visualizar o proximo (1)");
-				System.out.println("   Atualizar o anuncio (2)");
-				System.out.println("   Deletar anuncio (3)");
+				System.out.println("   Atualizar o anuncio (1)");
+				System.out.println("   Deletar anuncio (2)");
+				System.out.println("   Visualizar o proximo (3)");
 				System.out.print("   Digite sua resposta: ");
-				userAnswer = entrada.nextInt();
+				int userAnswer = entrada.nextInt();
+				System.out.println(" ");
 
-				if(userAnswer == 2) {
-					atualizaAnuncio(anuncioList.get(i));
-					/**while(userAnswer != 5) {
+				if(userAnswer == 1) {
+					while(userAnswer != 5) {
 						atualizaAnuncio(anuncioList.get(i));
 						System.out.println(" ");
 						System.out.println("Anuncio atualizado!");
@@ -534,8 +535,9 @@ public class Menu {
 						System.out.println("Fazer outra atualizacao?");
 						System.out.print("SIM (4), NÃO (5)");
 						userAnswer = entrada.nextInt();
-					} **/
-				} else if (userAnswer == 3) {
+						entrada.nextLine();
+					} 
+				} else if (userAnswer == 2) {
 					anuncioList.get(i).setMidia(midiaDao.findByAnuncioId(anuncioList.get(i).getIdAnuncio()));
 					for(int j = 0; j < anuncioList.get(i).getMidia().size(); j++) {
 						MidiaAnuncio midia = anuncioList.get(i).getMidia().get(j);
@@ -548,18 +550,21 @@ public class Menu {
 		} else {
 			System.out.println("Voce nao criou nenhum anuncio ainda!");
 		}
-		entrada.close();
 	}
 
 	private static void visualizarAnuncios(Usuario usuario) {
 		Scanner entrada = new Scanner(System.in);
 		AnuncioDao anuncioDao = DaoFactory.createAnuncioDao();
+		UsuarioDao usuarioDao = DaoFactory.createUsuarioDao();
 		RecadosDao recadosDao = DaoFactory.createRecadosDao();
 		FavoritoDao favoritoDao = DaoFactory.createFavoritosDao();
 		List <Anuncio> anuncioList = anuncioDao.getAllAnuncios();
 		int cont = 0;
-		//int contId = 0;
+		int contId = 0;
 		if(anuncioList != null) {
+			for(Anuncio anuncio : anuncioList) {
+				anuncio.setAutor(usuarioDao.findById(anuncio.getAutor().getIdUsuario()));
+			}
 			for(Anuncio anuncio : anuncioList) {
 				System.out.println("   Anuncio " + anuncio.getIdAnuncio() + ":");
 				System.out.println(anuncio);
@@ -582,10 +587,10 @@ public class Menu {
 				if(cont %3 == 0) {
 					Recados recados = new Recados();
 					System.out.println(" ");
-					recados = recadosDao.findById(3);
+					recados = recadosDao.findById(contId);
 					System.out.println(recados);
 					System.out.println(" ");
-					//contId++;
+					contId++;
 				}
 			}
 		} else {
@@ -603,7 +608,7 @@ public class Menu {
 		List<Anuncio> listFavorito = anuncioDao.findAnunciosFavoritados(usuario);
 		System.out.println("Bem vindo aos anuncios favoritos!");
 		System.out.println(" ");
-		if(listFavorito != null) {
+		if(listFavorito.size() > 0) {
 			for(Anuncio anuncio : listFavorito) {
 				anuncio.setAutor(usuarioDao.findById(anuncio.getAutor().getIdUsuario()));
 			}
@@ -612,7 +617,8 @@ public class Menu {
 				System.out.println(anuncio);
 				System.out.println(" ");
 				System.out.println("   Remover anuncio dos favoritos?");
-				System.out.println("   Desfavoritar anuncio (1) || Proximo anuncio (2)");
+				System.out.println("   Desfavoritar anuncio (1)");
+				System.out.println("   Proximo anuncio (2)");
 				System.out.print("   Digite sua resposta: ");
 				int userAnswer = entrada.nextInt();
 				System.out.println(" ");
@@ -624,9 +630,9 @@ public class Menu {
 					System.out.println(" ");
 				}
 			}
-		} 
-		if(listFavorito == null ){
+		} else {
 			System.out.println("Voce ainda nao possui anuncios favoritados");
+			System.out.println(" ");
 		}
 	}
 
@@ -635,8 +641,8 @@ public class Menu {
 		UsuarioDao usuarioDao = DaoFactory.createUsuarioDao();
 		Usuario usuario = usuarioDao.findById(anuncio.getAutor().getIdUsuario());
 		Scanner entrada = new Scanner(System.in);
-		int userAnswer = 0; 
 
+		System.out.println(" ");
 		System.out.println("+ -------------------------------------- +");
 		System.out.println("|	 Atualizacao de anuncio:         |");
 		System.out.println("+ -------------------------------------- +");
@@ -654,7 +660,7 @@ public class Menu {
 
 		System.out.println(" ");
 		System.out.print("Sua resposta: ");
-		userAnswer = entrada.nextInt();
+		int userAnswer = entrada.nextInt();
 		entrada.nextLine();
 		System.out.println(" ");
 		switch(userAnswer) {
@@ -710,7 +716,6 @@ public class Menu {
 		anuncioDao.update(anuncio);
 		break;
 		}
-		entrada.close();
 	}
 }
 
