@@ -12,6 +12,7 @@ import java.util.List;
 import db.DB;
 import db.DbException;
 import model.dao.MensagemDao;
+import model.entities.Conversa;
 import model.entities.Mensagem;
 
 public class MensagemDaoJDBC implements MensagemDao {
@@ -78,12 +79,12 @@ public class MensagemDaoJDBC implements MensagemDao {
 		}
 	}
 	@Override
-	public List<Mensagem> findByConversa(Integer idConversa) {
+	public List<Mensagem> findByConversa(Conversa conversa){
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement("SELECT * FROM mensagem WHERE id_conversa = ?");
-			st.setInt(1, idConversa);
+			st.setInt(1, conversa.getIdConversa());
 			rs = st.executeQuery();
 			List<Mensagem> mensagemList = new ArrayList<>();
 			while(rs.next()) {

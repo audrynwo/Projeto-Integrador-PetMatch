@@ -86,7 +86,7 @@ public class Recados implements Serializable {
 
 	@Override
 	public String toString() {
-		return ("   Dica: " + titulo + "\n    " + texto + "\n    " + midia);
+		return ("   Dica: " + titulo + "\n   " + texto + "\n   " + midia);
 	}
 
 }

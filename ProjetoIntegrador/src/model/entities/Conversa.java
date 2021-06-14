@@ -17,12 +17,13 @@ public class Conversa implements Serializable {
 	private Usuario usuarioDestinatario;
 
 	public Conversa() {
-		
+		this.usuarioRemetente = new Usuario();
+		this.usuarioDestinatario = new Usuario();
 	}
 	
 	public Conversa(Usuario usuarioRemetente, Usuario usuarioDestinatario) {
 		this.usuarioRemetente = usuarioRemetente;
-		this.usuarioDestinatario = usuarioRemetente;
+		this.usuarioDestinatario = usuarioDestinatario;
 	}
 
 	public Usuario getUsuarioRemetente() {

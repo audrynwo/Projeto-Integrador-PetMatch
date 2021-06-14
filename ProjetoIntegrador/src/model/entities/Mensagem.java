@@ -2,9 +2,12 @@ package model.entities;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Mensagem implements Serializable {
+	
 	private static final long serialVersionUID = 1L;
+	private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 
 	private int idMensagem;
 	private String textoMensagem;
@@ -65,8 +68,7 @@ public class Mensagem implements Serializable {
 	}
 	@Override
 	public String toString() {
-		return ("texto_mensagem = " + textoMensagem + "\n data_mensagem = " + dataMensagem + "\n conversa = "
-				+ conversa);
+		return (dataMensagem.format(formatter) + ": " + textoMensagem);
 	}
 
 }

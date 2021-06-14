@@ -12,6 +12,7 @@ import db.DB;
 import db.DbException;
 import model.dao.ConversaDao;
 import model.entities.Conversa;
+import model.entities.Usuario;
 
 public class ConversaDaoJDBC implements ConversaDao {
 	private Connection conn;
@@ -103,12 +104,12 @@ public class ConversaDaoJDBC implements ConversaDao {
 	}
 
 	@Override
-	public List<Conversa> findByIdUsuario(Integer idRemetente) {
+	public List<Conversa> findByUsuario(Usuario usuario) {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
-			st = conn.prepareStatement("SELECT id_usuario_destinatario FROM conversa WHERE id_usuario_remetente = ?");
-			st.setInt(1, idRemetente);
+			st = conn.prepareStatement("SELECT * FROM conversa WHERE id_usuario_remetente = ?");
+			st.setInt(1, usuario.getIdUsuario());
 			rs = st.executeQuery();
 			List<Conversa> conversaList = new ArrayList<>();
 			while(rs.next()) {

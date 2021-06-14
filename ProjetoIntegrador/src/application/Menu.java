@@ -6,15 +6,19 @@ import java.util.List;
 import java.util.Scanner;
 
 import model.dao.AnuncioDao;
+import model.dao.ConversaDao;
 import model.dao.DaoFactory;
 import model.dao.EnderecoDao;
 import model.dao.FavoritoDao;
+import model.dao.MensagemDao;
 import model.dao.MidiaDao;
 import model.dao.RecadosDao;
 import model.dao.UsuarioDao;
 import model.entities.Anuncio;
+import model.entities.Conversa;
 import model.entities.Endereco;
 import model.entities.Favorito;
+import model.entities.Mensagem;
 import model.entities.MidiaAnuncio;
 import model.entities.Recados;
 import model.entities.Usuario;
@@ -89,11 +93,12 @@ public class Menu {
 			break;
 			case(4):
 				pesquisaPorAnuncio(usuario);
-				break;
+			break;
 			case(5):
 				visualizarFavoritos(usuario);
 			break;
 			case(6):
+				minhasConversas(usuario);
 				break;
 			case(7):
 				apagaPerfil(usuario, endereco);
@@ -194,7 +199,7 @@ public class Menu {
 		System.out.println("|     3 - Opcoes de anuncios 			 	  |");
 		System.out.println("|     4 - Filtrar a visualizacao dos anuncios 	          |");
 		System.out.println("|     5 - Acesso aos anuncios favoritos 	          |");
-		System.out.println("|     6 - Opcoes de conversa 			 	  |");
+		System.out.println("|     6 - Minhas conversas 	  		 	  |");
 		System.out.println("|     7 - Excluir perfil 			     	  |");
 		System.out.println("|    55 - Fechar o programa				  |");
 		System.out.println("+ ------------------------------------------------------- +");
@@ -565,7 +570,7 @@ public class Menu {
 		FavoritoDao favoritoDao = DaoFactory.createFavoritosDao();
 		List <Anuncio> anuncioList = anuncioDao.getAllAnuncios();
 		int cont = 0;
-		int contId = 0;
+		int contId = 1;
 		if(anuncioList != null) {
 			for(Anuncio anuncio : anuncioList) {
 				anuncio.setAutor(usuarioDao.findById(anuncio.getAutor().getIdUsuario()));
@@ -576,19 +581,27 @@ public class Menu {
 				System.out.println(anuncio);
 				System.out.println(" ");
 				System.out.println("   (1) Favoritar anuncio");
-				System.out.println("   (2) Visuaizar proximo anuncio");
+				System.out.println("   (2) Entrar em contato com o doador");
+				System.out.println("   (3) Visualizar proximo anuncio");
 				System.out.print("   Digite sua resposta: ");
 				int userAnswer = entrada.nextInt();
 				entrada.nextLine();
 				System.out.println(" ");
-				
+
 				if(userAnswer == 1) {
 					Favorito favorito = new Favorito(usuario, anuncio);
 					favoritoDao.insert(favorito);
 					System.out.println(" ");
 					System.out.println("Anuncio Favoritado!");
 					System.out.println(" ");
+				} 
+
+				if(userAnswer == 2) {
+					Usuario autor = new Usuario();
+					autor = (usuarioDao.findById(anuncio.getAutor().getIdUsuario()));
+					conversa(usuario, autor);
 				}
+
 				cont++;
 				if(cont %3 == 0) {
 					Recados recados = new Recados();
@@ -596,6 +609,9 @@ public class Menu {
 					recados = recadosDao.findById(contId);
 					System.out.println(recados);
 					System.out.println(" ");
+					if(contId == 6) {
+						contId = 0;
+					}
 					contId++;
 				}
 			}
@@ -625,16 +641,22 @@ public class Menu {
 				System.out.println(" ");
 				System.out.println("   Remover anuncio dos favoritos?");
 				System.out.println("   Desfavoritar anuncio (1)");
-				System.out.println("   Proximo anuncio (2)");
+				System.out.println("   Entrar em contato com o doador (2)");
+				System.out.println("   Proximo anuncio (3)");
 				System.out.print("   Digite sua resposta: ");
 				int userAnswer = entrada.nextInt();
 				System.out.println(" ");
-				
+
 				if(userAnswer == 1) {
 					favoritoDao.deleteByUserAndAnuncioId(usuario, anuncio);
 					System.out.println("   Anuncio removido dos favoritos!");
 					System.out.println("   Próximo anuncio: ");
 					System.out.println(" ");
+				}
+				
+				if(userAnswer == 2) {
+					Usuario autor = (usuarioDao.findById(anuncio.getAutor().getIdUsuario()));
+					conversa(usuario, autor);
 				}
 			}
 		} else {
@@ -645,8 +667,6 @@ public class Menu {
 
 	private static void atualizaAnuncio(Anuncio anuncio) { 
 		AnuncioDao anuncioDao = DaoFactory.createAnuncioDao();
-		UsuarioDao usuarioDao = DaoFactory.createUsuarioDao();
-		Usuario usuario = usuarioDao.findById(anuncio.getAutor().getIdUsuario());
 		Scanner entrada = new Scanner(System.in);
 
 		System.out.println(" ");
@@ -724,11 +744,12 @@ public class Menu {
 		break;
 		}
 	}
-	
-	private static void pesquisaPorAnuncio(Usuario usuario) {
+
+	private static void pesquisaPorAnuncio(Usuario usuario) { 
 		Scanner entrada = new Scanner(System.in);
 		AnuncioDao anuncioDao = DaoFactory.createAnuncioDao();
 		FavoritoDao favoritoDao = DaoFactory.createFavoritosDao();
+		UsuarioDao usuarioDao = DaoFactory.createUsuarioDao();
 		String userFilterInput = "SELECT * FROM anuncio WHERE especie LIKE '";
 
 		System.out.println("Vamos definir seus filtros! ");
@@ -823,7 +844,7 @@ public class Menu {
 			break;
 			}
 		}
-		
+
 		userFilterInput += ";";
 		System.out.println(" ");
 		System.out.println("Filtros definidos com sucesso!");
@@ -839,13 +860,13 @@ public class Menu {
 				System.out.println(anuncio);
 				System.out.println(" ");
 				System.out.println("   (1) Favoritar anuncio");
-				System.out.println("   (2) Visuaizar proximo anuncio");
-				System.out.println("   (3) Sair.");
+				System.out.println("   (2) Entrar em contato com o doador");
+				System.out.println("   (3) Visualizar proximo anuncio");
 				System.out.print("   Digite sua resposta: ");
 				userAnswer = entrada.nextInt();
 				entrada.nextLine();
 				System.out.println(" ");
-				
+
 				if(userAnswer == 1) {
 					Favorito favorito = new Favorito(usuario, anuncio);
 					favoritoDao.insert(favorito);
@@ -853,9 +874,84 @@ public class Menu {
 					System.out.println("Anuncio Favoritado!");
 					System.out.println(" ");
 				}
+				
+				if(userAnswer == 2) {
+					Usuario autor = (usuarioDao.findById(anuncio.getAutor().getIdUsuario()));
+					conversa(usuario, autor);
+				}
 			}
 		} else {
 			System.out.println("Nenhum anuncio foi encontrado! :(");
+		}
+	}
+
+	private static void minhasConversas(Usuario usuario) {
+		Scanner entrada = new Scanner(System.in);
+		ConversaDao conversaDao = DaoFactory.createConversaDao();
+		UsuarioDao usuarioDao = DaoFactory.createUsuarioDao();
+		MensagemDao mensagemDao = DaoFactory.createMensagemDao();
+		
+		
+		System.out.println("Bem vindo a sua lista de conversas!");
+		System.out.println(" ");
+		List<Conversa> conversaList = conversaDao.findByUsuario(usuario);
+		if(conversaList.size() > 0) {
+			for(Conversa conversa : conversaList) {
+				conversa.setUsuarioDestinatario(usuarioDao.findById(conversa.getUsuarioDestinatario().getIdUsuario()));
+				List<Mensagem> mensagensList = mensagemDao.findByConversa(conversa);
+				System.out.println("Mensagem enviadas para: " + conversa.getUsuarioDestinatario().getNome() + ".");
+				for(Mensagem mensagem : mensagensList) {
+					System.out.println(mensagem);
+				}
+				System.out.println(" ");
+				System.out.println("Deseja apagar essa conversa? (1) SIM (2) NAO");
+				int userAnswer = entrada.nextInt();
+				if(userAnswer == 1){
+					for(Mensagem mensagem : mensagensList) {
+						mensagemDao.deleteById(mensagem.getIdMensagem());
+					}
+					conversaDao.deleteById(conversa.getIdConversa());
+					System.out.println(" ");
+					System.out.println("Conversa apagada com sucesso!");
+				}
+			}
+		}
+	}
+	
+	private static void conversa(Usuario usuarioRemetente, Usuario usuarioDestinatario) {
+		Scanner entrada = new Scanner(System.in);
+		ConversaDao conversaDao = DaoFactory.createConversaDao();
+		MensagemDao mensagemDao = DaoFactory.createMensagemDao();
+
+		Conversa conversa = new Conversa(usuarioRemetente, usuarioDestinatario);
+		conversaDao.insert(conversa);
+
+		int userAnswer = 0;
+		while(userAnswer != 2) {
+			System.out.println("Digite sua mensagem: ");
+			String mensagemString = entrada.nextLine();
+
+			Mensagem mensagem = new Mensagem(mensagemString, conversa);
+			mensagemDao.insert(mensagem);
+
+			System.out.println(" ");
+			System.out.println("Mensagem registrada!");
+			System.out.print("Deseja apagar esta mensagem? (1) SIM (2) NAO ");
+			userAnswer = entrada.nextInt();
+
+			if(userAnswer == 1) {
+				mensagemDao.deleteById(mensagem.getIdMensagem());
+				System.out.println(" ");
+				System.out.println("Mensagem apagada!");
+			}
+
+			System.out.println(" ");
+			System.out.print("Deseja enviar outra mensagem? (1) SIM (2) NAO ");
+			userAnswer = entrada.nextInt();
+			entrada.nextLine();
+
+			if(userAnswer == 2)
+				break;
 		}
 	}
 }
